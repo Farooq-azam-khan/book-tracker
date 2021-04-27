@@ -3,7 +3,7 @@
 from fastapi import FastAPI 
 from dotenv import load_dotenv, dotenv_values
 import databases
-from models import Book, Author
+from models import Book, Author, CreateBook
 import sqlalchemy
 
 load_dotenv('.env')
@@ -60,14 +60,14 @@ async def books():
     query = book.select()
     return await database.fetch_all(query)
 
-# @app.post('/books')
-# async def books(create_book: CreateBook):
-#     query = book.insert().values(name=create_book.name, 
-#                                 total_pages=create_book.total_pages,
-#                                 total_chapters=create_book.total_chapters,
-#                                 author=create_book.author)
-#     last_record_id = await database.execute(query)
-#     return {**create_book.dict(), "id": last_record_id}
+@app.post('/books')
+async def create_book(create_book: CreateBook):
+    query = book.insert().values(name=create_book.name, 
+                                total_pages=create_book.total_pages,
+                                total_chapters=create_book.total_chapters,
+                                author=create_book.author)
+    last_record_id = await database.execute(query)
+    return {**create_book.dict(), "id": last_record_id}
 
 @app.get('/books/{book_id}')
 async def get_a_book(book_id: int):
