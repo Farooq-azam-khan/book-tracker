@@ -6,10 +6,11 @@ from dotenv import load_dotenv, dotenv_values
 from models import (Book, 
                     Author, 
                     CreateBook, 
+                    CreateAuthor, CreateHistory,
                     User, 
                     Token, 
                     TokenData,
-                    book, author, 
+                    book, author, history,
                     database)
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
@@ -58,17 +59,6 @@ async def startup():
 @app.on_event('shutdown')
 async def shutdown():
     await database.disconnect()
-
-
-# @app.get('/books')
-# async def books():
-#     query = book.select()
-#     return await database.fetch_all(query)
-
-# @app.get('/books/{book_id}')
-# async def get_a_book(book_id: int):
-#     query = book.select().where(book.c.id == book_id)
-#     return await database.fetch_all(query)
 
 
 @app.post('/token', response_model=Token)
@@ -126,8 +116,28 @@ def authenticate_user(username: str, password: str):
     return dotenv_values()['PASSWORD'] == password and dotenv_values()['USERNAME'] == username
 
 
+@app.get('/history')
+async def get_history(current_user = Depends(get_current_user)):
+    query = history.select().order_by(history.c.created_at)
+    return await database.fetch_all(query)
 
+@app.post('/history')
+async def get_history(create_history: CreateHistory, current_user = Depends(get_current_user)):
+    # TODO: figure out created_at 
+    query = history.insert().values(book=create_history.book, 
+                                start_page=create_history.start_page, 
+                                end_page=create_history.end_page, 
+                                created_at=create_history.create_at if not create_history.create_at == None else datetime.utcnow()
+                                )
+                                
+    last_record_id = await database.execute(query)
+    return {**create_history.dict(), 'id': last_record_id}
 
+@app.post('/authors')
+async def create_author(create_author: CreateAuthor, current_user=Depends(get_current_user)):
+    query = author.insert().values(name=create_author.name)
+    last_record_id = await database.execute(query)
+    return {**create_author.dict(), 'id': last_record_id}
 
 @app.post('/books')
 async def create_book(create_book: CreateBook, current_user = Depends(get_current_user)):

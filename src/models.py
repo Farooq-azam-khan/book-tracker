@@ -25,17 +25,32 @@ class CreateBook(BaseModel):
     author: int
     book_order: Optional[int]
 
+
+class CreateAuthor(BaseModel):
+    name: str 
+
+
 class Author(BaseModel):
     name: str 
     id: int 
-    data_of_birth: str
 
 
+class CreateHistory(BaseModel):
+    book: int 
+    start_page: Optional[int]
+    end_page: int
+    create_at: Optional[str]
+
+class History(BaseModel):
+    id: int 
+    book: int 
+    start_page: Optional[int]
+    end_page: int
 
 import sqlalchemy
 from dotenv import load_dotenv, dotenv_values
 import databases
-
+import datetime 
 load_dotenv('.env')
 
 SECRET_KEY = dotenv_values()['SECRET_KEY']
@@ -66,6 +81,15 @@ author = sqlalchemy.Table(
     sqlalchemy.Column('name', sqlalchemy.String, nullable=False),
 )
 
+history = sqlalchemy.Table(
+    'history', 
+    metadata, 
+    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
+    sqlalchemy.Column('book', sqlalchemy.Integer, sqlalchemy.ForeignKey('book.id'), nullable=False), 
+    sqlalchemy.Column('start_page', sqlalchemy.Integer), 
+    sqlalchemy.Column('end_page', sqlalchemy.Integer, nullable=False), 
+    sqlalchemy.Column('created_at', sqlalchemy.DateTime, default=datetime.datetime.utcnow)
+)
 engine = sqlalchemy.create_engine(
     DATABASE_URL, connect_args={"check_same_thread": False}
 )
