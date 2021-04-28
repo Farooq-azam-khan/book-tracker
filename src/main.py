@@ -8,7 +8,7 @@ from models import (Book, Author, CreateBook, CreateAuthor, CreateHistory,
                     )
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
-
+from dependencies import authenticate_user, get_current_user, pwd_context
 from typing import Optional
 
 from jose import JWTError, jwt
@@ -24,37 +24,6 @@ SECRET_KEY = dotenv_values()['SECRET_KEY']
 ALGORITHM = dotenv_values()['ALGORITHM']
 
 
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail='Could not validate credentials',
-        headers={'WWW-Authenticate': 'Bearer'},
-    )
-
-    try:
-        
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get('sub')
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
-    except JWTError:
-        raise credentials_exception
-    return True 
-    # user = get_user(fake_users_db, username=token_data.username)
-    # if user is None:
-    #     raise credentials_exception
-    # return user
-
-def authenticate_user(username: str, password: str):
-    return dotenv_values()['PASSWORD'] == password and dotenv_values()['USERNAME'] == username
-
-
 app = FastAPI()
 
 app.include_router(authors_router.router, prefix='/authors')
@@ -62,14 +31,6 @@ app.include_router(books_router.router, prefix='/books')
 app.include_router(history_router.router, prefix='/history', 
                     dependencies=[Depends(get_current_user)]
                     )
-
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
 
 @app.get('/')
 def index():
@@ -128,22 +89,3 @@ async def create_book(create_book: CreateBook, current_user = Depends(get_curren
                                 author=create_book.author)
     last_record_id = await database.execute(query)
     return {**create_book.dict(), 'id': last_record_id}
-
-
-
-
-# @app.get('/history')
-# async def get_history(current_user = Depends(get_current_user)):
-#     query = history.select().order_by(history.c.read_at)
-#     return await database.fetch_all(query)
-
-# @app.post('/history')
-# async def get_history(create_history: CreateHistory, current_user = Depends(get_current_user)):
-#     query = history.insert().values(book=create_history.book, 
-#                                 start_page=create_history.start_page, 
-#                                 end_page=create_history.end_page, 
-#                                 read_at=create_history.read_at if not create_history.read_at == None else datetime.utcnow()
-#                                 )
-                                
-#     last_record_id = await database.execute(query)
-#     return {**create_history.dict(), 'id': last_record_id}
