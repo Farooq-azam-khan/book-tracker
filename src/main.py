@@ -10,7 +10,7 @@ from models import (Book,
                     User, 
                     Token, 
                     TokenData,
-                    book, author, history,
+                    book_table, author_table, history_table,
                     database)
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
@@ -118,16 +118,15 @@ def authenticate_user(username: str, password: str):
 
 @app.get('/history')
 async def get_history(current_user = Depends(get_current_user)):
-    query = history.select().order_by(history.c.created_at)
+    query = history.select().order_by(history.c.read_at)
     return await database.fetch_all(query)
 
 @app.post('/history')
 async def get_history(create_history: CreateHistory, current_user = Depends(get_current_user)):
-    # TODO: figure out created_at 
     query = history.insert().values(book=create_history.book, 
                                 start_page=create_history.start_page, 
                                 end_page=create_history.end_page, 
-                                created_at=create_history.create_at if not create_history.create_at == None else datetime.utcnow()
+                                read_at=create_history.read_at if not create_history.read_at == None else datetime.utcnow()
                                 )
                                 
     last_record_id = await database.execute(query)
@@ -135,13 +134,13 @@ async def get_history(create_history: CreateHistory, current_user = Depends(get_
 
 @app.post('/authors')
 async def create_author(create_author: CreateAuthor, current_user=Depends(get_current_user)):
-    query = author.insert().values(name=create_author.name)
+    query = author_table.insert().values(name=create_author.name)
     last_record_id = await database.execute(query)
     return {**create_author.dict(), 'id': last_record_id}
 
 @app.post('/books')
 async def create_book(create_book: CreateBook, current_user = Depends(get_current_user)):
-    query = book.insert().values(name=create_book.name, 
+    query = book_table.insert().values(name=create_book.name, 
                                 total_pages=create_book.total_pages,
                                 total_chapters=create_book.total_chapters,
                                 author=create_book.author)

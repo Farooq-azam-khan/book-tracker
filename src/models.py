@@ -64,33 +64,45 @@ database = databases.Database(DATABASE_URL)
 DATABASE_URL = dotenv_values()['DATABASE_URL']
 
 metadata = sqlalchemy.MetaData()
-book = sqlalchemy.Table(
+book_table = sqlalchemy.Table(
     'book',
     metadata,
     sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column('name', sqlalchemy.String, nullable=False),
-    sqlalchemy.Column('total_pages', sqlalchemy.Integer, nullable=False),
-    sqlalchemy.Column('total_chapters', sqlalchemy.Integer, nullable=False),
-    sqlalchemy.Column('author', sqlalchemy.Integer, sqlalchemy.ForeignKey('author.id'), nullable=False),
+    sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True),
+    sqlalchemy.Column('total_pages', sqlalchemy.Integer, 
+                        sqlalchemy.CheckConstraint('total_pages > 0'),
+                        nullable=False, default=1,
+                    ),
+    sqlalchemy.Column('total_chapters', 
+                        sqlalchemy.Integer, 
+                        sqlalchemy.CheckConstraint('total_chapters > 0'), 
+                        nullable=False, default=1
+                    ),
+    sqlalchemy.Column('author', 
+                        sqlalchemy.Integer, 
+                        sqlalchemy.ForeignKey('author.id'), 
+                        nullable=False
+                    ),
 )
 
-author = sqlalchemy.Table(
+author_table = sqlalchemy.Table(
     'author', 
     metadata, 
     sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
-    sqlalchemy.Column('name', sqlalchemy.String, nullable=False),
+    sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True),
 )
 
-history = sqlalchemy.Table(
+history_table = sqlalchemy.Table(
     'history', 
     metadata, 
     sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
     sqlalchemy.Column('book', sqlalchemy.Integer, sqlalchemy.ForeignKey('book.id'), nullable=False), 
     sqlalchemy.Column('start_page', sqlalchemy.Integer), 
     sqlalchemy.Column('end_page', sqlalchemy.Integer, nullable=False), 
-    sqlalchemy.Column('created_at', sqlalchemy.DateTime, default=datetime.datetime.utcnow)
+    sqlalchemy.Column('read_at', sqlalchemy.DateTime, default=datetime.datetime.utcnow)
 )
 engine = sqlalchemy.create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
+    DATABASE_URL, 
+    # connect_args={"check_same_thread": False}
 )
 # metadata.create_all(engine)
