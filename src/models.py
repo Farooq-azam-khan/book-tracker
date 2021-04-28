@@ -1,5 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from typing import Optional
+import datetime 
 
 class User(BaseModel):
     username: str 
@@ -25,6 +26,21 @@ class CreateBook(BaseModel):
     author: int
     book_order: Optional[int]
 
+    @validator('total_pages')
+    def total_pages_positive(cls, v):
+        if v <= 0:
+            raise ValueError('total pages has to be bigger than 1')
+        return v 
+
+    @validator('total_chapters')
+    def total_chapters_positive(cls, v):
+        if v <= 0:
+            raise ValueError('total chapters has to be bigger than 1')
+        
+        return v
+
+
+
 
 class CreateAuthor(BaseModel):
     name: str 
@@ -39,7 +55,7 @@ class CreateHistory(BaseModel):
     book: int 
     start_page: Optional[int]
     end_page: int
-    create_at: Optional[str]
+    read_at: Optional[datetime.datetime]
 
 class History(BaseModel):
     id: int 
@@ -50,7 +66,7 @@ class History(BaseModel):
 import sqlalchemy
 from dotenv import load_dotenv, dotenv_values
 import databases
-import datetime 
+
 load_dotenv('.env')
 
 SECRET_KEY = dotenv_values()['SECRET_KEY']
