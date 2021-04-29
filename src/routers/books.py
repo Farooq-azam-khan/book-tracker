@@ -22,6 +22,8 @@ async def create_book(create_book: CreateBook, current_user = Depends(get_curren
                                 author=create_book.author)
     last_record_id = await database.execute(query)
     return {**create_book.dict(), 'id': last_record_id}def either_or(orig, updt):
+
+def either_or(orig, updt):
     if updt == None:
         return orig 
     return updt 
