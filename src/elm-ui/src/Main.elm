@@ -49,7 +49,19 @@ update msg model =
                 lgn_frm = LoginForm (model.login_form.username) updt_pswd
             in
                 ({model | login_form = lgn_frm}, Cmd.none)
+        LoginAction -> 
+            (model, sendLoginRequest model.login_form) 
 
+type Token = Token String 
+sendLoginRequest : LoginForm -> Cmd Msg 
+sendLoginRequest login_form = 
+        Http.post 
+            { url = "/token"
+            , body = Http.multipartBody [ stringPart "username" login_form.username
+                                        , stringPart "password" login_form.password
+                                        ]
+            , expect = Http.expectJson LoginSuccessful token_decoder
+            }
 view : Model -> Html Msg 
 view model = 
     div [] [text "hello there fastapi"]
