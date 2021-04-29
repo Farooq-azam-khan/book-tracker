@@ -52,6 +52,12 @@ class CreateBook(BaseModel):
             raise ValueError('total chapters has to be bigger than 1')
         
         return v
+    
+    @validator('book_order')
+    def book_order_is_pos(cls, v):
+        if v <= 0:
+            raise ValueError('book order needs to be bigger than 1')
+
 class UpdateBook(CreateBook):
     name: Optional[str] = None 
     total_pages: Optional[int] = None 
