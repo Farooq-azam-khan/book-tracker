@@ -52,6 +52,15 @@ class CreateBook(BaseModel):
             raise ValueError('total chapters has to be bigger than 1')
         
         return v
+class UpdateBook(CreateBook):
+    name: Optional[str] = None 
+    total_pages: Optional[int] = None 
+    total_chapters: Optional[int] = 1
+    author: Optional[int]
+    book_order: Optional[int] = None 
+    franchise: Optional[int] = None 
+    genre: Optional[int] = None 
+
 
 
 class CreateFranchise(BaseModel):
