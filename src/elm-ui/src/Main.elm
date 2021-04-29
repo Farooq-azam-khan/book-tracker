@@ -128,3 +128,24 @@ view model =
             loggedin_page model 
 
 
+not_loggedin_page : Model -> Html Msg 
+not_loggedin_page model = 
+    div [] 
+        [ (if model.show_login then login_form_view model.login_form  else div [] [button [onClick ToggleLogin] [text "login"]])
+        , h1 [] [text "Books I am Reading"]
+        , case model.books of 
+            Nothing -> 
+                text "loading"
+            Just books -> 
+                div [] [ol  [] (List.map view_book books)]
+
+        ]
+
+view_book : Book -> Html Msg 
+view_book book = li [] [text book.name]
+loggedin_page : Model -> Html Msg 
+loggedin_page _ = 
+    div [] 
+        [text "Welcome"
+        , button [] [text "Create Record"]
+        ]
