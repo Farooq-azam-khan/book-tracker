@@ -17,6 +17,8 @@ from datetime import timedelta, datetime
 from .routers import authors as authors_router
 from .routers import books as books_router
 from .routers import history as history_router 
+from .routers import book_franchise as book_franchise_router
+from .routers import book_genre as book_genre_router
 
 import os 
 load_dotenv('.env')
@@ -27,11 +29,22 @@ ALGORITHM = os.environ['ALGORITHM']#dotenv_values()['ALGORITHM']
 
 app = FastAPI()
 
-app.include_router(authors_router.router, prefix='/authors')
-app.include_router(books_router.router, prefix='/books')
-app.include_router(history_router.router, prefix='/history', 
-                    dependencies=[Depends(get_current_user)]
+app.include_router( authors_router.router, prefix='/authors', tags=['Authors'])
+app.include_router( books_router.router, prefix='/books', tags=['Books'])
+app.include_router( history_router.router, prefix='/history', 
+                    # dependencies=[Depends(get_current_user)]
+                    tags=['Reading History']
                     )
+app.include_router( book_franchise_router.router, 
+                    prefix='/book_franchise',
+                    # dependencies=[Depends(get_current_user)], 
+                    tags=['Book Franchises']
+                )
+app.include_router( book_genre_router.router, 
+                    prefix='/book_genre',
+                    # dependencies=[Depends(get_current_user)], 
+                    tags=['Book Genres']
+                )
 
 @app.get('/')
 def index():
@@ -76,19 +89,3 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
-
-
-@app.post('/authors')
-async def create_author(create_author: CreateAuthor, current_user=Depends(get_current_user)):
-    query = author_table.insert().values(name=create_author.name)
-    last_record_id = await database.execute(query)
-    return {**create_author.dict(), 'id': last_record_id}
-
-@app.post('/books')
-async def create_book(create_book: CreateBook, current_user = Depends(get_current_user)):
-    query = book_table.insert().values(name=create_book.name, 
-                                total_pages=create_book.total_pages,
-                                total_chapters=create_book.total_chapters,
-                                author=create_book.author)
-    last_record_id = await database.execute(query)
-    return {**create_book.dict(), 'id': last_record_id}
