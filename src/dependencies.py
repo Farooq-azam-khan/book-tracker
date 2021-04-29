@@ -38,13 +38,13 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     # if user is None:
     #     raise credentials_exception
     # return user
-
-PASSWORD = os.environ['PASSWORD']
 try: 
+    PASSWORD = dotenv_values('.env')['PASSWORD']
     USERNAME = dotenv_values('.env')['USERNAME'] 
 except: 
     USERNAME = os.environ['USERNAME']
+    PASSWORD = os.environ['PASSWORD']
 
 def authenticate_user(username: str, password: str):
-    print(f'comparing{PASSWORD} == {password} and {username}=={USERNAME}')
+    # print(f'comparing {PASSWORD} == {password} and {username}=={USERNAME}')
     return PASSWORD == password and USERNAME == username
