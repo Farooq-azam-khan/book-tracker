@@ -1,9 +1,13 @@
 module Main exposing (main)
 import Browser
-import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
-
-main = Browser.sandbox {init = init, update = update, view=view}
+import Html exposing (Html, button, div, text, input, form, label, h1, ol, li)
+import Html.Events exposing (onInput, onSubmit, onClick)
+import Html.Attributes exposing(type_, placeholder, for, value, id)
+import Http exposing(stringPart)
+import Json.Decode as D
+-- import Json.Encode as E
+main: Program String Model Msg
+main = Browser.element {init = init, update = update, view=view, subscriptions = subscriptions}
 
 type Msg = NoOp 
 type alias Model = Int
