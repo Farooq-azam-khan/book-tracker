@@ -19,10 +19,22 @@ type Msg = NoOp
          | LoginSuccessful (Result Http.Error String)
          | BooksGetRequest (Result Http.Error (List Book))
 
-init : Model 
-init = 0
+type alias LoginForm = {username: String, password: String}
+type alias Book = {name : String, total_chapters : Int, author: Int}
 
-update : Msg -> Model -> Model 
+type alias Model = 
+    { login_form : LoginForm
+    , show_login: Bool
+    , token : Maybe Token
+    , books : Maybe (List Book)
+    }
+
+-- TODO: check token in localstorage with flags (if it exists then set the model token to it)
+init : flags -> (Model, Cmd Msg) 
+init _ = ({login_form = LoginForm "" "", show_login = False, token = Nothing, books = Nothing}, getBooks)
+
+
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
     case msg of 
         NoOp -> 
