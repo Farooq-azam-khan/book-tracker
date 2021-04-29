@@ -15,13 +15,15 @@ async def get_a_book(book_id: int):
     return await database.fetch_all(query)
 
 
+@router.post('/')
 async def create_book(create_book: CreateBook, current_user = Depends(get_current_user)):
     query = book_table.insert().values(name=create_book.name, 
                                 total_pages=create_book.total_pages,
                                 total_chapters=create_book.total_chapters,
                                 author=create_book.author)
     last_record_id = await database.execute(query)
-    return {**create_book.dict(), 'id': last_record_id}def either_or(orig, updt):
+    return {**create_book.dict(), 'id': last_record_id}
+
 
 def either_or(orig, updt):
     if updt == None:
