@@ -35,12 +35,12 @@ class Book(BaseModel):
 
 class CreateBook(BaseModel):
     name: str
-    total_pages: int = 1
-    total_chapters: int = 1
+    total_pages: int
+    total_chapters: int
     author: int
-    book_order: Optional[int] = None 
-    franchise: Optional[int] = None 
-    genre: Optional[int] = None 
+    book_order: int
+    franchise: Optional[int]
+    genre: Optional[int]
 
     @validator('total_pages')
     def total_pages_positive(cls, v):
@@ -61,13 +61,7 @@ class CreateBook(BaseModel):
             raise ValueError('book order needs to be bigger than 1')
 
 class UpdateBook(CreateBook):
-    name: Optional[str] = None 
-    total_pages: Optional[int] = None 
-    total_chapters: Optional[int] = 1
-    author: Optional[int]
-    book_order: Optional[int] = None 
-    franchise: Optional[int] = None 
-    genre: Optional[int] = None 
+    pass 
 
 
 
