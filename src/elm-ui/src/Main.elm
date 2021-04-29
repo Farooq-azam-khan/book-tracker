@@ -51,6 +51,13 @@ update msg model =
                 ({model | login_form = lgn_frm}, Cmd.none)
         LoginAction -> 
             (model, sendLoginRequest model.login_form) 
+        LoginSuccessful (Ok response) -> 
+            let
+                clear_form = LoginForm "" ""
+            in
+            
+            ({model | token = Just (Token response), login_form = clear_form}, Cmd.none)
+
 
 type Token = Token String 
 sendLoginRequest : LoginForm -> Cmd Msg 
