@@ -1,4 +1,6 @@
 .env
 .vscode 
 elm-stuff
-src/elm-ui/index.html
+# for elm make src/Main.elm
+# index.html 
+elm.js
