@@ -65,6 +65,18 @@ update msg model =
             
             ({model | token = Just (Token response), login_form = clear_form}, Cmd.none)
 
+        -- TODO: handle view 
+        BooksGetRequest (Err e) -> 
+            let
+                _ = Debug.log "error:" e
+            in
+            
+            (model, Cmd.none)
+        
+        BooksGetRequest (Ok response) -> 
+            ({model | books = Just (response)}, Cmd.none)
+        
+
 
 type Token = Token String 
 sendLoginRequest : LoginForm -> Cmd Msg 
@@ -76,6 +88,16 @@ sendLoginRequest login_form =
                                         ]
             , expect = Http.expectJson LoginSuccessful token_decoder
             }
+getBooks : Cmd Msg 
+getBooks = Http.get 
+            { url = "/books"
+            , expect = Http.expectJson BooksGetRequest (D.list book_decoder)
+            }
+token_decoder : D.Decoder String
+token_decoder = D.field "access_token" D.string
+
+book_decoder : D.Decoder Book 
+book_decoder = D.map3 Book (D.field "name" D.string) (D.field "total_chapters" D.int) (D.field "author" D.int)
 view : Model -> Html Msg 
 view model = 
     div [] [text "hello there fastapi"]
