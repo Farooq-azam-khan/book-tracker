@@ -6,7 +6,7 @@ router = APIRouter()
 
 @router.get('/')
 async def get_all_authors():
-    query = author_table.select()
+    query = author_table.select().order_by(author_table.c.name)
     return await database.fetch_all(query)
 
 @router.get('/{author_id}')
