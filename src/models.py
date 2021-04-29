@@ -1,6 +1,20 @@
 from pydantic import BaseModel, validator
 from typing import Optional
 import datetime 
+import sqlalchemy
+from dotenv import load_dotenv, dotenv_values
+
+
+import databases
+import os 
+load_dotenv('.env')
+
+if len(dotenv_values()):
+    config = dotenv_values()
+else:
+    config = os.environ
+database = databases.Database(config['DATABASE_URL'])
+
 
 class User(BaseModel):
     username: str 
@@ -73,17 +87,6 @@ class History(BaseModel):
     start_page: Optional[int]
     end_page: int
 
-import sqlalchemy
-from dotenv import load_dotenv, dotenv_values
-import databases
-import os 
-load_dotenv('.env')
-
-if len(dotenv_values()):
-    config = dotenv_values()
-else:
-    config = os.environ
-database = databases.Database(config['DATABASE_URL'])
 
 metadata = sqlalchemy.MetaData()
 
@@ -93,6 +96,10 @@ author_table = sqlalchemy.Table(
     sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
     sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True),
 )
+
+
+class UpdateAuthor(CreateAuthor):
+    pass
 
 
 
