@@ -18,10 +18,11 @@ from .routers import authors as authors_router
 from .routers import books as books_router
 from .routers import history as history_router 
 
+import os 
 load_dotenv('.env')
-DATABASE_URL = dotenv_values()['DATABASE_URL']
-SECRET_KEY = dotenv_values()['SECRET_KEY']
-ALGORITHM = dotenv_values()['ALGORITHM']
+DATABASE_URL = os.environ['DATABASE_URL']#dotenv_values()['DATABASE_URL']
+SECRET_KEY = os.environ['SECRET_KEY']#dotenv_values()['SECRET_KEY']
+ALGORITHM = os.environ['ALGORITHM']#dotenv_values()['ALGORITHM']
 
 
 app = FastAPI()
@@ -48,6 +49,7 @@ async def shutdown():
 
 @app.post('/token', response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    print('logging in ....')
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -55,10 +57,11 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             detail='Incorrect username or password',
             headers={'WWW-Authenticate': 'Bearer'},
         )
-    ACCESS_TOKEN_EXPIRE_MINUTES = int(dotenv_values()['ACCESS_TOKEN_EXPIRE_MINUTES'])
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ['ACCESS_TOKEN_EXPIRE_MINUTES'])#int(dotenv_values()['ACCESS_TOKEN_EXPIRE_MINUTES'])
+    USERNAME = os.environ['USERNAME']
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={'sub': dotenv_values()['USERNAME']}, expires_delta=access_token_expires
+        data={'sub': USERNAME}, expires_delta=access_token_expires
     )
     return {'access_token': access_token, 'token_type': 'bearer'}
 

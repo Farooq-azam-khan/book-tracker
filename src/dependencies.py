@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from dotenv import load_dotenv, dotenv_values
-
+import os 
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 
@@ -10,8 +10,8 @@ from jose import JWTError, jwt
 from .models import Token, TokenData
 
 load_dotenv('.env')
-SECRET_KEY = dotenv_values()['SECRET_KEY']
-ALGORITHM = dotenv_values()['ALGORITHM']
+SECRET_KEY = os.environ['SECRET_KEY']#dotenv_values()['SECRET_KEY']
+ALGORITHM = os.environ['ALGORITHM']#dotenv_values()['ALGORITHM']
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
@@ -39,5 +39,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     #     raise credentials_exception
     # return user
 
+PASSWORD = os.environ['PASSWORD']
+USERNAME = dotenv_values('.env')['USERNAME'] or os.environ['USERNAME']
 def authenticate_user(username: str, password: str):
-    return dotenv_values()['PASSWORD'] == password and dotenv_values()['USERNAME'] == username
+    print(f'comparing{PASSWORD} == {password} and {username}=={USERNAME}')
+    return PASSWORD == password and USERNAME == username

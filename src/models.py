@@ -66,18 +66,14 @@ class History(BaseModel):
 import sqlalchemy
 from dotenv import load_dotenv, dotenv_values
 import databases
-
+import os 
 load_dotenv('.env')
 
-SECRET_KEY = dotenv_values()['SECRET_KEY']
-ALGORITHM = dotenv_values()['ALGORITHM']
-DATABASE_URL = dotenv_values()['DATABASE_URL']
+SECRET_KEY = os.environ['SECRET_KEY'] #dotenv_values()['SECRET_KEY']
+ALGORITHM = os.environ['ALGORITHM'] #dotenv_values()['ALGORITHM']
+DATABASE_URL = os.environ['DATABASE_URL'] #dotenv_values()['DATABASE_URL']
 
 database = databases.Database(DATABASE_URL)
-
-
-
-DATABASE_URL = dotenv_values()['DATABASE_URL']
 
 metadata = sqlalchemy.MetaData()
 book_table = sqlalchemy.Table(
