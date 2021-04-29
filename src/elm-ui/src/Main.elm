@@ -51,6 +51,13 @@ update msg model =
                 ({model | login_form = lgn_frm}, Cmd.none)
         LoginAction -> 
             (model, sendLoginRequest model.login_form) 
+        
+        ToggleLogin -> 
+            ({model | show_login = not model.show_login}, Cmd.none)
+        -- TODO: handle view 
+        LoginSuccessful (Err _) -> 
+            (model, Cmd.none)
+        
         LoginSuccessful (Ok response) -> 
             let
                 clear_form = LoginForm "" ""
