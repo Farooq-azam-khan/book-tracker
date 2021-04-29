@@ -1,6 +1,9 @@
 from fastapi import APIRouter
-from models import (author_table, database, history_table, CreateHistory)
 from datetime import datetime
+
+
+from src.models import (author_table, database, history_table, CreateHistory)
+
 router = APIRouter()
 
 @router.get('/')

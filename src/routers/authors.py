@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from models import author_table, database
+from src.models import author_table, database
 router = APIRouter()
 
 @router.get('/')

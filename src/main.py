@@ -1,22 +1,22 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from dotenv import load_dotenv, dotenv_values
 
-from models import (Book, Author, CreateBook, CreateAuthor, CreateHistory,
+from .models import (Book, Author, CreateBook, CreateAuthor, CreateHistory,
                     Token, TokenData,
                     book_table, author_table,#, history_table,
                     database
                     )
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
-from dependencies import authenticate_user, get_current_user, pwd_context
+from .dependencies import authenticate_user, get_current_user, pwd_context
 from typing import Optional
 
 from jose import JWTError, jwt
 from datetime import timedelta, datetime
 
-from routers import authors as authors_router
-from routers import books as books_router
-from routers import history as history_router 
+from .routers import authors as authors_router
+from .routers import books as books_router
+from .routers import history as history_router 
 
 load_dotenv('.env')
 DATABASE_URL = dotenv_values()['DATABASE_URL']
