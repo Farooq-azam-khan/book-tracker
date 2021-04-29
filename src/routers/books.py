@@ -24,7 +24,10 @@ async def create_book(create_book: CreateBook, current_user = Depends(get_curren
     query = book_table.insert().values(name=create_book.name, 
                                 total_pages=create_book.total_pages,
                                 total_chapters=create_book.total_chapters,
-                                author=create_book.author)
+                                author=create_book.author, 
+                                book_order=create_book.book_order, 
+                                franchise=create_book.franchise,
+                                genre=create_book.genre)
     last_record_id = await database.execute(query)
     return {**create_book.dict(), 'id': last_record_id}
 
@@ -36,6 +39,7 @@ def either_or(orig, updt):
 
 @router.put('/{book_id}')
 async def update_a_book(book_id: int, update_book: UpdateBook, current_user = Depends(get_current_user)):
+
 
     # check if new name is unique
     books_count = await database.fetch_all(book_table.select().where(book_table.c.name == update_book.name))
@@ -61,6 +65,7 @@ async def update_a_book(book_id: int, update_book: UpdateBook, current_user = De
         if len(genre_db) <= 0:
             raise HTTPException(status_code=400, detail='Genere id does not exist')
 
+    
     query = book_table.update().where(book_table.c.id == book_id).values(
         name=either_or(current_book['name'], update_book.name), 
         total_pages=either_or(current_book['total_pages'], update_book.total_pages),
