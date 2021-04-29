@@ -98,6 +98,27 @@ token_decoder = D.field "access_token" D.string
 
 book_decoder : D.Decoder Book 
 book_decoder = D.map3 Book (D.field "name" D.string) (D.field "total_chapters" D.int) (D.field "author" D.int)
+
+login_form_view : LoginForm -> Html Msg 
+login_form_view login_form = form 
+                            [onSubmit LoginAction] 
+                            [ label [for "username"] [text "Username"]
+                            , input [id "username"
+                                    , type_ "text"
+                                    , placeholder "Username"
+                                    , value login_form.username
+                                    , onInput UpdateUserName
+                                    ] []
+                            , label [for "password"] [text "Password"]
+                            , input [id "password"
+                                    , type_ "password"
+                                    , placeholder "Password"
+                                    , value login_form.password
+                                    , onInput UpdatePassword
+                                    ] []
+                            , button [type_ "button", onClick ToggleLogin] [text "x"]
+                            , button [type_ "submit"] [text "Login"]
+                            ]
 view : Model -> Html Msg 
 view model = 
     div [] [text "hello there fastapi"]
