@@ -5,7 +5,7 @@ import Html.Events exposing (onInput, onSubmit, onClick)
 import Html.Attributes exposing(type_, placeholder, for, value, id)
 import Http exposing(stringPart)
 import Json.Decode as D
--- import Json.Encode as E
+import Json.Encode as E
 main: Program String Model Msg
 main = Browser.element {init = init, update = update, view=view, subscriptions = subscriptions}
 
@@ -18,18 +18,31 @@ type Msg = NoOp
          | ToggleLogin
          | LoginSuccessful (Result Http.Error String)
          | BooksGetRequest (Result Http.Error (List Book))
+         | HistoryGetRequest (Result Http.Error (List History))
          | ToggleCreateRecord
          | CreateHistoryRecord
+         | UpdateHistoryFormBook (Maybe Int)
+         | UpdateHistoryStartPage (Maybe Int)
+         | UpdateHistoryEndPage (Maybe Int)
+         | WasHistoryRecodedSuccessful (Result Http.Error (List History))
 
 type alias LoginForm = {username: String, password: String}
 type alias Book = {name : String, total_chapters : Int, author: Int}
+
+type alias History = 
+    { book : Int 
+    , start_page : Maybe Int 
+    , end_page: Int
+    }
 
 type alias Model = 
     { login_form : LoginForm
     , show_login: Bool
     , token : Maybe Token
     , books : Maybe (List Book)
+    , reading_history : Maybe (List History)
     , show_create_record_form : Bool 
+    , history_record_form : History 
     }
 
 -- TODO: check token in localstorage with flags (if it exists then set the model token to it)
@@ -40,7 +53,9 @@ init _ =
                      , show_login = False
                      , token = Nothing
                      , books = Nothing
+                     , reading_history = Nothing 
                      , show_create_record_form = False 
+                     , history_record_form = History (-1) Nothing (-1)
                      }
     in
         (init_model, getBooks)
@@ -112,6 +127,7 @@ update msg model =
         
         ToggleLogin -> 
             ({model | show_login = not model.show_login}, Cmd.none)
+
         -- TODO: handle view 
         LoginSuccessful (Err _) -> 
             (model, Cmd.none)
@@ -119,9 +135,10 @@ update msg model =
         LoginSuccessful (Ok response) -> 
             let
                 clear_form = LoginForm "" ""
+                new_model = {model | token = Just (Token response), login_form = clear_form}
             in
             
-            ({model | token = Just (Token response), login_form = clear_form}, Cmd.none)
+            (new_model, getReadingHistory new_model.token)
 
         -- TODO: handle view 
         BooksGetRequest (Err e) -> 
@@ -294,7 +311,7 @@ not_loggedin_page model =
 view_book : Book -> Html Msg 
 view_book book = li [] [text book.name]
 loggedin_page : Model -> Html Msg 
-loggedin_page _ = 
+loggedin_page model = 
     div [] 
         [text "Welcome"
         , button [] [text "Create Record"]
