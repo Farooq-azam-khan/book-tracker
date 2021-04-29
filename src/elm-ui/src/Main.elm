@@ -121,4 +121,10 @@ login_form_view login_form = form
                             ]
 view : Model -> Html Msg 
 view model = 
-    div [] [text "hello there fastapi"]
+    case model.token of 
+        Nothing -> 
+            not_loggedin_page model 
+        Just _ ->
+            loggedin_page model 
+
+
