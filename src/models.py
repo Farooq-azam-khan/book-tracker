@@ -40,7 +40,17 @@ class CreateBook(BaseModel):
         return v
 
 
+class CreateFranchise(BaseModel):
+    name: str 
 
+class Franchise(CreateFranchise):
+    id: int 
+
+class CreateGenre(BaseModel):
+    name: str 
+
+class Genre(CreateGenre):
+    id: int 
 
 class CreateAuthor(BaseModel):
     name: str 
@@ -69,13 +79,39 @@ import databases
 import os 
 load_dotenv('.env')
 
-SECRET_KEY = os.environ['SECRET_KEY'] #dotenv_values()['SECRET_KEY']
-ALGORITHM = os.environ['ALGORITHM'] #dotenv_values()['ALGORITHM']
-DATABASE_URL = os.environ['DATABASE_URL'] #dotenv_values()['DATABASE_URL']
-
-database = databases.Database(DATABASE_URL)
+if len(dotenv_values()):
+    config = dotenv_values()
+else:
+    config = os.environ
+database = databases.Database(config['DATABASE_URL'])
 
 metadata = sqlalchemy.MetaData()
+
+author_table = sqlalchemy.Table(
+    'author', 
+    metadata, 
+    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
+    sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True),
+)
+
+
+
+book_genre_table = sqlalchemy.Table(
+    'book_genre', 
+    metadata, 
+    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
+    sqlalchemy.Column('name', sqlalchemy.String,nullable=False, unique=True), 
+)
+
+book_franchise_table = sqlalchemy.Table(
+    'book_franchise', 
+    metadata, 
+    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
+    sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True), 
+)
+
+
+
 book_table = sqlalchemy.Table(
     'book',
     metadata,
@@ -95,13 +131,14 @@ book_table = sqlalchemy.Table(
                         sqlalchemy.ForeignKey('author.id'), 
                         nullable=False
                     ),
-)
-
-author_table = sqlalchemy.Table(
-    'author', 
-    metadata, 
-    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
-    sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True),
+    sqlalchemy.Column('genre',
+                        sqlalchemy.Integer, 
+                        sqlalchemy.ForeignKey('book_genre.id')
+                    ),
+    sqlalchemy.Column('franchise',
+                        sqlalchemy.Integer, 
+                        sqlalchemy.ForeignKey('book_franchise.id')
+                    )
 )
 
 history_table = sqlalchemy.Table(
@@ -113,8 +150,9 @@ history_table = sqlalchemy.Table(
     sqlalchemy.Column('end_page', sqlalchemy.Integer, nullable=False), 
     sqlalchemy.Column('read_at', sqlalchemy.DateTime, default=datetime.datetime.utcnow)
 )
+
 engine = sqlalchemy.create_engine(
-    DATABASE_URL, 
+    config['DATABASE_URL'], 
     # connect_args={"check_same_thread": False}
 )
 # metadata.create_all(engine)
