@@ -1,7 +1,8 @@
 # Book Tracking
 
 ## TODOS
-* [ ] update `books/history/author` routes 
+* [x] update `books/author` routes 
+* [ ] update `history/genre/franchise` routes
 * [ ] rate limit
 * [ ] pagination and order by title of book, author name, descenting read_at for book, author, history table respectively
 * [x] add column / table  `book-franchise` 
