@@ -35,10 +35,12 @@ class Book(BaseModel):
 
 class CreateBook(BaseModel):
     name: str
-    total_pages: int
-    total_chapters: int
+    total_pages: int = 1
+    total_chapters: int = 1
     author: int
-    book_order: Optional[int]
+    book_order: Optional[int] = None 
+    franchise: Optional[int] = None 
+    genre: Optional[int] = None 
 
     @validator('total_pages')
     def total_pages_positive(cls, v):
