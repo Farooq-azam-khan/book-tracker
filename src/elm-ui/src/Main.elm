@@ -133,10 +133,102 @@ update msg model =
         
         BooksGetRequest (Ok response) -> 
             ({model | books = Just (response)}, Cmd.none)
+
+        HistoryGetRequest (Err e) -> 
+            let
+                _ = Debug.log "history error:" e
+            in
+                (model, Cmd.none)
+
+        HistoryGetRequest (Ok response) ->
+                ({model | reading_history = Just response}, Cmd.none)
+        
+        ToggleCreateRecord -> 
+            ({model | show_create_record_form = not model.show_create_record_form}, Cmd.none)
+        
+        WasHistoryRecodedSuccessful (Err _) -> 
+            let
+                _ = Debug.log "Could not add history"
+            in 
+                (model, Cmd.none)
+        WasHistoryRecodedSuccessful (Ok response) -> 
+            let
+                _ = Debug.log "response after adding history" response 
+                new_model = {model | history_record_form = History 0 Nothing 0}
+                new_reading_list = case model.reading_history of 
+                    Nothing -> 
+                       Just response 
+                    Just old_reading_history -> 
+                        Just (List.append response old_reading_history)
+
+            in
+                ({new_model|reading_history=new_reading_list}, Cmd.none)
         
 
+getReadingHistory : Maybe Token -> Cmd Msg 
+getReadingHistory maybe_tkn = 
+        case maybe_tkn of 
+            Nothing -> 
+                Cmd.none 
+            Just (Token tkn) -> 
+                let
+                    auth_header = Http.header "Authorization" ("Bearer " ++ tkn)
+                in
+                    Http.request 
+                        { url = "/history"
+                        , method = "get"
+                        , headers = [auth_header]
+                        , body = Http.emptyBody
+                        , timeout = Nothing 
+                        , tracker = Nothing 
+                        , expect = Http.expectJson HistoryGetRequest (D.list history_decoder)
+                        }
+
+history_decoder : D.Decoder History 
+history_decoder = 
+    D.map3 History 
+        (D.field "book" D.int)
+        (D.maybe  (D.field "start_page" D.int))
+        (D.field "end_page" D.int)
 
 type Token = Token String 
+
+sendHistoryRecord : Token -> History -> Cmd Msg 
+sendHistoryRecord (Token tkn) history_record_form = 
+    let
+        auth_header = Http.header "Authorization" ("Bearer " ++ tkn)
+    in
+        Http.request 
+            { url = "/history"
+            , method = "post"
+            , headers = [auth_header]
+            , body = Http.jsonBody (encodeHistory history_record_form)
+            , timeout = Nothing 
+            , tracker = Nothing 
+            , expect = Http.expectJson WasHistoryRecodedSuccessful (D.list history_decoder)
+            }
+
+encodeHistory : History -> E.Value 
+encodeHistory history_record_form =
+    let
+        bk_val = ("book", E.int history_record_form.book)
+        end_page_val = ("end_page", E.int history_record_form.end_page)
+    in
+    
+    case history_record_form.start_page of
+        Nothing ->
+            E.object 
+                [ end_page_val
+                , bk_val
+                ]
+        Just st_pg ->
+            E.object 
+                [ end_page_val
+                , bk_val
+                , ("start_page", E.int st_pg)
+                ]
+
+
 sendLoginRequest : LoginForm -> Cmd Msg 
 sendLoginRequest login_form = 
         Http.post 
