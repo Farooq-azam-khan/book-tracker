@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Book Tracker Application</title>
+	</head>
+	<body>
+		<div id="elm-app"></div>
+		<script src="{{ url_for('static', path='elm.js') }}"></script>
+		<script>
+			const root = document.querySelector('#elm-app')
+			if (root) {
+				const app = Elm.Main.init({
+					node: root,
+					flags: 'fake token'
+				})
+			}
+			</script>
+	</body>
+</html>
