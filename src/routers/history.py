@@ -1,8 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from datetime import datetime
 
 
 from src.models import (author_table, database, history_table, CreateHistory)
+from src.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -12,7 +13,7 @@ async def get_history():
     return await database.fetch_all(query)
 
 @router.post('/')
-async def get_history(create_history: CreateHistory):
+async def get_history(create_history: CreateHistory, current_user=Depends(get_current_user)):
     query = history_table.insert().values(book=create_history.book, 
                                 start_page=create_history.start_page, 
                                 end_page=create_history.end_page, 
