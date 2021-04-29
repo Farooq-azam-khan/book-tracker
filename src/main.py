@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from dotenv import load_dotenv, dotenv_values
 
 from .models import (Book, Author, CreateBook, CreateAuthor, CreateHistory,
@@ -14,6 +14,9 @@ from typing import Optional
 from jose import JWTError, jwt
 from datetime import timedelta, datetime
 
+# from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
 from .routers import authors as authors_router
 from .routers import books as books_router
 from .routers import history as history_router 
@@ -28,6 +31,8 @@ ALGORITHM = os.environ['ALGORITHM']#dotenv_values()['ALGORITHM']
 
 
 app = FastAPI()
+# app.mount('/static', StaticFiles(directory='static'), name='static')
+templates = Jinja2Templates(directory='src/elm-ui')
 
 app.include_router( authors_router.router, prefix='/authors', tags=['Authors'])
 app.include_router( books_router.router, prefix='/books', tags=['Books'])
@@ -46,9 +51,11 @@ app.include_router( book_genre_router.router,
                     tags=['Book Genres']
                 )
 
-@app.get('/')
-def index():
-    return 'go to /docs or /redocs'
+from fastapi.responses import HTMLResponse
+@app.get('/', response_class=HTMLResponse)
+def index(request: Request):
+    return templates.TemplateResponse('index.html', {'title': 'Book Tracker - Home Page', 'request': request})
+
 
 @app.on_event('startup')
 async def startup():
