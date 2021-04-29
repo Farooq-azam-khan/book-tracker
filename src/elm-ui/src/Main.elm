@@ -18,6 +18,8 @@ type Msg = NoOp
          | ToggleLogin
          | LoginSuccessful (Result Http.Error String)
          | BooksGetRequest (Result Http.Error (List Book))
+         | ToggleCreateRecord
+         | CreateHistoryRecord
 
 type alias LoginForm = {username: String, password: String}
 type alias Book = {name : String, total_chapters : Int, author: Int}
@@ -27,11 +29,21 @@ type alias Model =
     , show_login: Bool
     , token : Maybe Token
     , books : Maybe (List Book)
+    , show_create_record_form : Bool 
     }
 
 -- TODO: check token in localstorage with flags (if it exists then set the model token to it)
 init : flags -> (Model, Cmd Msg) 
-init _ = ({login_form = LoginForm "" "", show_login = False, token = Nothing, books = Nothing}, getBooks)
+init _ =
+    let
+        init_model = { login_form = LoginForm "" ""
+                     , show_login = False
+                     , token = Nothing
+                     , books = Nothing
+                     , show_create_record_form = False 
+                     }
+    in
+        (init_model, getBooks)
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -51,6 +63,52 @@ update msg model =
                 ({model | login_form = lgn_frm}, Cmd.none)
         LoginAction -> 
             (model, sendLoginRequest model.login_form) 
+        
+        CreateHistoryRecord -> 
+            case model.token of 
+                Just token -> 
+                    (model, sendHistoryRecord token model.history_record_form)
+                Nothing -> 
+                    (model, Cmd.none)
+        
+
+        UpdateHistoryFormBook Nothing -> 
+            let
+                new_hist = History 0 (model.history_record_form.start_page) (model.history_record_form.end_page)
+
+            in
+                ({model | history_record_form = new_hist}, Cmd.none)
+
+        UpdateHistoryFormBook (Just val) -> 
+            let
+                new_hist = History val (model.history_record_form.start_page) (model.history_record_form.end_page)
+            in
+                ({model | history_record_form = new_hist }, Cmd.none)
+
+        UpdateHistoryStartPage Nothing -> 
+            let
+                new_hist = History (model.history_record_form.book) Nothing (model.history_record_form.end_page)
+
+            in
+                ({model | history_record_form = new_hist}, Cmd.none)
+
+        UpdateHistoryStartPage (Just val) -> 
+            let
+                new_hist = History (model.history_record_form.book) (Just val) (model.history_record_form.end_page)
+            in
+                ({model | history_record_form = new_hist }, Cmd.none)
+
+        UpdateHistoryEndPage Nothing -> 
+            let
+                new_hist = History (model.history_record_form.book) (model.history_record_form.start_page) 0
+            in
+                ({model | history_record_form = new_hist}, Cmd.none)
+
+        UpdateHistoryEndPage (Just val) ->
+            let
+                new_hist = History (model.history_record_form.book) (model.history_record_form.start_page) val
+            in
+                ({model | history_record_form = new_hist }, Cmd.none)
         
         ToggleLogin -> 
             ({model | show_login = not model.show_login}, Cmd.none)
