@@ -141,20 +141,15 @@ update msg model =
             (new_model, getReadingHistory new_model.token)
 
         -- TODO: handle view 
-        BooksGetRequest (Err e) -> 
-            let
-                _ = Debug.log "error:" e
-            in
+        BooksGetRequest (Err _) -> 
+        
             
             (model, Cmd.none)
         
         BooksGetRequest (Ok response) -> 
             ({model | books = Just (response)}, Cmd.none)
 
-        HistoryGetRequest (Err e) -> 
-            let
-                _ = Debug.log "history error:" e
-            in
+        HistoryGetRequest (Err _) -> 
                 (model, Cmd.none)
 
         HistoryGetRequest (Ok response) ->
@@ -164,13 +159,11 @@ update msg model =
             ({model | show_create_record_form = not model.show_create_record_form}, Cmd.none)
         
         WasHistoryRecodedSuccessful (Err _) -> 
-            let
-                _ = Debug.log "Could not add history"
-            in 
+        
                 (model, Cmd.none)
         WasHistoryRecodedSuccessful (Ok response) -> 
             let
-                _ = Debug.log "response after adding history" response 
+                -- _ = Debug.log "response after adding history" response 
                 new_model = {model | history_record_form = History 0 Nothing 0}
                 new_reading_list = case model.reading_history of 
                     Nothing -> 

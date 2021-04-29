@@ -7,7 +7,8 @@
 	</head>
 	<body>
 		<div id="elm-app"></div>
-		<script src="{{ url_for('static', path='elm.js') }}"></script>
+		<!-- <script src="{{ url_for('static', path='elm.js') }}"></script> -->
+		<script src="{{ url_for('static', path='elm_prod.js') }}"></script>
 		<script>
 			const root = document.querySelector('#elm-app')
 			if (root) {
