@@ -12,7 +12,12 @@ main = Browser.element {init = init, update = update, view=view, subscriptions =
 subscriptions : Model -> Sub Msg 
 subscriptions _ = Sub.none 
 type Msg = NoOp 
-type alias Model = Int
+         | UpdateUserName String 
+         | UpdatePassword String 
+         | LoginAction
+         | ToggleLogin
+         | LoginSuccessful (Result Http.Error String)
+         | BooksGetRequest (Result Http.Error (List Book))
 
 init : Model 
 init = 0
