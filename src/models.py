@@ -145,6 +145,9 @@ book_table = sqlalchemy.Table(
     sqlalchemy.Column('franchise',
                         sqlalchemy.Integer, 
                         sqlalchemy.ForeignKey('book_franchise.id')
+                    ), 
+    sqlalchemy.Column('book_order',
+                        sqlalchemy.Integer
                     )
 )
 
