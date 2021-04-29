@@ -40,7 +40,11 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     # return user
 
 PASSWORD = os.environ['PASSWORD']
-USERNAME = dotenv_values('.env')['USERNAME'] or os.environ['USERNAME']
+try: 
+    USERNAME = dotenv_values('.env')['USERNAME'] 
+except: 
+    USERNAME = os.environ['USERNAME']
+
 def authenticate_user(username: str, password: str):
     print(f'comparing{PASSWORD} == {password} and {username}=={USERNAME}')
     return PASSWORD == password and USERNAME == username
