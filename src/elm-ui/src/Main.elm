@@ -38,7 +38,17 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
     case msg of 
         NoOp -> 
-            model 
+            (model, Cmd.none) 
+        UpdateUserName user_nm_inpt -> 
+            let
+                lgn_frm = LoginForm user_nm_inpt (model.login_form.password)
+            in
+                ({model | login_form = lgn_frm}, Cmd.none)
+        UpdatePassword updt_pswd -> 
+            let
+                lgn_frm = LoginForm (model.login_form.username) updt_pswd
+            in
+                ({model | login_form = lgn_frm}, Cmd.none)
 
 view : Model -> Html Msg 
 view model = 
