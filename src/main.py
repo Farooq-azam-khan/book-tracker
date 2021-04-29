@@ -14,7 +14,7 @@ from typing import Optional
 from jose import JWTError, jwt
 from datetime import timedelta, datetime
 
-# from fastapi.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from .routers import authors as authors_router
@@ -31,7 +31,7 @@ ALGORITHM = os.environ['ALGORITHM']#dotenv_values()['ALGORITHM']
 
 
 app = FastAPI()
-# app.mount('/static', StaticFiles(directory='static'), name='static')
+app.mount('/static', StaticFiles(directory='src/elm-ui'), name='static')
 templates = Jinja2Templates(directory='src/elm-ui')
 
 app.include_router( authors_router.router, prefix='/authors', tags=['Authors'])
