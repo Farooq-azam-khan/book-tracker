@@ -9,6 +9,8 @@ import Json.Decode as D
 main: Program String Model Msg
 main = Browser.element {init = init, update = update, view=view, subscriptions = subscriptions}
 
+subscriptions : Model -> Sub Msg 
+subscriptions _ = Sub.none 
 type Msg = NoOp 
 type alias Model = Int
 
