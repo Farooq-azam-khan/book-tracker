@@ -15,7 +15,7 @@ async def books():
 
 @router.get('/{book_id}')
 async def get_a_book(book_id: int):
-    query = book_table.select().where(book_table.c.id == book_id)
+    query = book_table.select().where(book_table.c.id == book_id).order_by(book_table.c.name)
     return await database.fetch_all(query)
 
 
