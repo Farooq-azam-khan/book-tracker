@@ -1,5 +1,9 @@
-from fastapi import APIRouter, Depends
-from src.models import author_table, database, book_table, CreateBook
+from fastapi import APIRouter, Depends, HTTPException
+from src.models import (author_table, 
+                        database, book_table, 
+                        CreateBook, UpdateBook, 
+                        book_franchise_table, book_genre_table)
+
 from src.dependencies import get_current_user
 router = APIRouter()
 
