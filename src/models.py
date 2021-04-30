@@ -98,6 +98,11 @@ class CreateHistory(BaseModel):
     chapter_mark: int
     read_at: Optional[datetime.datetime]
 
+    # TODO: validate page_mark and chapter_mark 
+    # against previous entries
+    # keep in mind that the book might have been read before 
+    # and it is being read a second(or third, etc.) time 
+
 class History(BaseModel):
     id: int 
     book: int 
