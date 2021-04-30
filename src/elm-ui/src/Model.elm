@@ -28,7 +28,11 @@ init flags =
                      , show_create_record_form = False 
                      , history_record_form = History 0 0 0
                      }
-        commands = Cmd.batch [getReadingHistory maybeToken]
+        commands = case maybeToken of 
+            Nothing -> 
+                Cmd.none 
+            Just token ->
+                Cmd.batch [getReadingHistory token]
 
     in
         (init_model, commands)
