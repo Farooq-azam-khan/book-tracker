@@ -7,6 +7,10 @@ import Json.Encode as E
 import Msg exposing (..)
 
 
+auth_header : Token -> Http.Header
+auth_header (Token tkn) = Http.header "Authorization" ("Bearer " ++ tkn)
+
+
 book_decoder : D.Decoder Book 
 book_decoder = 
     D.map4 Book 
@@ -28,19 +32,12 @@ history_decoder =
         (D.field "page_mark" D.int)
         (D.field "chapter_mark" D.int)
 
-getReadingHistory : Maybe Token -> Cmd Msg 
-getReadingHistory maybe_tkn = 
-        case maybe_tkn of 
-            Nothing -> 
-                Cmd.none 
-            Just (Token tkn) -> 
-                let
-                    auth_header = Http.header "Authorization" ("Bearer " ++ tkn)
-                in
+getReadingHistory : Token -> Cmd Msg 
+getReadingHistory token = 
                     Http.request 
                         { url = "/history"
                         , method = "get"
-                        , headers = [auth_header]
+                        , headers = [auth_header token]
                         , body = Http.emptyBody
                         , timeout = Nothing 
                         , tracker = Nothing 
@@ -72,17 +69,12 @@ encodeHistory history_record_form =
         E.object [bk_val, end_page_val, chapter_val]
     
 
-
-
 sendHistoryRecord : Token -> History -> Cmd Msg 
-sendHistoryRecord (Token tkn) history_record_form = 
-    let
-        auth_header = Http.header "Authorization" ("Bearer " ++ tkn)
-    in
+sendHistoryRecord token history_record_form = 
         Http.request 
             { url = "/history"
             , method = "post"
-            , headers = [auth_header]
+            , headers = [auth_header token]
             , body = Http.jsonBody (encodeHistory history_record_form)
             , timeout = Nothing 
             , tracker = Nothing 
