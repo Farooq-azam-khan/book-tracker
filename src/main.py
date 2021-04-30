@@ -22,7 +22,7 @@ from .routers import books as books_router
 from .routers import history as history_router 
 from .routers import book_franchise as book_franchise_router
 from .routers import book_genre as book_genre_router
-
+from .routers import book_progress as book_progress_router
 import os 
 load_dotenv('.env')
 DATABASE_URL = os.environ['DATABASE_URL']#dotenv_values()['DATABASE_URL']
@@ -50,6 +50,10 @@ app.include_router( book_genre_router.router,
                     # dependencies=[Depends(get_current_user)], 
                     tags=['Book Genres']
                 )
+app.include_router(book_progress_router.router, 
+                    prefix='/progress', 
+                    tags=['Currently Reading'])
+
 
 from fastapi.responses import HTMLResponse
 @app.get('/', response_class=HTMLResponse)
