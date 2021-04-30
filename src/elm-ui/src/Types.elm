@@ -16,20 +16,12 @@ type alias History =
     }
 
 
--- [
---   {
---     "book": {
---       "id": 7,
---       "name": "asdf1",
---       "total_pages": 10,
---       "total_chapters": 10
---     },
---     "read_before": 2,
---     "page_progress": 0.7,
---     "chapter_progress": 0.06999999999999999
---   }
--- ]
-type alias Progress = 
-    { 
+
+type alias BookProgress = 
+    { book : Book 
+    , read_before : Int 
+    , page_progress : Float
+    , chapter_progress : Float 
     }
+    
 type Token = Token String 
