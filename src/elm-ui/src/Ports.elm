@@ -3,3 +3,4 @@ import Msg exposing (..)
 import Types exposing (Token(..))
 
 port storeToken : String -> Cmd msg 
+port deleteToken : String -> Cmd msg 
