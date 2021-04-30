@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.W.E === region.ac.E)
+	if (region.P.C === region.U.C)
 	{
-		return 'on line ' + region.W.E;
+		return 'on line ' + region.P.C;
 	}
-	return 'on lines ' + region.W.E + ' through ' + region.ac.E;
+	return 'on lines ' + region.P.C + ' through ' + region.U.C;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aR,
+		impl.aP,
+		impl.a6,
 		impl.a2,
-		impl.a$,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		q: func(record.q),
-		X: record.X,
-		T: record.T
+		p: func(record.p),
+		Q: record.Q,
+		M: record.M
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.q;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.X;
+		var message = !tag ? value : tag < 3 ? value.a : value.p;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.Q;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.T) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.M) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aR,
+		impl.aP,
+		impl.a6,
 		impl.a2,
-		impl.a$,
 		function(sendToApp, initialModel) {
-			var view = impl.a3;
+			var view = impl.a8;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aR,
+		impl.aP,
+		impl.a6,
 		impl.a2,
-		impl.a$,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.U && impl.U(sendToApp)
-			var view = impl.a3;
+			var divertHrefToApp = impl.O && impl.O(sendToApp)
+			var view = impl.a8;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.O);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.J);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.a0) && (_VirtualDom_doc.title = title = doc.a0);
+				(title !== doc.a3) && (_VirtualDom_doc.title = title = doc.a3);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aT;
-	var onUrlRequest = impl.aU;
+	var onUrlChange = impl.aQ;
+	var onUrlRequest = impl.aR;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		U: function(sendToApp)
+		O: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ar === next.ar
-							&& curr.ah === next.ah
-							&& curr.ao.a === next.ao.a
+							&& curr.aj === next.aj
+							&& curr.Z === next.Z
+							&& curr.ag.a === next.ag.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aR: function(flags)
+		aP: function(flags)
 		{
-			return A3(impl.aR, flags, _Browser_getUrl(), key);
+			return A3(impl.aP, flags, _Browser_getUrl(), key);
 		},
-		a3: impl.a3,
-		a2: impl.a2,
-		a$: impl.a$
+		a8: impl.a8,
+		a6: impl.a6,
+		a2: impl.a2
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aP: 'hidden', aL: 'visibilitychange' }
+		? { aN: 'hidden', aH: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aP: 'mozHidden', aL: 'mozvisibilitychange' }
+		? { aN: 'mozHidden', aH: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aP: 'msHidden', aL: 'msvisibilitychange' }
+		? { aN: 'msHidden', aH: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aP: 'webkitHidden', aL: 'webkitvisibilitychange' }
-		: { aP: 'hidden', aL: 'visibilitychange' };
+		? { aN: 'webkitHidden', aH: 'webkitvisibilitychange' }
+		: { aN: 'hidden', aH: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ax: _Browser_getScene(),
-		aD: {
-			aF: _Browser_window.pageXOffset,
-			aG: _Browser_window.pageYOffset,
-			aE: _Browser_doc.documentElement.clientWidth,
-			ag: _Browser_doc.documentElement.clientHeight
+		ap: _Browser_getScene(),
+		ax: {
+			az: _Browser_window.pageXOffset,
+			aA: _Browser_window.pageYOffset,
+			ay: _Browser_doc.documentElement.clientWidth,
+			Y: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aE: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ag: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		ay: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		Y: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ax: {
-				aE: node.scrollWidth,
-				ag: node.scrollHeight
+			ap: {
+				ay: node.scrollWidth,
+				Y: node.scrollHeight
 			},
-			aD: {
-				aF: node.scrollLeft,
-				aG: node.scrollTop,
-				aE: node.clientWidth,
-				ag: node.clientHeight
+			ax: {
+				az: node.scrollLeft,
+				aA: node.scrollTop,
+				ay: node.clientWidth,
+				Y: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ax: _Browser_getScene(),
-			aD: {
-				aF: x,
-				aG: y,
-				aE: _Browser_doc.documentElement.clientWidth,
-				ag: _Browser_doc.documentElement.clientHeight
+			ap: _Browser_getScene(),
+			ax: {
+				az: x,
+				aA: y,
+				ay: _Browser_doc.documentElement.clientWidth,
+				Y: _Browser_doc.documentElement.clientHeight
 			},
-			aN: {
-				aF: x + rect.left,
-				aG: y + rect.top,
-				aE: rect.width,
-				ag: rect.height
+			aL: {
+				az: x + rect.left,
+				aA: y + rect.top,
+				ay: rect.width,
+				Y: rect.height
 			}
 		};
 	});
@@ -4365,25 +4365,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.K.a(response)));
+			callback(toTask(request.B.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.K.b, xhr)); });
-		$elm$core$Maybe$isJust(request.aC) && _Http_track(router, xhr, request.aC.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.B.b, xhr)); });
+		$elm$core$Maybe$isJust(request.aw) && _Http_track(router, xhr, request.aw.a);
 
 		try {
-			xhr.open(request.aj, request.N, true);
+			xhr.open(request.aa, request.I, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.N));
+			return done($elm$http$Http$BadUrl_(request.I));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.O.a && xhr.setRequestHeader('Content-Type', request.O.a);
-		xhr.send(request.O.b);
+		request.J.a && xhr.setRequestHeader('Content-Type', request.J.a);
+		xhr.send(request.J.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4394,13 +4394,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.af; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.X; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.aB.a || 0;
-	xhr.responseType = request.K.d;
-	xhr.withCredentials = request.aI;
+	xhr.timeout = request.av.a || 0;
+	xhr.responseType = request.B.d;
+	xhr.withCredentials = request.aC;
 }
 
 
@@ -4421,10 +4421,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		N: xhr.responseURL,
-		aZ: xhr.status,
-		a_: xhr.statusText,
-		af: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		I: xhr.responseURL,
+		a$: xhr.status,
+		a0: xhr.statusText,
+		X: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -4519,18 +4519,55 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			aY: event.loaded,
-			ay: event.total
+			a_: event.loaded,
+			as: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			aW: event.loaded,
-			ay: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			aY: event.loaded,
+			as: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
-}var $elm$core$Maybe$Just = function (a) {
+}
+
+
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
+var $elm$core$Maybe$Just = function (a) {
 	return {$: 0, a: a};
 };
 var $elm$core$Maybe$Nothing = {$: 1};
@@ -5035,7 +5072,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ae: fragment, ah: host, am: path, ao: port_, ar: protocol, as: query};
+		return {W: fragment, Z: host, ae: path, ag: port_, aj: protocol, ak: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5316,31 +5353,52 @@ var $elm$core$Task$perform = F2(
 var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $author$project$Types$History = F3(
-	function (book, start_page, end_page) {
-		return {C: book, D: end_page, F: start_page};
+	function (book, page_mark, chapter_mark) {
+		return {aF: book, aI: chapter_mark, aT: page_mark};
 	});
 var $author$project$Types$LoginForm = F2(
 	function (username, password) {
-		return {S: password, Z: username};
+		return {aV: password, a7: username};
 	});
 var $author$project$Types$Token = $elm$core$Basics$identity;
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $author$project$Msg$BooksGetRequest = function (a) {
-	return {$: 6, a: a};
+var $author$project$Msg$GetActiveReadingList = function (a) {
+	return {$: 14, a: a};
 };
-var $author$project$Types$Book = F3(
-	function (name, total_chapters, author) {
-		return {aK: author, aS: name, a1: total_chapters};
+var $author$project$Types$BookProgress = F4(
+	function (book, read_before, page_progress, chapter_progress) {
+		return {aF: book, aJ: chapter_progress, aU: page_progress, aW: read_before};
+	});
+var $author$project$Types$Book = F4(
+	function (name, total_chapters, total_pages, author) {
+		return {aE: author, ac: name, a4: total_chapters, a5: total_pages};
 	});
 var $elm$json$Json$Decode$int = _Json_decodeInt;
-var $elm$json$Json$Decode$map3 = _Json_map3;
+var $elm$json$Json$Decode$map4 = _Json_map4;
 var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Main$book_decoder = A4(
-	$elm$json$Json$Decode$map3,
+var $author$project$Api$book_decoder = A5(
+	$elm$json$Json$Decode$map4,
 	$author$project$Types$Book,
 	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
 	A2($elm$json$Json$Decode$field, 'total_chapters', $elm$json$Json$Decode$int),
+	A2($elm$json$Json$Decode$field, 'total_pages', $elm$json$Json$Decode$int),
 	A2($elm$json$Json$Decode$field, 'author', $elm$json$Json$Decode$int));
+var $elm$json$Json$Decode$float = _Json_decodeFloat;
+var $author$project$Api$book_progress_decoder = A5(
+	$elm$json$Json$Decode$map4,
+	$author$project$Types$BookProgress,
+	A2($elm$json$Json$Decode$field, 'book', $author$project$Api$book_decoder),
+	A2($elm$json$Json$Decode$field, 'read_before', $elm$json$Json$Decode$int),
+	A2($elm$json$Json$Decode$field, 'page_progress', $elm$json$Json$Decode$float),
+	A2($elm$json$Json$Decode$field, 'chapter_progress', $elm$json$Json$Decode$float));
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
@@ -5933,7 +5991,7 @@ var $elm$http$Http$resolve = F2(
 			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.aZ));
+					$elm$http$Http$BadStatus(metadata.a$));
 			default:
 				var body = response.b;
 				return A2(
@@ -5961,7 +6019,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {au: reqs, az: subs};
+		return {am: reqs, at: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6005,7 +6063,7 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.aC;
+							var _v4 = req.aw;
 							if (_v4.$ === 1) {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
@@ -6035,7 +6093,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.au));
+			A3($elm$http$Http$updateReqs, router, cmds, state.am));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6078,7 +6136,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.az)));
+					state.at)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -6092,14 +6150,14 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					aI: r.aI,
-					O: r.O,
-					K: A2(_Http_mapExpect, func, r.K),
-					af: r.af,
-					aj: r.aj,
-					aB: r.aB,
 					aC: r.aC,
-					N: r.N
+					J: r.J,
+					B: A2(_Http_mapExpect, func, r.B),
+					X: r.X,
+					aa: r.aa,
+					av: r.av,
+					aw: r.aw,
+					I: r.I
 				});
 		}
 	});
@@ -6122,20 +6180,20 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{aI: false, O: r.O, K: r.K, af: r.af, aj: r.aj, aB: r.aB, aC: r.aC, N: r.N}));
+			{aC: false, J: r.J, B: r.B, X: r.X, aa: r.aa, av: r.av, aw: r.aw, I: r.I}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{O: $elm$http$Http$emptyBody, K: r.K, af: _List_Nil, aj: 'GET', aB: $elm$core$Maybe$Nothing, aC: $elm$core$Maybe$Nothing, N: r.N});
+		{J: $elm$http$Http$emptyBody, B: r.B, X: _List_Nil, aa: 'GET', av: $elm$core$Maybe$Nothing, aw: $elm$core$Maybe$Nothing, I: r.I});
 };
 var $elm$json$Json$Decode$list = _Json_decodeList;
-var $author$project$Main$getBooks = $elm$http$Http$get(
+var $author$project$Api$getBookProgress = $elm$http$Http$get(
 	{
-		K: A2(
+		B: A2(
 			$elm$http$Http$expectJson,
-			$author$project$Msg$BooksGetRequest,
-			$elm$json$Json$Decode$list($author$project$Main$book_decoder)),
-		N: '/books'
+			$author$project$Msg$GetActiveReadingList,
+			$elm$json$Json$Decode$list($author$project$Api$book_progress_decoder)),
+		I: '/progress/active/books'
 	});
 var $author$project$Msg$HistoryGetRequest = function (a) {
 	return {$: 7, a: a};
@@ -6145,44 +6203,34 @@ var $elm$http$Http$Header = F2(
 		return {$: 0, a: a, b: b};
 	});
 var $elm$http$Http$header = $elm$http$Http$Header;
-var $elm$json$Json$Decode$oneOf = _Json_oneOf;
-var $elm$json$Json$Decode$maybe = function (decoder) {
-	return $elm$json$Json$Decode$oneOf(
-		_List_fromArray(
-			[
-				A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, decoder),
-				$elm$json$Json$Decode$succeed($elm$core$Maybe$Nothing)
-			]));
+var $author$project$Api$auth_header = function (_v0) {
+	var tkn = _v0;
+	return A2($elm$http$Http$header, 'Authorization', 'Bearer ' + tkn);
 };
-var $author$project$Main$history_decoder = A4(
+var $elm$json$Json$Decode$map3 = _Json_map3;
+var $author$project$Api$history_decoder = A4(
 	$elm$json$Json$Decode$map3,
 	$author$project$Types$History,
 	A2($elm$json$Json$Decode$field, 'book', $elm$json$Json$Decode$int),
-	$elm$json$Json$Decode$maybe(
-		A2($elm$json$Json$Decode$field, 'start_page', $elm$json$Json$Decode$int)),
-	A2($elm$json$Json$Decode$field, 'end_page', $elm$json$Json$Decode$int));
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Main$getReadingHistory = function (maybe_tkn) {
-	if (maybe_tkn.$ === 1) {
-		return $elm$core$Platform$Cmd$none;
-	} else {
-		var tkn = maybe_tkn.a;
-		var auth_header = A2($elm$http$Http$header, 'Authorization', 'Bearer ' + tkn);
-		return $elm$http$Http$request(
-			{
-				O: $elm$http$Http$emptyBody,
-				K: A2(
-					$elm$http$Http$expectJson,
-					$author$project$Msg$HistoryGetRequest,
-					$elm$json$Json$Decode$list($author$project$Main$history_decoder)),
-				af: _List_fromArray(
-					[auth_header]),
-				aj: 'get',
-				aB: $elm$core$Maybe$Nothing,
-				aC: $elm$core$Maybe$Nothing,
-				N: '/history'
-			});
-	}
+	A2($elm$json$Json$Decode$field, 'page_mark', $elm$json$Json$Decode$int),
+	A2($elm$json$Json$Decode$field, 'chapter_mark', $elm$json$Json$Decode$int));
+var $author$project$Api$getReadingHistory = function (token) {
+	return $elm$http$Http$request(
+		{
+			J: $elm$http$Http$emptyBody,
+			B: A2(
+				$elm$http$Http$expectJson,
+				$author$project$Msg$HistoryGetRequest,
+				$elm$json$Json$Decode$list($author$project$Api$history_decoder)),
+			X: _List_fromArray(
+				[
+					$author$project$Api$auth_header(token)
+				]),
+			aa: 'get',
+			av: $elm$core$Maybe$Nothing,
+			aw: $elm$core$Maybe$Nothing,
+			I: '/history'
+		});
 };
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
@@ -6194,48 +6242,54 @@ var $elm$core$Maybe$map = F2(
 			return $elm$core$Maybe$Nothing;
 		}
 	});
-var $author$project$Main$init = function (flags) {
-	var maybeToken = A2($elm$core$Maybe$map, $elm$core$Basics$identity, flags.Y);
+var $author$project$Model$init = function (flags) {
+	var maybeToken = A2($elm$core$Maybe$map, $elm$core$Basics$identity, flags.a1);
 	var init_model = {
-		P: $elm$core$Maybe$Nothing,
-		a: A3($author$project$Types$History, 0, $elm$core$Maybe$Nothing, 0),
-		p: A2($author$project$Types$LoginForm, '', ''),
-		L: $elm$core$Maybe$Nothing,
-		V: false,
-		M: false,
-		w: maybeToken
+		aG: $elm$core$Maybe$Nothing,
+		a: A3($author$project$Types$History, 0, 0, 0),
+		x: A2($author$project$Types$LoginForm, '', ''),
+		N: $elm$core$Maybe$Nothing,
+		aX: _List_Nil,
+		aq: false,
+		ar: false,
+		F: maybeToken
 	};
+	var auth_commands = function () {
+		if (maybeToken.$ === 1) {
+			return _List_Nil;
+		} else {
+			var token = maybeToken.a;
+			return _List_fromArray(
+				[
+					$author$project$Api$getReadingHistory(token)
+				]);
+		}
+	}();
 	var commands = $elm$core$Platform$Cmd$batch(
-		_List_fromArray(
-			[
-				$author$project$Main$getReadingHistory(maybeToken),
-				$author$project$Main$getBooks
-			]));
+		A2(
+			$elm$core$List$append,
+			auth_commands,
+			_List_fromArray(
+				[$author$project$Api$getBookProgress])));
 	return _Utils_Tuple2(init_model, commands);
 };
 var $elm$json$Json$Decode$null = _Json_decodeNull;
+var $elm$json$Json$Decode$oneOf = _Json_oneOf;
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
-var $elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
-		}
-	});
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$Ports$deleteToken = _Platform_outgoingPort('deleteToken', $elm$json$Json$Encode$string);
 var $author$project$Main$log_user_out = function (model) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			model,
-			{w: $elm$core$Maybe$Nothing}),
+			{F: $elm$core$Maybe$Nothing}),
 		$author$project$Ports$deleteToken(''));
 };
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Basics$not = _Basics_not;
 var $author$project$Msg$WasHistoryRecodedSuccessful = function (a) {
 	return {$: 13, a: a};
@@ -6254,30 +6308,19 @@ var $elm$json$Json$Encode$object = function (pairs) {
 			_Json_emptyObject(0),
 			pairs));
 };
-var $author$project$Main$encodeHistory = function (history_record_form) {
+var $author$project$Api$encodeHistory = function (history_record_form) {
 	var end_page_val = _Utils_Tuple2(
-		'end_page',
-		$elm$json$Json$Encode$int(history_record_form.D));
+		'page_mark',
+		$elm$json$Json$Encode$int(history_record_form.aT));
+	var chapter_val = _Utils_Tuple2(
+		'chapter_mark',
+		$elm$json$Json$Encode$int(history_record_form.aI));
 	var bk_val = _Utils_Tuple2(
 		'book',
-		$elm$json$Json$Encode$int(history_record_form.C));
-	var _v0 = history_record_form.F;
-	if (_v0.$ === 1) {
-		return $elm$json$Json$Encode$object(
-			_List_fromArray(
-				[end_page_val, bk_val]));
-	} else {
-		var st_pg = _v0.a;
-		return $elm$json$Json$Encode$object(
-			_List_fromArray(
-				[
-					end_page_val,
-					bk_val,
-					_Utils_Tuple2(
-					'start_page',
-					$elm$json$Json$Encode$int(st_pg))
-				]));
-	}
+		$elm$json$Json$Encode$int(history_record_form.aF));
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[bk_val, end_page_val, chapter_val]));
 };
 var $elm$http$Http$jsonBody = function (value) {
 	return A2(
@@ -6285,24 +6328,24 @@ var $elm$http$Http$jsonBody = function (value) {
 		'application/json',
 		A2($elm$json$Json$Encode$encode, 0, value));
 };
-var $author$project$Main$sendHistoryRecord = F2(
-	function (_v0, history_record_form) {
-		var tkn = _v0;
-		var auth_header = A2($elm$http$Http$header, 'Authorization', 'Bearer ' + tkn);
+var $author$project$Api$sendHistoryRecord = F2(
+	function (token, history_record_form) {
 		return $elm$http$Http$request(
 			{
-				O: $elm$http$Http$jsonBody(
-					$author$project$Main$encodeHistory(history_record_form)),
-				K: A2(
+				J: $elm$http$Http$jsonBody(
+					$author$project$Api$encodeHistory(history_record_form)),
+				B: A2(
 					$elm$http$Http$expectJson,
 					$author$project$Msg$WasHistoryRecodedSuccessful,
-					$elm$json$Json$Decode$list($author$project$Main$history_decoder)),
-				af: _List_fromArray(
-					[auth_header]),
-				aj: 'post',
-				aB: $elm$core$Maybe$Nothing,
-				aC: $elm$core$Maybe$Nothing,
-				N: '/history'
+					$elm$json$Json$Decode$list($author$project$Api$history_decoder)),
+				X: _List_fromArray(
+					[
+						$author$project$Api$auth_header(token)
+					]),
+				aa: 'post',
+				av: $elm$core$Maybe$Nothing,
+				aw: $elm$core$Maybe$Nothing,
+				I: '/history'
 			});
 	});
 var $author$project$Msg$LoginSuccessful = function (a) {
@@ -6316,21 +6359,21 @@ var $elm$http$Http$multipartBody = function (parts) {
 };
 var $elm$http$Http$post = function (r) {
 	return $elm$http$Http$request(
-		{O: r.O, K: r.K, af: _List_Nil, aj: 'POST', aB: $elm$core$Maybe$Nothing, aC: $elm$core$Maybe$Nothing, N: r.N});
+		{J: r.J, B: r.B, X: _List_Nil, aa: 'POST', av: $elm$core$Maybe$Nothing, aw: $elm$core$Maybe$Nothing, I: r.I});
 };
 var $elm$http$Http$stringPart = _Http_pair;
-var $author$project$Main$token_decoder = A2($elm$json$Json$Decode$field, 'access_token', $elm$json$Json$Decode$string);
-var $author$project$Main$sendLoginRequest = function (login_form) {
+var $author$project$Api$token_decoder = A2($elm$json$Json$Decode$field, 'access_token', $elm$json$Json$Decode$string);
+var $author$project$Api$sendLoginRequest = function (login_form) {
 	return $elm$http$Http$post(
 		{
-			O: $elm$http$Http$multipartBody(
+			J: $elm$http$Http$multipartBody(
 				_List_fromArray(
 					[
-						A2($elm$http$Http$stringPart, 'username', login_form.Z),
-						A2($elm$http$Http$stringPart, 'password', login_form.S)
+						A2($elm$http$Http$stringPart, 'username', login_form.a7),
+						A2($elm$http$Http$stringPart, 'password', login_form.aV)
 					])),
-			K: A2($elm$http$Http$expectJson, $author$project$Msg$LoginSuccessful, $author$project$Main$token_decoder),
-			N: '/token'
+			B: A2($elm$http$Http$expectJson, $author$project$Msg$LoginSuccessful, $author$project$Api$token_decoder),
+			I: '/token'
 		});
 };
 var $author$project$Ports$storeToken = _Platform_outgoingPort('storeToken', $elm$json$Json$Encode$string);
@@ -6341,38 +6384,38 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 			case 1:
 				var user_nm_inpt = msg.a;
-				var lgn_frm = A2($author$project$Types$LoginForm, user_nm_inpt, model.p.S);
+				var lgn_frm = A2($author$project$Types$LoginForm, user_nm_inpt, model.x.aV);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{p: lgn_frm}),
+						{x: lgn_frm}),
 					$elm$core$Platform$Cmd$none);
 			case 2:
 				var updt_pswd = msg.a;
-				var lgn_frm = A2($author$project$Types$LoginForm, model.p.Z, updt_pswd);
+				var lgn_frm = A2($author$project$Types$LoginForm, model.x.a7, updt_pswd);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{p: lgn_frm}),
+						{x: lgn_frm}),
 					$elm$core$Platform$Cmd$none);
 			case 3:
 				return _Utils_Tuple2(
 					model,
-					$author$project$Main$sendLoginRequest(model.p));
+					$author$project$Api$sendLoginRequest(model.x));
 			case 9:
-				var _v1 = model.w;
+				var _v1 = model.F;
 				if (!_v1.$) {
 					var token = _v1.a;
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Main$sendHistoryRecord, token, model.a));
+						A2($author$project$Api$sendHistoryRecord, token, model.a));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 10:
 				if (msg.a.$ === 1) {
 					var _v2 = msg.a;
-					var new_hist = A3($author$project$Types$History, 0, model.a.F, model.a.D);
+					var new_hist = A3($author$project$Types$History, 1, model.a.aT, model.a.aI);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -6380,29 +6423,7 @@ var $author$project$Main$update = F2(
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var val = msg.a.a;
-					var new_hist = A3($author$project$Types$History, val, model.a.F, model.a.D);
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{a: new_hist}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 11:
-				if (msg.a.$ === 1) {
-					var _v3 = msg.a;
-					var new_hist = A3($author$project$Types$History, model.a.C, $elm$core$Maybe$Nothing, model.a.D);
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{a: new_hist}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					var val = msg.a.a;
-					var new_hist = A3(
-						$author$project$Types$History,
-						model.a.C,
-						$elm$core$Maybe$Just(val),
-						model.a.D);
+					var new_hist = A3($author$project$Types$History, val, model.a.aT, model.a.aI);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -6411,8 +6432,8 @@ var $author$project$Main$update = F2(
 				}
 			case 12:
 				if (msg.a.$ === 1) {
-					var _v4 = msg.a;
-					var new_hist = A3($author$project$Types$History, model.a.C, model.a.F, 0);
+					var _v3 = msg.a;
+					var new_hist = A3($author$project$Types$History, model.a.aF, 0, model.a.aI);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -6420,7 +6441,25 @@ var $author$project$Main$update = F2(
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var val = msg.a.a;
-					var new_hist = A3($author$project$Types$History, model.a.C, model.a.F, val);
+					var new_hist = A3($author$project$Types$History, model.a.aF, val, model.a.aI);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{a: new_hist}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 11:
+				if (msg.a.$ === 1) {
+					var _v4 = msg.a;
+					var new_hist = A3($author$project$Types$History, model.a.aF, model.a.aT, 0);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{a: new_hist}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					var val = msg.a.a;
+					var new_hist = A3($author$project$Types$History, model.a.aF, model.a.aT, val);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -6431,7 +6470,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{M: !model.M}),
+						{ar: !model.ar}),
 					$elm$core$Platform$Cmd$none);
 			case 5:
 				if (msg.a.$ === 1) {
@@ -6442,19 +6481,19 @@ var $author$project$Main$update = F2(
 					}
 				} else {
 					var response = msg.a.a;
+					var commands = $elm$core$Platform$Cmd$batch(
+						_List_fromArray(
+							[
+								$author$project$Api$getReadingHistory(response),
+								$author$project$Ports$storeToken(response)
+							]));
 					var clear_form = A2($author$project$Types$LoginForm, '', '');
 					var new_model = _Utils_update(
 						model,
 						{
-							p: clear_form,
-							w: $elm$core$Maybe$Just(response)
+							x: clear_form,
+							F: $elm$core$Maybe$Just(response)
 						});
-					var commands = $elm$core$Platform$Cmd$batch(
-						_List_fromArray(
-							[
-								$author$project$Main$getReadingHistory(new_model.w),
-								$author$project$Ports$storeToken(response)
-							]));
 					return _Utils_Tuple2(new_model, commands);
 				}
 			case 6:
@@ -6470,7 +6509,7 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								P: $elm$core$Maybe$Just(response)
+								aG: $elm$core$Maybe$Just(response)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -6487,7 +6526,7 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								L: $elm$core$Maybe$Just(response)
+								N: $elm$core$Maybe$Just(response)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -6495,7 +6534,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{V: !model.V}),
+						{aq: !model.aq}),
 					$elm$core$Platform$Cmd$none);
 			case 13:
 				if (msg.a.$ === 1) {
@@ -6507,7 +6546,7 @@ var $author$project$Main$update = F2(
 				} else {
 					var response = msg.a.a;
 					var new_reading_list = function () {
-						var _v5 = model.L;
+						var _v5 = model.N;
 						if (_v5.$ === 1) {
 							return $elm$core$Maybe$Just(response);
 						} else {
@@ -6519,16 +6558,16 @@ var $author$project$Main$update = F2(
 					var new_model = _Utils_update(
 						model,
 						{
-							a: A3($author$project$Types$History, 0, $elm$core$Maybe$Nothing, 0)
+							a: A3($author$project$Types$History, 0, 0, 0)
 						});
 					return _Utils_Tuple2(
 						_Utils_update(
 							new_model,
-							{L: new_reading_list}),
+							{N: new_reading_list}),
 						$elm$core$Platform$Cmd$none);
 				}
-			default:
-				var _v6 = model.w;
+			case 15:
+				var _v6 = model.F;
 				if (_v6.$ === 1) {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				} else {
@@ -6537,19 +6576,35 @@ var $author$project$Main$update = F2(
 						model,
 						$author$project$Ports$storeToken(tkn_str));
 				}
+			default:
+				if (msg.a.$ === 1) {
+					if ((msg.a.a.$ === 3) && (msg.a.a.a === 401)) {
+						return $author$project$Main$log_user_out(model);
+					} else {
+						var e = msg.a.a;
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+					}
+				} else {
+					var response = msg.a.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{aX: response}),
+						$elm$core$Platform$Cmd$none);
+				}
 		}
 	});
 var $author$project$Msg$ToggleCreateRecord = {$: 8};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $author$project$Msg$CreateHistoryRecord = {$: 9};
-var $author$project$Msg$UpdateHistoryEndPage = function (a) {
-	return {$: 12, a: a};
+var $author$project$Msg$UpdateHistoryChapterMark = function (a) {
+	return {$: 11, a: a};
 };
 var $author$project$Msg$UpdateHistoryFormBook = function (a) {
 	return {$: 10, a: a};
 };
-var $author$project$Msg$UpdateHistoryStartPage = function (a) {
-	return {$: 11, a: a};
+var $author$project$Msg$UpdateHistoryPageMark = function (a) {
+	return {$: 12, a: a};
 };
 var $elm$core$Basics$composeL = F3(
 	function (g, f, x) {
@@ -6651,7 +6706,7 @@ var $author$project$Pages$create_record_form = function (history_form) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$value(
-						$elm$core$String$fromInt(history_form.C)),
+						$elm$core$String$fromInt(history_form.aF)),
 						$elm$html$Html$Events$onInput(
 						A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryFormBook, $elm$core$String$toInt)),
 						$elm$html$Html$Attributes$id('book'),
@@ -6663,49 +6718,7 @@ var $author$project$Pages$create_record_form = function (history_form) {
 				$elm$html$Html$label,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$for('start page')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Start Page')
-					])),
-				function () {
-				var _v0 = history_form.F;
-				if (_v0.$ === 1) {
-					return A2(
-						$elm$html$Html$input,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$value('-1'),
-								$elm$html$Html$Events$onInput(
-								A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryStartPage, $elm$core$String$toInt)),
-								$elm$html$Html$Attributes$id('start page'),
-								$elm$html$Html$Attributes$type_('number'),
-								$elm$html$Html$Attributes$placeholder('Which page did you start reading?')
-							]),
-						_List_Nil);
-				} else {
-					var start_page = _v0.a;
-					return A2(
-						$elm$html$Html$input,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$value(
-								$elm$core$String$fromInt(start_page)),
-								$elm$html$Html$Events$onInput(
-								A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryStartPage, $elm$core$String$toInt)),
-								$elm$html$Html$Attributes$id('start page'),
-								$elm$html$Html$Attributes$type_('number'),
-								$elm$html$Html$Attributes$placeholder('Which page did you start reading?')
-							]),
-						_List_Nil);
-				}
-			}(),
-				A2(
-				$elm$html$Html$label,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$for('end page')
+						$elm$html$Html$Attributes$for('page-mark')
 					]),
 				_List_fromArray(
 					[
@@ -6716,11 +6729,34 @@ var $author$project$Pages$create_record_form = function (history_form) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$value(
-						$elm$core$String$fromInt(history_form.D)),
+						$elm$core$String$fromInt(history_form.aT)),
 						$elm$html$Html$Events$onInput(
-						A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryEndPage, $elm$core$String$toInt)),
-						$elm$html$Html$Attributes$id('end page'),
+						A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryPageMark, $elm$core$String$toInt)),
+						$elm$html$Html$Attributes$id('page-mark'),
 						$elm$html$Html$Attributes$placeholder('Where did you finish?')
+					]),
+				_List_Nil),
+				A2(
+				$elm$html$Html$label,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$for('chapter-mark')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Chapter Mark')
+					])),
+				A2(
+				$elm$html$Html$input,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$value(
+						$elm$core$String$fromInt(history_form.aI)),
+						$elm$html$Html$Attributes$id('chapter-mark'),
+						$elm$html$Html$Attributes$placeholder('Which Chapter are you on right now?'),
+						$elm$html$Html$Events$onInput(
+						A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryChapterMark, $elm$core$String$toInt)),
+						$elm$html$Html$Attributes$type_('number')
 					]),
 				_List_Nil),
 				A2(
@@ -6743,7 +6779,7 @@ var $author$project$Pages$display_single_history = function (hist) {
 		_List_fromArray(
 			[
 				$elm$html$Html$text(
-				$elm$core$String$fromInt(hist.C) + ('ended at:' + $elm$core$String$fromInt(hist.D)))
+				$elm$core$String$fromInt(hist.aF) + (' page:' + ($elm$core$String$fromInt(hist.aT) + ('Chapter: ' + $elm$core$String$fromInt(hist.aI)))))
 			]));
 };
 var $elm$html$Html$ol = _VirtualDom_node('ol');
@@ -6777,7 +6813,7 @@ var $author$project$Pages$loggedin_page = function (model) {
 		_List_fromArray(
 			[
 				$elm$html$Html$text('Welcome'),
-				(!model.V) ? A2(
+				(!model.aq) ? A2(
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
@@ -6788,7 +6824,7 @@ var $author$project$Pages$loggedin_page = function (model) {
 						$elm$html$Html$text('Create History Record')
 					])) : $author$project$Pages$create_record_form(model.a),
 				function () {
-				var _v0 = model.L;
+				var _v0 = model.N;
 				if (_v0.$ === 1) {
 					return $elm$html$Html$text('loading history...');
 				} else {
@@ -6799,6 +6835,275 @@ var $author$project$Pages$loggedin_page = function (model) {
 			]));
 };
 var $author$project$Msg$ToggleLogin = {$: 4};
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
+var $elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
+			}
+		}
+	});
+var $elm$core$Basics$neq = _Utils_notEqual;
+var $elm$core$String$foldr = _String_foldr;
+var $elm$core$String$toList = function (string) {
+	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
+};
+var $myrho$elm_round$Round$addSign = F2(
+	function (signed, str) {
+		var isNotZero = A2(
+			$elm$core$List$any,
+			function (c) {
+				return (c !== '0') && (c !== '.');
+			},
+			$elm$core$String$toList(str));
+		return _Utils_ap(
+			(signed && isNotZero) ? '-' : '',
+			str);
+	});
+var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$core$String$cons = _String_cons;
+var $elm$core$Char$fromCode = _Char_fromCode;
+var $myrho$elm_round$Round$increaseNum = function (_v0) {
+	var head = _v0.a;
+	var tail = _v0.b;
+	if (head === '9') {
+		var _v1 = $elm$core$String$uncons(tail);
+		if (_v1.$ === 1) {
+			return '01';
+		} else {
+			var headtail = _v1.a;
+			return A2(
+				$elm$core$String$cons,
+				'0',
+				$myrho$elm_round$Round$increaseNum(headtail));
+		}
+	} else {
+		var c = $elm$core$Char$toCode(head);
+		return ((c >= 48) && (c < 57)) ? A2(
+			$elm$core$String$cons,
+			$elm$core$Char$fromCode(c + 1),
+			tail) : '0';
+	}
+};
+var $elm$core$Basics$isInfinite = _Basics_isInfinite;
+var $elm$core$Basics$isNaN = _Basics_isNaN;
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$Bitwise$shiftRightBy = _Bitwise_shiftRightBy;
+var $elm$core$String$repeatHelp = F3(
+	function (n, chunk, result) {
+		return (n <= 0) ? result : A3(
+			$elm$core$String$repeatHelp,
+			n >> 1,
+			_Utils_ap(chunk, chunk),
+			(!(n & 1)) ? result : _Utils_ap(result, chunk));
+	});
+var $elm$core$String$repeat = F2(
+	function (n, chunk) {
+		return A3($elm$core$String$repeatHelp, n, chunk, '');
+	});
+var $elm$core$String$padRight = F3(
+	function (n, _char, string) {
+		return _Utils_ap(
+			string,
+			A2(
+				$elm$core$String$repeat,
+				n - $elm$core$String$length(string),
+				$elm$core$String$fromChar(_char)));
+	});
+var $elm$core$String$reverse = _String_reverse;
+var $myrho$elm_round$Round$splitComma = function (str) {
+	var _v0 = A2($elm$core$String$split, '.', str);
+	if (_v0.b) {
+		if (_v0.b.b) {
+			var before = _v0.a;
+			var _v1 = _v0.b;
+			var after = _v1.a;
+			return _Utils_Tuple2(before, after);
+		} else {
+			var before = _v0.a;
+			return _Utils_Tuple2(before, '0');
+		}
+	} else {
+		return _Utils_Tuple2('0', '0');
+	}
+};
+var $elm$core$Tuple$mapFirst = F2(
+	function (func, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			func(x),
+			y);
+	});
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $myrho$elm_round$Round$toDecimal = function (fl) {
+	var _v0 = A2(
+		$elm$core$String$split,
+		'e',
+		$elm$core$String$fromFloat(
+			$elm$core$Basics$abs(fl)));
+	if (_v0.b) {
+		if (_v0.b.b) {
+			var num = _v0.a;
+			var _v1 = _v0.b;
+			var exp = _v1.a;
+			var e = A2(
+				$elm$core$Maybe$withDefault,
+				0,
+				$elm$core$String$toInt(
+					A2($elm$core$String$startsWith, '+', exp) ? A2($elm$core$String$dropLeft, 1, exp) : exp));
+			var _v2 = $myrho$elm_round$Round$splitComma(num);
+			var before = _v2.a;
+			var after = _v2.b;
+			var total = _Utils_ap(before, after);
+			var zeroed = (e < 0) ? A2(
+				$elm$core$Maybe$withDefault,
+				'0',
+				A2(
+					$elm$core$Maybe$map,
+					function (_v3) {
+						var a = _v3.a;
+						var b = _v3.b;
+						return a + ('.' + b);
+					},
+					A2(
+						$elm$core$Maybe$map,
+						$elm$core$Tuple$mapFirst($elm$core$String$fromChar),
+						$elm$core$String$uncons(
+							_Utils_ap(
+								A2(
+									$elm$core$String$repeat,
+									$elm$core$Basics$abs(e),
+									'0'),
+								total))))) : A3($elm$core$String$padRight, e + 1, '0', total);
+			return _Utils_ap(
+				(fl < 0) ? '-' : '',
+				zeroed);
+		} else {
+			var num = _v0.a;
+			return _Utils_ap(
+				(fl < 0) ? '-' : '',
+				num);
+		}
+	} else {
+		return '';
+	}
+};
+var $myrho$elm_round$Round$roundFun = F3(
+	function (functor, s, fl) {
+		if ($elm$core$Basics$isInfinite(fl) || $elm$core$Basics$isNaN(fl)) {
+			return $elm$core$String$fromFloat(fl);
+		} else {
+			var signed = fl < 0;
+			var _v0 = $myrho$elm_round$Round$splitComma(
+				$myrho$elm_round$Round$toDecimal(
+					$elm$core$Basics$abs(fl)));
+			var before = _v0.a;
+			var after = _v0.b;
+			var r = $elm$core$String$length(before) + s;
+			var normalized = _Utils_ap(
+				A2($elm$core$String$repeat, (-r) + 1, '0'),
+				A3(
+					$elm$core$String$padRight,
+					r,
+					'0',
+					_Utils_ap(before, after)));
+			var totalLen = $elm$core$String$length(normalized);
+			var roundDigitIndex = A2($elm$core$Basics$max, 1, r);
+			var increase = A2(
+				functor,
+				signed,
+				A3($elm$core$String$slice, roundDigitIndex, totalLen, normalized));
+			var remains = A3($elm$core$String$slice, 0, roundDigitIndex, normalized);
+			var num = increase ? $elm$core$String$reverse(
+				A2(
+					$elm$core$Maybe$withDefault,
+					'1',
+					A2(
+						$elm$core$Maybe$map,
+						$myrho$elm_round$Round$increaseNum,
+						$elm$core$String$uncons(
+							$elm$core$String$reverse(remains))))) : remains;
+			var numLen = $elm$core$String$length(num);
+			var numZeroed = (num === '0') ? num : ((s <= 0) ? _Utils_ap(
+				num,
+				A2(
+					$elm$core$String$repeat,
+					$elm$core$Basics$abs(s),
+					'0')) : ((_Utils_cmp(
+				s,
+				$elm$core$String$length(after)) < 0) ? (A3($elm$core$String$slice, 0, numLen - s, num) + ('.' + A3($elm$core$String$slice, numLen - s, numLen, num))) : _Utils_ap(
+				before + '.',
+				A3($elm$core$String$padRight, s, '0', after))));
+			return A2($myrho$elm_round$Round$addSign, signed, numZeroed);
+		}
+	});
+var $myrho$elm_round$Round$round = $myrho$elm_round$Round$roundFun(
+	F2(
+		function (signed, str) {
+			var _v0 = $elm$core$String$uncons(str);
+			if (_v0.$ === 1) {
+				return false;
+			} else {
+				if ('5' === _v0.a.a) {
+					if (_v0.a.b === '') {
+						var _v1 = _v0.a;
+						return !signed;
+					} else {
+						var _v2 = _v0.a;
+						return true;
+					}
+				} else {
+					var _v3 = _v0.a;
+					var _int = _v3.a;
+					return function (i) {
+						return ((i > 53) && signed) || ((i >= 53) && (!signed));
+					}(
+						$elm$core$Char$toCode(_int));
+				}
+			}
+		}));
+var $author$project$Pages$book_view = function (prog_book) {
+	return A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$text(
+				prog_book.aF.ac + (' page prog: ' + (A2($myrho$elm_round$Round$round, 2, 100 * prog_book.aU) + ('% chap prog: ' + (A2($myrho$elm_round$Round$round, 2, 100 * prog_book.aJ) + '%')))))
+			]));
+};
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $author$project$Msg$LoginAction = {$: 3};
 var $author$project$Msg$UpdatePassword = function (a) {
@@ -6807,7 +7112,7 @@ var $author$project$Msg$UpdatePassword = function (a) {
 var $author$project$Msg$UpdateUserName = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$login_form_view = function (login_form) {
+var $author$project$Pages$login_form_view = function (login_form) {
 	return A2(
 		$elm$html$Html$form,
 		_List_fromArray(
@@ -6833,7 +7138,7 @@ var $author$project$Main$login_form_view = function (login_form) {
 						$elm$html$Html$Attributes$id('username'),
 						$elm$html$Html$Attributes$type_('text'),
 						$elm$html$Html$Attributes$placeholder('Username'),
-						$elm$html$Html$Attributes$value(login_form.Z),
+						$elm$html$Html$Attributes$value(login_form.a7),
 						$elm$html$Html$Events$onInput($author$project$Msg$UpdateUserName)
 					]),
 				_List_Nil),
@@ -6854,7 +7159,7 @@ var $author$project$Main$login_form_view = function (login_form) {
 						$elm$html$Html$Attributes$id('password'),
 						$elm$html$Html$Attributes$type_('password'),
 						$elm$html$Html$Attributes$placeholder('Password'),
-						$elm$html$Html$Attributes$value(login_form.S),
+						$elm$html$Html$Attributes$value(login_form.aV),
 						$elm$html$Html$Events$onInput($author$project$Msg$UpdatePassword)
 					]),
 				_List_Nil),
@@ -6881,22 +7186,13 @@ var $author$project$Main$login_form_view = function (login_form) {
 					]))
 			]));
 };
-var $author$project$Main$view_book = function (book) {
-	return A2(
-		$elm$html$Html$li,
-		_List_Nil,
-		_List_fromArray(
-			[
-				$elm$html$Html$text(book.aS)
-			]));
-};
-var $author$project$Main$not_loggedin_page = function (model) {
+var $author$project$Pages$not_loggedin_page = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
 			[
-				model.M ? $author$project$Main$login_form_view(model.p) : A2(
+				model.ar ? $author$project$Pages$login_form_view(model.x) : A2(
 				$elm$html$Html$div,
 				_List_Nil,
 				_List_fromArray(
@@ -6919,42 +7215,28 @@ var $author$project$Main$not_loggedin_page = function (model) {
 					[
 						$elm$html$Html$text('Books I am Reading')
 					])),
-				function () {
-				var _v0 = model.P;
-				if (_v0.$ === 1) {
-					return $elm$html$Html$text('loading');
-				} else {
-					var books = _v0.a;
-					return A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$ol,
-								_List_Nil,
-								A2($elm$core$List$map, $author$project$Main$view_book, books))
-							]));
-				}
-			}()
+				A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				A2($elm$core$List$map, $author$project$Pages$book_view, model.aX))
 			]));
 };
 var $author$project$Main$view = function (model) {
-	var _v0 = model.w;
+	var _v0 = model.F;
 	if (_v0.$ === 1) {
-		return $author$project$Main$not_loggedin_page(model);
+		return $author$project$Pages$not_loggedin_page(model);
 	} else {
 		return $author$project$Pages$loggedin_page(model);
 	}
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{aR: $author$project$Main$init, a$: $author$project$Main$subscriptions, a2: $author$project$Main$update, a3: $author$project$Main$view});
+	{aP: $author$project$Model$init, a2: $author$project$Main$subscriptions, a6: $author$project$Main$update, a8: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
 		function (storedToken) {
 			return $elm$json$Json$Decode$succeed(
-				{Y: storedToken});
+				{a1: storedToken});
 		},
 		A2(
 			$elm$json$Json$Decode$field,
