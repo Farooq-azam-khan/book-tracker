@@ -94,8 +94,8 @@ class Author(BaseModel):
 
 class CreateHistory(BaseModel):
     book: int 
-    start_page: Optional[int]
-    end_page: int
+    page_mark: int
+    chapter_mark: int
     read_at: Optional[datetime.datetime]
 
 class History(BaseModel):
@@ -173,8 +173,12 @@ history_table = sqlalchemy.Table(
     metadata, 
     sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
     sqlalchemy.Column('book', sqlalchemy.Integer, sqlalchemy.ForeignKey('book.id'), nullable=False), 
-    sqlalchemy.Column('start_page', sqlalchemy.Integer), 
-    sqlalchemy.Column('end_page', sqlalchemy.Integer, nullable=False), 
+    sqlalchemy.Column('page_mark', sqlalchemy.Integer, 
+                        sqlalchemy.CheckConstraint('page_mark > 0'),nullable=False
+                    ), 
+    sqlalchemy.Column('chapter_mark', 
+                        sqlalchemy.Integer, sqlalchemy.CheckConstraint('chapter_mark > 0'),nullable=False
+                    ), 
     sqlalchemy.Column('read_at', sqlalchemy.DateTime, default=datetime.datetime.utcnow)
 )
 
