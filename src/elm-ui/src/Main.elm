@@ -6,44 +6,52 @@ import Html.Attributes exposing(type_, placeholder, for, value, id)
 import Http exposing(stringPart)
 import Json.Decode as D
 import Json.Encode as E
+
+import Model exposing (..)
+import Msg exposing (..)
+import Types exposing (..)
+
+import Pages exposing (loggedin_page)
+
 main: Program String Model Msg
 main = Browser.element {init = init, update = update, view=view, subscriptions = subscriptions}
 
+
 subscriptions : Model -> Sub Msg 
 subscriptions _ = Sub.none 
-type Msg = NoOp 
-         | UpdateUserName String 
-         | UpdatePassword String 
-         | LoginAction
-         | ToggleLogin
-         | LoginSuccessful (Result Http.Error String)
-         | BooksGetRequest (Result Http.Error (List Book))
-         | HistoryGetRequest (Result Http.Error (List History))
-         | ToggleCreateRecord
-         | CreateHistoryRecord
-         | UpdateHistoryFormBook (Maybe Int)
-         | UpdateHistoryStartPage (Maybe Int)
-         | UpdateHistoryEndPage (Maybe Int)
-         | WasHistoryRecodedSuccessful (Result Http.Error (List History))
+-- type Msg = NoOp 
+--          | UpdateUserName String 
+--          | UpdatePassword String 
+--          | LoginAction
+--          | ToggleLogin
+--          | LoginSuccessful (Result Http.Error String)
+--          | BooksGetRequest (Result Http.Error (List Book))
+--          | HistoryGetRequest (Result Http.Error (List History))
+--          | ToggleCreateRecord
+--          | CreateHistoryRecord
+--          | UpdateHistoryFormBook (Maybe Int)
+--          | UpdateHistoryStartPage (Maybe Int)
+--          | UpdateHistoryEndPage (Maybe Int)
+--          | WasHistoryRecodedSuccessful (Result Http.Error (List History))
 
-type alias LoginForm = {username: String, password: String}
-type alias Book = {name : String, total_chapters : Int, author: Int}
+-- type alias LoginForm = {username: String, password: String}
+-- type alias Book = {name : String, total_chapters : Int, author: Int}
 
-type alias History = 
-    { book : Int 
-    , start_page : Maybe Int 
-    , end_page: Int
-    }
+-- type alias History = 
+--     { book : Int 
+--     , start_page : Maybe Int 
+--     , end_page: Int
+--     }
 
-type alias Model = 
-    { login_form : LoginForm
-    , show_login: Bool
-    , token : Maybe Token
-    , books : Maybe (List Book)
-    , reading_history : Maybe (List History)
-    , show_create_record_form : Bool 
-    , history_record_form : History 
-    }
+-- type alias Model = 
+--     { login_form : LoginForm
+--     , show_login: Bool
+--     , token : Maybe Token
+--     , books : Maybe (List Book)
+--     , reading_history : Maybe (List History)
+--     , show_create_record_form : Bool 
+--     , history_record_form : History 
+--     }
 
 -- TODO: check token in localstorage with flags (if it exists then set the model token to it)
 init : flags -> (Model, Cmd Msg) 
@@ -55,7 +63,7 @@ init _ =
                      , books = Nothing
                      , reading_history = Nothing 
                      , show_create_record_form = False 
-                     , history_record_form = History (-1) Nothing (-1)
+                     , history_record_form = History 0 Nothing 0
                      }
     in
         (init_model, getBooks)
@@ -201,7 +209,7 @@ history_decoder =
         (D.maybe  (D.field "start_page" D.int))
         (D.field "end_page" D.int)
 
-type Token = Token String 
+-- type Token = Token String 
 
 sendHistoryRecord : Token -> History -> Cmd Msg 
 sendHistoryRecord (Token tkn) history_record_form = 
@@ -303,42 +311,42 @@ not_loggedin_page model =
 
 view_book : Book -> Html Msg 
 view_book book = li [] [text book.name]
-loggedin_page : Model -> Html Msg 
-loggedin_page model = 
-    div [] 
-        [text "Welcome"
-        , if not model.show_create_record_form 
-            then button [onClick ToggleCreateRecord] [text "Create History Record"] 
-            else create_record_form model.history_record_form 
+-- loggedin_page : Model -> Html Msg 
+-- loggedin_page model = 
+--     div [] 
+--         [text "Welcome"
+--         , if not model.show_create_record_form 
+--             then button [onClick ToggleCreateRecord] [text "Create History Record"] 
+--             else create_record_form model.history_record_form 
 
-        , case model.reading_history of 
-            Nothing -> 
-                text "loading history..."
-            Just read_hist -> 
-                display_reading_history read_hist
-        ]
+--         , case model.reading_history of 
+--             Nothing -> 
+--                 text "loading history..."
+--             Just read_hist -> 
+--                 display_reading_history read_hist
+--         ]
 
-create_record_form : History -> Html Msg 
-create_record_form history_form =
-    form    [onSubmit CreateHistoryRecord] 
-            [ label [for "book"] [text "Book"]
-            , input [value <| String.fromInt history_form.book, onInput (UpdateHistoryFormBook <<  String.toInt), id "book", placeholder "Book (id for now)", type_ "number"] [] -- TODO: will be a dropdown
-            , label [for "start page"] [text "Start Page"]
-            , case history_form.start_page of
-                Nothing -> 
-                    input [value "-1", onInput (UpdateHistoryStartPage <<  String.toInt), id "start page", type_ "number", placeholder "Which page did you start reading?"] []
-                Just start_page -> 
-                    input [value <| String.fromInt start_page, onInput (UpdateHistoryStartPage <<  String.toInt), id "start page", type_ "number", placeholder "Which page did you start reading?"] []
-            , label [for "end page"] [text "End Page"]
-            , input [value <| String.fromInt history_form.end_page, onInput (UpdateHistoryEndPage  << String.toInt), id "end page", placeholder "Where did you finish?"] []
-            , button [type_ "submit"] [text "Create Record"]
-            ]
-display_reading_history : List History -> Html Msg 
-display_reading_history reading_history = 
-    ol  [] 
-        (List.map display_single_history reading_history)
+-- create_record_form : History -> Html Msg 
+-- create_record_form history_form =
+--     form    [onSubmit CreateHistoryRecord] 
+--             [ label [for "book"] [text "Book"]
+--             , input [value <| String.fromInt history_form.book, onInput (UpdateHistoryFormBook <<  String.toInt), id "book", placeholder "Book (id for now)", type_ "number"] [] -- TODO: will be a dropdown
+--             , label [for "start page"] [text "Start Page"]
+--             , case history_form.start_page of
+--                 Nothing -> 
+--                     input [value "-1", onInput (UpdateHistoryStartPage <<  String.toInt), id "start page", type_ "number", placeholder "Which page did you start reading?"] []
+--                 Just start_page -> 
+--                     input [value <| String.fromInt start_page, onInput (UpdateHistoryStartPage <<  String.toInt), id "start page", type_ "number", placeholder "Which page did you start reading?"] []
+--             , label [for "end page"] [text "End Page"]
+--             , input [value <| String.fromInt history_form.end_page, onInput (UpdateHistoryEndPage  << String.toInt), id "end page", placeholder "Where did you finish?"] []
+--             , button [type_ "submit"] [text "Create Record"]
+--             ]
+-- display_reading_history : List History -> Html Msg 
+-- display_reading_history reading_history = 
+--     ol  [] 
+--         (List.map display_single_history reading_history)
 
-display_single_history : History -> Html Msg 
-display_single_history hist = 
-    li  [] 
-        [text ( String.fromInt hist.book ++ "ended at:" ++ String.fromInt hist.end_page)]
+-- display_single_history : History -> Html Msg 
+-- display_single_history hist = 
+--     li  [] 
+--         [text ( String.fromInt hist.book ++ "ended at:" ++ String.fromInt hist.end_page)]
