@@ -13,7 +13,7 @@ import Types exposing (..)
 import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest)
 import Ports exposing (storeToken, deleteToken)
 
-import Pages exposing (loggedin_page)
+import Pages exposing (loggedin_page, not_loggedin_page)
 
 
 
@@ -171,28 +171,6 @@ log_user_out : Model -> (Model, Cmd msg)
 log_user_out model = ({model | token = Nothing}, deleteToken "")
 
 
-
-
-login_form_view : LoginForm -> Html Msg 
-login_form_view login_form = form 
-                            [onSubmit LoginAction] 
-                            [ label [for "username"] [text "Username"]
-                            , input [id "username"
-                                    , type_ "text"
-                                    , placeholder "Username"
-                                    , value login_form.username
-                                    , onInput UpdateUserName
-                                    ] []
-                            , label [for "password"] [text "Password"]
-                            , input [id "password"
-                                    , type_ "password"
-                                    , placeholder "Password"
-                                    , value login_form.password
-                                    , onInput UpdatePassword
-                                    ] []
-                            , button [type_ "button", onClick ToggleLogin] [text "x"]
-                            , button [type_ "submit"] [text "Login"]
-                            ]
 view : Model -> Html Msg 
 view model = 
     case model.token of 
@@ -201,19 +179,3 @@ view model =
         Just _ ->
             loggedin_page model 
 
-
-not_loggedin_page : Model -> Html Msg 
-not_loggedin_page model = 
-    div [] 
-        [ (if model.show_login then login_form_view model.login_form  else div [] [button [onClick ToggleLogin] [text "login"]])
-        , h1 [] [text "Books I am Reading"]
-        , case model.books of 
-            Nothing -> 
-                text "loading"
-            Just books -> 
-                div [] [ol  [] (List.map view_book books)]
-
-        ]
-
-view_book : Book -> Html Msg 
-view_book book = li [] [text book.name]
