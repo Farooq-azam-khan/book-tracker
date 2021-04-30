@@ -124,8 +124,6 @@ update msg model =
             ({model | books = Just (response)}, Cmd.none)
 
          
-            
-
         HistoryGetRequest (Err (Http.BadStatus 401)) -> 
                 log_user_out model 
         
