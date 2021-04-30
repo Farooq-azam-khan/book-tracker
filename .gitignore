@@ -4,3 +4,4 @@ elm-stuff
 # for elm make src/Main.elm
 # index.html 
 elm.js
+__pycache__
