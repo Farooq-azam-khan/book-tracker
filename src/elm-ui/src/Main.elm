@@ -106,7 +106,7 @@ update msg model =
             let
                 clear_form = LoginForm "" ""
                 new_model = {model | token = Just (Token response), login_form = clear_form}
-                commands = Cmd.batch [getReadingHistory new_model.token, storeToken response]
+                commands = Cmd.batch [getReadingHistory (Token response), storeToken response]
             in
             
             (new_model, commands)
