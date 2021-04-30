@@ -34,6 +34,7 @@ async def a_book_progress(book_id: int):
             'name': first_record['name'], 
             'total_pages': total_pages, 
             'total_chapters': total_chapters, 
+            'author': first_record['author']
         }, 
         'read_before': 0,
         'page_progress': 0,
@@ -52,8 +53,8 @@ async def a_book_progress(book_id: int):
             ret['chapter_progress'] = vl['chapter_mark']
         
 
-    ret['page_progress'] = ret['page_progress'] / ret['book']['total_pages']
-    ret['chapter_progress'] = ret['page_progress'] / ret['book']['total_chapters']
+    ret['page_progress'] = min(1, ret['page_progress'] / ret['book']['total_pages'])
+    ret['chapter_progress'] = min(1, ret['page_progress'] / ret['book']['total_chapters'])
 
     return ret
 
