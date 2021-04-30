@@ -16,5 +16,6 @@ type Msg = NoOp
          | UpdateHistoryChapterMark (Maybe Int)
          | UpdateHistoryPageMark (Maybe Int)
          | WasHistoryRecodedSuccessful (Result Http.Error (List History))
+         | GetActiveReadingList (Result Http.Error (List BookProgress))
          | StoreTokenAction 
          

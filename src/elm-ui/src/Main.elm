@@ -115,7 +115,7 @@ update msg model =
             log_user_out model 
 
         -- TODO: handle view 
-        BooksGetRequest (Err _) ->             
+        BooksGetRequest (Err _) -> 
             (model, Cmd.none) 
         
         
@@ -163,6 +163,16 @@ update msg model =
                     (model, Cmd.none)
                 Just (Token tkn_str) -> 
                     (model, storeToken tkn_str)
+        
+        GetActiveReadingList (Err (Http.BadStatus 401)) -> 
+            log_user_out model
+        
+        GetActiveReadingList (Err e) -> 
+            (model, Cmd.none)
+        
+        GetActiveReadingList (Ok response) -> 
+            ({model | reading_list = response}, Cmd.none)
+
         
 
 

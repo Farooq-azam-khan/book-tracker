@@ -13,6 +13,7 @@ type alias Model =
     , reading_history : Maybe (List History)
     , show_create_record_form : Bool 
     , history_record_form : History 
+    , reading_list : List BookProgress
     }
 
 init : Flags -> (Model, Cmd Msg) 
@@ -27,12 +28,15 @@ init flags =
                      , reading_history = Nothing 
                      , show_create_record_form = False 
                      , history_record_form = History 0 0 0
+                     , reading_list = []
                      }
-        commands = case maybeToken of 
+        auth_commands = case maybeToken of 
             Nothing -> 
-                Cmd.none 
+                []
             Just token ->
-                Cmd.batch [getReadingHistory token]
+                 [getReadingHistory token]
+        
+        commands = Cmd.batch (List.append auth_commands [getBookProgress])
 
     in
         (init_model, commands)
