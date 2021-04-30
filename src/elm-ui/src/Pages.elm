@@ -6,7 +6,7 @@ import Types exposing (..)
 import Html exposing (Html, button, div, text, input, form, label, h1, ol, li)
 import Html.Events exposing (onInput, onSubmit, onClick)
 import Html.Attributes exposing(type_, placeholder, for, value, id)
-
+import Round as R
 
 loggedin_page : Model -> Html Msg 
 loggedin_page model = 
@@ -55,13 +55,21 @@ not_loggedin_page model =
     div [] 
         [ (if model.show_login then login_form_view model.login_form  else div [] [button [onClick ToggleLogin] [text "login"]])
         , h1 [] [text "Books I am Reading"]
-        , case model.books of 
-            Nothing -> 
-                text "loading"
-            Just books -> 
-                div [] [ol  [] (List.map view_book books)]
+        , div [] (List.map book_view model.reading_list) 
+        -- , case model.books of 
+        --     Nothing -> 
+        --         text "loading"
+        --     Just books -> 
+        --         div [] [ol  [] (List.map view_book books)]
 
         ]
+
+book_view : BookProgress -> Html Msg 
+book_view prog_book =
+    div [] 
+        [text (prog_book.book.name ++ " page prog: " ++ (R.round 2 (100*prog_book.page_progress)) ++ "% chap prog: " ++ (R.round 2 (100*prog_book.chapter_progress)) ++ "%")
+        ]
+        
 
 view_book : Book -> Html Msg 
 view_book book = li [] [text book.name]
