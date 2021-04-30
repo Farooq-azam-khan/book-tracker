@@ -13,7 +13,8 @@ type Msg = NoOp
          | ToggleCreateRecord
          | CreateHistoryRecord
          | UpdateHistoryFormBook (Maybe Int)
-         | UpdateHistoryStartPage (Maybe Int)
-         | UpdateHistoryEndPage (Maybe Int)
+         | UpdateHistoryChapterMark (Maybe Int)
+         | UpdateHistoryPageMark (Maybe Int)
          | WasHistoryRecodedSuccessful (Result Http.Error (List History))
          | StoreTokenAction 
+         

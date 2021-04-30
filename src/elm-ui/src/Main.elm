@@ -3,22 +3,18 @@ import Browser
 import Html exposing (Html, button, div, text, input, form, label, h1, ol, li)
 import Html.Events exposing (onInput, onSubmit, onClick)
 import Html.Attributes exposing(type_, placeholder, for, value, id)
-import Http exposing(stringPart)
+import Http
 import Json.Decode as D
 import Json.Encode as E
 
 import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
-
+import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest)
 import Ports exposing (storeToken, deleteToken)
 
 import Pages exposing (loggedin_page)
 
-
-
-
-type alias Flags = { storedToken : Maybe String }
 
 
 main: Program Flags Model Msg
@@ -28,24 +24,6 @@ main = Browser.element {init = init, update = update, view=view, subscriptions =
 subscriptions : Model -> Sub Msg 
 subscriptions _ = Sub.none 
 
--- TODO: check token in localstorage with flags (if it exists then set the model token to it)
-init : Flags -> (Model, Cmd Msg) 
-init flags =
-    let
-        maybeToken = Maybe.map Token flags.storedToken
-        -- _ = Debug.log "Flags" maybeToken
-        init_model = { login_form = LoginForm "" ""
-                     , show_login = False
-                     , token = maybeToken
-                     , books = Nothing
-                     , reading_history = Nothing 
-                     , show_create_record_form = False 
-                     , history_record_form = History 0 Nothing 0
-                     }
-        commands = Cmd.batch [getReadingHistory maybeToken, getBooks]
-
-    in
-        (init_model, commands)
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -76,39 +54,39 @@ update msg model =
 
         UpdateHistoryFormBook Nothing -> 
             let
-                new_hist = History 0 (model.history_record_form.start_page) (model.history_record_form.end_page)
+                new_hist = History 1 (model.history_record_form.page_mark) (model.history_record_form.chapter_mark)
 
             in
                 ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryFormBook (Just val) -> 
             let
-                new_hist = History val (model.history_record_form.start_page) (model.history_record_form.end_page)
+                new_hist = History val (model.history_record_form.page_mark) (model.history_record_form.chapter_mark)
             in
                 ({model | history_record_form = new_hist }, Cmd.none)
 
-        UpdateHistoryStartPage Nothing -> 
+        UpdateHistoryPageMark Nothing -> 
             let
-                new_hist = History (model.history_record_form.book) Nothing (model.history_record_form.end_page)
+                new_hist = History (model.history_record_form.book) 0 (model.history_record_form.chapter_mark)
 
             in
                 ({model | history_record_form = new_hist}, Cmd.none)
 
-        UpdateHistoryStartPage (Just val) -> 
+        UpdateHistoryPageMark (Just val) -> 
             let
-                new_hist = History (model.history_record_form.book) (Just val) (model.history_record_form.end_page)
+                new_hist = History (model.history_record_form.book) val (model.history_record_form.chapter_mark)
             in
                 ({model | history_record_form = new_hist }, Cmd.none)
 
-        UpdateHistoryEndPage Nothing -> 
+        UpdateHistoryChapterMark Nothing -> 
             let
-                new_hist = History (model.history_record_form.book) (model.history_record_form.start_page) 0
+                new_hist = History (model.history_record_form.book) (model.history_record_form.page_mark) 0
             in
                 ({model | history_record_form = new_hist}, Cmd.none)
 
-        UpdateHistoryEndPage (Just val) ->
+        UpdateHistoryChapterMark (Just val) ->
             let
-                new_hist = History (model.history_record_form.book) (model.history_record_form.start_page) val
+                new_hist = History (model.history_record_form.book) (model.history_record_form.page_mark) val
             in
                 ({model | history_record_form = new_hist }, Cmd.none)
         
@@ -169,7 +147,7 @@ update msg model =
         WasHistoryRecodedSuccessful (Ok response) -> 
             let
                 -- _ = Debug.log "response after adding history" response 
-                new_model = {model | history_record_form = History 0 Nothing 0}
+                new_model = {model | history_record_form = History 0 0 0}
                 new_reading_list = case model.reading_history of 
                     Nothing -> 
                        Just response 
@@ -187,92 +165,13 @@ update msg model =
                     (model, storeToken tkn_str)
         
 
-getReadingHistory : Maybe Token -> Cmd Msg 
-getReadingHistory maybe_tkn = 
-        case maybe_tkn of 
-            Nothing -> 
-                Cmd.none 
-            Just (Token tkn) -> 
-                let
-                    auth_header = Http.header "Authorization" ("Bearer " ++ tkn)
-                in
-                    Http.request 
-                        { url = "/history"
-                        , method = "get"
-                        , headers = [auth_header]
-                        , body = Http.emptyBody
-                        , timeout = Nothing 
-                        , tracker = Nothing 
-                        , expect = Http.expectJson HistoryGetRequest (D.list history_decoder)
-                        }
+
 
 log_user_out : Model -> (Model, Cmd msg)
 log_user_out model = ({model | token = Nothing}, deleteToken "")
 
-history_decoder : D.Decoder History 
-history_decoder = 
-    D.map3 History 
-        (D.field "book" D.int)
-        (D.maybe  (D.field "start_page" D.int))
-        (D.field "end_page" D.int)
-
--- type Token = Token String 
-
-sendHistoryRecord : Token -> History -> Cmd Msg 
-sendHistoryRecord (Token tkn) history_record_form = 
-    let
-        auth_header = Http.header "Authorization" ("Bearer " ++ tkn)
-    in
-        Http.request 
-            { url = "/history"
-            , method = "post"
-            , headers = [auth_header]
-            , body = Http.jsonBody (encodeHistory history_record_form)
-            , timeout = Nothing 
-            , tracker = Nothing 
-            , expect = Http.expectJson WasHistoryRecodedSuccessful (D.list history_decoder)
-            }
-
-encodeHistory : History -> E.Value 
-encodeHistory history_record_form =
-    let
-        bk_val = ("book", E.int history_record_form.book)
-        end_page_val = ("end_page", E.int history_record_form.end_page)
-    in
-    
-    case history_record_form.start_page of
-        Nothing ->
-            E.object 
-                [ end_page_val
-                , bk_val
-                ]
-        Just st_pg ->
-            E.object 
-                [ end_page_val
-                , bk_val
-                , ("start_page", E.int st_pg)
-                ]
 
 
-sendLoginRequest : LoginForm -> Cmd Msg 
-sendLoginRequest login_form = 
-        Http.post 
-            { url = "/token"
-            , body = Http.multipartBody [ stringPart "username" login_form.username
-                                        , stringPart "password" login_form.password
-                                        ]
-            , expect = Http.expectJson LoginSuccessful token_decoder
-            }
-getBooks : Cmd Msg 
-getBooks = Http.get 
-            { url = "/books"
-            , expect = Http.expectJson BooksGetRequest (D.list book_decoder)
-            }
-token_decoder : D.Decoder String
-token_decoder = D.field "access_token" D.string
-
-book_decoder : D.Decoder Book 
-book_decoder = D.map3 Book (D.field "name" D.string) (D.field "total_chapters" D.int) (D.field "author" D.int)
 
 login_form_view : LoginForm -> Html Msg 
 login_form_view login_form = form 

@@ -33,19 +33,16 @@ create_record_form : History -> Html Msg
 create_record_form history_form =
     form    [onSubmit CreateHistoryRecord] 
             [ label [for "book"] [text "Book"]
-            , input [value <| String.fromInt history_form.book, onInput (UpdateHistoryFormBook <<  String.toInt), id "book", placeholder "Book (id for now)", type_ "number"] [] -- TODO: will be a dropdown
-            , label [for "start page"] [text "Start Page"]
-            , case history_form.start_page of
-                Nothing -> 
-                    input [value "-1", onInput (UpdateHistoryStartPage <<  String.toInt), id "start page", type_ "number", placeholder "Which page did you start reading?"] []
-                Just start_page -> 
-                    input [value <| String.fromInt start_page, onInput (UpdateHistoryStartPage <<  String.toInt), id "start page", type_ "number", placeholder "Which page did you start reading?"] []
-            , label [for "end page"] [text "End Page"]
-            , input [value <| String.fromInt history_form.end_page, onInput (UpdateHistoryEndPage  << String.toInt), id "end page", placeholder "Where did you finish?"] []
+            -- TODO: Change to Select input filed 
+            , input [value <| String.fromInt history_form.book, onInput (UpdateHistoryFormBook <<  String.toInt), id "book", placeholder "Book (id for now)", type_ "number"] []
+            , label [for "page-mark"] [text "End Page"]
+            , input [value <| String.fromInt history_form.page_mark, onInput (UpdateHistoryPageMark  << String.toInt), id "page-mark", placeholder "Where did you finish?"] []
+            , label [for "chapter-mark"] [text "Chapter Mark"]
+            , input [value <| String.fromInt history_form.chapter_mark, id "chapter-mark", placeholder "Which Chapter are you on right now?", onInput (UpdateHistoryChapterMark << String.toInt), type_ "number"] []
             , button [type_ "submit"] [text "Create Record"]
             ]
 
 display_single_history : History -> Html Msg 
 display_single_history hist = 
-    li  [] 
-        [text ( String.fromInt hist.book ++ "ended at:" ++ String.fromInt hist.end_page)]
+    li  []
+        [text ( String.fromInt hist.book ++ " page:" ++ String.fromInt hist.page_mark ++ "Chapter: " ++ String.fromInt hist.chapter_mark)]
