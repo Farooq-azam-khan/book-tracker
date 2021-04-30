@@ -11,7 +11,7 @@ import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
 
-import Ports exposing (storeToken)
+import Ports exposing (storeToken, deleteToken)
 
 import Pages exposing (loggedin_page)
 
@@ -33,7 +33,7 @@ init : Flags -> (Model, Cmd Msg)
 init flags =
     let
         maybeToken = Maybe.map Token flags.storedToken
-        _ = Debug.log "Flags" maybeToken
+        -- _ = Debug.log "Flags" maybeToken
         init_model = { login_form = LoginForm "" ""
                      , show_login = False
                      , token = maybeToken
@@ -116,7 +116,12 @@ update msg model =
             ({model | show_login = not model.show_login}, Cmd.none)
 
         -- TODO: handle view 
+        LoginSuccessful (Err (Http.BadStatus 401)) -> 
+            -- delete token from local storage if an error occurs
+            log_user_out model 
+        
         LoginSuccessful (Err _) -> 
+            -- delete token from local storage if an error occurs
             (model, Cmd.none)
         
         LoginSuccessful (Ok response) -> 
@@ -128,15 +133,24 @@ update msg model =
             
             (new_model, commands)
 
+        BooksGetRequest (Err (Http.BadStatus 401)) ->             
+            log_user_out model 
+
         -- TODO: handle view 
-        BooksGetRequest (Err _) -> 
+        BooksGetRequest (Err _) ->             
+            (model, Cmd.none) 
         
-            
-            (model, Cmd.none)
+        
         
         BooksGetRequest (Ok response) -> 
             ({model | books = Just (response)}, Cmd.none)
 
+         
+            
+
+        HistoryGetRequest (Err (Http.BadStatus 401)) -> 
+                log_user_out model 
+        
         HistoryGetRequest (Err _) -> 
                 (model, Cmd.none)
 
@@ -146,9 +160,12 @@ update msg model =
         ToggleCreateRecord -> 
             ({model | show_create_record_form = not model.show_create_record_form}, Cmd.none)
         
+        WasHistoryRecodedSuccessful (Err (Http.BadStatus 401)) -> 
+                log_user_out model
+
         WasHistoryRecodedSuccessful (Err _) -> 
-        
-                (model, Cmd.none)
+                (model, Cmd.none) 
+
         WasHistoryRecodedSuccessful (Ok response) -> 
             let
                 -- _ = Debug.log "response after adding history" response 
@@ -188,6 +205,9 @@ getReadingHistory maybe_tkn =
                         , tracker = Nothing 
                         , expect = Http.expectJson HistoryGetRequest (D.list history_decoder)
                         }
+
+log_user_out : Model -> (Model, Cmd msg)
+log_user_out model = ({model | token = Nothing}, deleteToken "")
 
 history_decoder : D.Decoder History 
 history_decoder = 
