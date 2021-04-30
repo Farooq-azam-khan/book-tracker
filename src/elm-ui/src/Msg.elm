@@ -16,3 +16,4 @@ type Msg = NoOp
          | UpdateHistoryStartPage (Maybe Int)
          | UpdateHistoryEndPage (Maybe Int)
          | WasHistoryRecodedSuccessful (Result Http.Error (List History))
+         | StoreTokenAction 
