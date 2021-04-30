@@ -1,12 +1,13 @@
 # Book Tracking
 
 ## TODOS
-* [x] fix form for history record creation
-* [ ] integrate tailwindcss (experiment with gradient) (priority: 1.3)
+* [ ] integrate tailwindcss (experiment with gradient) (priority: 1)
+    * [ ] better form input needed for record creation (          ^)
 * [ ] delete routes for (book / hisotry / genre / franchise (in that order))
 * [ ] update `history/genre/franchise` routes (priority: 2.1)
 * [ ] rate limit (priority: last)
 * [ ] pagination and order by title of book, author name, descenting read_at for book, author, history table respectively (priority: 2)
+* [x] fix form for history record creation
 * [x] refactor elm-ui (priority: 1.1)
 * [x] store token in localstorage(priority: 1.2)
 * [x] porgress route 
