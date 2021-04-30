@@ -19,6 +19,16 @@ book_decoder =
         (D.field "total_pages" D.int) 
         (D.field "author" D.int)
 
+
+book_progress_decoder : D.Decoder BookProgress 
+book_progress_decoder = 
+    D.map4 BookProgress 
+        (D.field "book" book_decoder) 
+        (D.field "read_before" D.int) 
+        (D.field "page_progress" D.float) 
+        (D.field "chapter_progress" D.float)
+
+
 getBooks : Cmd Msg 
 getBooks = Http.get 
             { url = "/books"
@@ -31,6 +41,13 @@ history_decoder =
         (D.field "book" D.int)
         (D.field "page_mark" D.int)
         (D.field "chapter_mark" D.int)
+
+getBookProgress : Cmd Msg 
+getBookProgress = 
+    Http.get 
+        { url = "/progress/active/books"
+        , expect = Http.expectJson GetActiveReadingList (D.list book_progress_decoder)
+        }
 
 getReadingHistory : Token -> Cmd Msg 
 getReadingHistory token = 
