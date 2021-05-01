@@ -15,9 +15,13 @@ create_record_form maybe_books history_form =
         Nothing -> 
             -- TODO: check if books can be stored in local storage
             text "sorry, you cannot add records at this moment. books are not loaded"
-        Just book_list -> 
-            form    [onSubmit CreateHistoryRecord
-                    ] 
+        Just book_list ->
+            div 
+                []
+                [ div [class "fixed z-20 inset-0 bg-black opacity-50"] [] 
+                , div [ class "mx-auto flex items-center justify-center fixed inset-0 z-30"]
+                [ form    
+                    [onSubmit CreateHistoryRecord] 
                     [ button [type_ "button", onClick ToggleCreateRecord] [text "x"]
                     , label [for "book"] [text "Book"]
                     , select [id "book", onInput (UpdateHistoryFormBook << String.toInt)] 
@@ -27,7 +31,7 @@ create_record_form maybe_books history_form =
                         else 
                         (List.map bookOption book_list)
                     )
-                    
+                        
                     , if history_form.book == 0
                         then  div  [] [] 
                         else 
@@ -39,6 +43,8 @@ create_record_form maybe_books history_form =
                             , button [type_ "submit"] [text "Create Record"]
                             ]
                     ]
+                ]
+                ]
 
 bookOption : Book -> Html Msg 
 bookOption book = option [value <| String.fromInt book.id] [text book.name]
@@ -58,8 +64,8 @@ login_icon =
 login_form_view : LoginForm -> Html Msg 
 login_form_view login_form = 
     div []
-        [ div [class "fixed inset-0 bg-black opacity-50"] []
-        , div [ class "mx-auto flex items-center justify-center fixed inset-0 z-10"]
+        [ div [class "fixed z-20 inset-0 bg-black opacity-50"] []
+        , div [ class "mx-auto flex items-center justify-center fixed inset-0 z-30"]
         [ div [class "bg-gray-700 rounded-lg shadow-md"] 
         [ div 
             [class "flex items-center rounded-t-lg  justify-between bg-gray-900 px-2 py-2 "] 
