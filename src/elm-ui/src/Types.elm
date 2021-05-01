@@ -1,5 +1,5 @@
 module Types exposing (..)
-
+-- import Time 
 type alias LoginForm = {username: String, password: String}
 type alias Book = 
     { id : Int 
@@ -14,8 +14,14 @@ type alias History =
     { book : Int 
     , page_mark: Int
     , chapter_mark: Int
+    , read_at : Maybe String --Maybe Time.Posix
     }
 
+type alias CreateHistory = 
+    { book : Int 
+    , page_mark: Int
+    , chapter_mark: Int
+    }
 
 
 type alias BookProgress = 
