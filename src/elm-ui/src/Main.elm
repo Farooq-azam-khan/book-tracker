@@ -13,7 +13,7 @@ import Types exposing (..)
 import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest)
 import Ports exposing (storeToken, deleteToken)
 
-import Pages exposing (loggedin_page, not_loggedin_page)
+import Pages.Home exposing (loggedin_page, not_loggedin_page)
 
 
 
