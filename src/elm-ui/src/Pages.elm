@@ -3,9 +3,9 @@ import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
 
-import Html exposing (Html, button, div, text, input, form, label, h1, ol, li)
+import Html exposing (Html, button, div, text, input, form, label, h1, ol, li, select, option)
 import Html.Events exposing (onInput, onSubmit, onClick)
-import Html.Attributes exposing(type_, placeholder, for, value, id)
+import Html.Attributes exposing(type_, placeholder, for, value, id, attribute)
 import Round as R
 
 loggedin_page : Model -> Html Msg 
@@ -14,7 +14,7 @@ loggedin_page model =
         [text "Welcome"
         , if not model.show_create_record_form 
             then button [onClick ToggleCreateRecord] [text "Create History Record"] 
-            else create_record_form model.history_record_form 
+            else create_record_form model.books model.history_record_form 
 
         , case model.reading_history of 
             Nothing -> 
@@ -29,18 +29,39 @@ display_reading_history reading_history =
         (List.map display_single_history reading_history)
 
 
-create_record_form : History -> Html Msg 
-create_record_form history_form =
-    form    [onSubmit CreateHistoryRecord] 
-            [ label [for "book"] [text "Book"]
-            -- TODO: Change to Select input filed 
-            , input [value <| String.fromInt history_form.book, onInput (UpdateHistoryFormBook <<  String.toInt), id "book", placeholder "Book (id for now)", type_ "number"] []
-            , label [for "page-mark"] [text "End Page"]
-            , input [value <| String.fromInt history_form.page_mark, onInput (UpdateHistoryPageMark  << String.toInt), id "page-mark", placeholder "Where did you finish?"] []
-            , label [for "chapter-mark"] [text "Chapter Mark"]
-            , input [value <| String.fromInt history_form.chapter_mark, id "chapter-mark", placeholder "Which Chapter are you on right now?", onInput (UpdateHistoryChapterMark << String.toInt), type_ "number"] []
-            , button [type_ "submit"] [text "Create Record"]
-            ]
+create_record_form : Maybe (List Book) -> History -> Html Msg 
+create_record_form maybe_books history_form =
+    case maybe_books of 
+        Nothing -> 
+            -- TODO: check if books can be stored in local storage
+            text "sorry, you cannot add records at this moment. books are not loaded"
+        Just book_list -> 
+            form    [onSubmit CreateHistoryRecord
+                    ] 
+                    [ button [type_ "button", onClick ToggleCreateRecord] [text "x"]
+                    , label [for "book"] [text "Book"]
+                    , select [id "book", onInput (UpdateHistoryFormBook << String.toInt)] 
+                    ( if history_form.book == 0 
+                        then 
+                        (List.append [option [attribute "selected" "selected", attribute "disabled" "disabled", value "0"] [text "Choose a Book"]] (List.map bookOption book_list))
+                        else 
+                        (List.map bookOption book_list)
+                    )
+                    
+                    , if history_form.book == 0
+                        then  div  [] [] 
+                        else 
+                            div []
+                            [ label [for "page-mark"] [text "End Page"]
+                            , input [value <| String.fromInt history_form.page_mark, onInput (UpdateHistoryPageMark  << String.toInt), id "page-mark", placeholder "Where did you finish?"] []
+                            , label [for "chapter-mark"] [text "Chapter Mark"]
+                            , input [value <| String.fromInt history_form.chapter_mark, id "chapter-mark", placeholder "Which Chapter are you on right now?", onInput (UpdateHistoryChapterMark << String.toInt), type_ "number"] []
+                            , button [type_ "submit"] [text "Create Record"]
+                            ]
+                    ]
+
+bookOption : Book -> Html Msg 
+bookOption book = option [value <| String.fromInt book.id] [text book.name]
 
 display_single_history : History -> Html Msg 
 display_single_history hist = 
