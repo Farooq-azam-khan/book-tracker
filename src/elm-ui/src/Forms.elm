@@ -9,7 +9,7 @@ import Svg.Attributes as SA exposing (d, fill, viewBox)
 import Msg exposing (..)
 import Types exposing (..)
 
-create_record_form : Maybe (List Book) -> History -> Html Msg 
+create_record_form : Maybe (List Book) -> CreateHistory -> Html Msg 
 create_record_form maybe_books history_form =
     case maybe_books of 
         Nothing -> 
@@ -19,33 +19,77 @@ create_record_form maybe_books history_form =
             div 
                 []
                 [ div [class "fixed z-20 inset-0 bg-black opacity-50"] [] 
-                , div [ class "mx-auto flex items-center justify-center fixed inset-0 z-30"]
-                [ form    
-                    [onSubmit CreateHistoryRecord] 
-                    [ button [type_ "button", onClick ToggleCreateRecord] [text "x"]
-                    , label [for "book"] [text "Book"]
-                    , select [id "book", onInput (UpdateHistoryFormBook << String.toInt)] 
-                    ( if history_form.book == 0 
-                        then 
-                        (List.append [option [attribute "selected" "selected", attribute "disabled" "disabled", value "0"] [text "Choose a Book"]] (List.map bookOption book_list))
-                        else 
-                        (List.map bookOption book_list)
-                    )
-                        
+                , div 
+                    [ class "mx-auto flex items-center justify-center fixed inset-0 z-30"]
+                    [ div 
+                        [ class "bg-gray-700 rounded-lg shadow-md"]
+                        [ div 
+                            [class "flex items-center rounded-t-lg  justify-between bg-gray-900 px-2 py-2 "] 
+                            [ h2 [class "text-md tracking-wider font-semibold"] [text "Create Record"]
+                    , button 
+                            [ onClick ToggleCreateRecord
+                            , type_ "button"
+                            , class "hover:text-white border-2 hover:border-indigo-300 border-white rounded-md"
+                            ] [x_icon]
+                    ]
+                    
+                , form    
+                    [onSubmit CreateHistoryRecord, class "flex flex-col items-start space-y-3 px-3 py-3 w-11/12 mx-auto"] 
+                    [ div 
+                        [class "flex flex-col items-start justify-between space-y-1"] 
+                        [ label [for "book"] [text "Book"]
+                        , select 
+                            [id "book"
+                            , onInput (UpdateHistoryFormBook << String.toInt)
+                            , class "w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800"
+                            ] 
+                            ( if history_form.book == 0 
+                                then 
+                                (List.append [option [attribute "selected" "selected", attribute "disabled" "disabled", value "0"] [text "Choose a Book"]] (List.map bookOption book_list))
+                                else 
+                                (List.map bookOption book_list)
+                            )
+                        ]    
                     , if history_form.book == 0
                         then  div  [] [] 
                         else 
-                            div []
-                            [ label [for "page-mark"] [text "End Page"]
-                            , input [value <| String.fromInt history_form.page_mark, onInput (UpdateHistoryPageMark  << String.toInt), id "page-mark", placeholder "Where did you finish?"] []
-                            , label [for "chapter-mark"] [text "Chapter Mark"]
-                            , input [value <| String.fromInt history_form.chapter_mark, id "chapter-mark", placeholder "Which Chapter are you on right now?", onInput (UpdateHistoryChapterMark << String.toInt), type_ "number"] []
-                            , button [type_ "submit"] [text "Create Record"]
-                            ]
+                            div [class "flex flex-col items-start space-y-3"]
+                                [ div 
+                                    [class "flex flex-col items-start justify-between space-y-1"] 
+                                    [label [for "page-mark"] [text "End Page"]
+                                    , input 
+                                        [ value <| String.fromInt history_form.page_mark
+                                        , id "page-mark"
+                                        , onInput (UpdateHistoryPageMark  << String.toInt)
+                                        , placeholder "Where did you finish?"
+                                        , type_ "number"
+                                        , class "w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800"
+                                        ] 
+                                        []
+                                    ]
+                                , div 
+                                    [class "flex flex-col items-start justify-between space-y-1"] 
+                                    [label [for "chapter-mark"] [text "Chapter Mark"]
+                                    , input 
+                                        [value <| String.fromInt history_form.chapter_mark
+                                        , id "chapter-mark"
+                                        , onInput (UpdateHistoryChapterMark << String.toInt)
+                                        , placeholder "Which Chapter are you on right now?"
+                                        , type_ "number"
+                                        , class "w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800"
+                                        ] 
+                                        []
+                                    ]
+                                , button 
+                                    [class "focus:ring-2 inline-block ml-auto flex items-center justify-between px-3 py-2 rounded-md bg-indigo-500 hover:bg-indigo-700 hover:text-white shadow-lg"
+                                    , type_ "submit"
+                                    ] 
+                                    [ span [] [text "Create Record"]]
+                                ]
                     ]
                 ]
                 ]
-
+                ]
 bookOption : Book -> Html Msg 
 bookOption book = option [value <| String.fromInt book.id] [text book.name]
 
@@ -105,7 +149,8 @@ login_form_view login_form =
             , button 
                 [class "focus:ring-2 inline-block ml-auto flex items-center justify-between px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg", type_ "submit"] 
                 [ span [] [login_icon]
-                , span [] [text "Login"]]
+                , span [] [text "Login"]
+                ]
             ]
         ]
         ]
