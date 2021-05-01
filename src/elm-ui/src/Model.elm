@@ -12,7 +12,7 @@ type alias Model =
     , books : Maybe (List Book)
     , reading_history : Maybe (List History)
     , show_create_record_form : Bool 
-    , history_record_form : History 
+    , history_record_form : CreateHistory 
     , reading_list : List BookProgress
     }
 
@@ -27,7 +27,7 @@ init flags =
                      , books = Nothing
                      , reading_history = Nothing 
                      , show_create_record_form = False 
-                     , history_record_form = History 0 0 0
+                     , history_record_form = CreateHistory 0 0 0
                      , reading_list = []
                      }
         auth_commands = case maybeToken of 
