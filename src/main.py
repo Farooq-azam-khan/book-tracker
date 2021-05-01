@@ -81,8 +81,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             detail='Incorrect username or password',
             headers={'WWW-Authenticate': 'Bearer'},
         )
-    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ['ACCESS_TOKEN_EXPIRE_MINUTES'])#int(dotenv_values()['ACCESS_TOKEN_EXPIRE_MINUTES'])
-    USERNAME = os.environ['USERNAME']
+    try:
+        ACCESS_TOKEN_EXPIRE_MINUTES = int(dotenv_values()['ACCESS_TOKEN_EXPIRE_MINUTES'])
+        USERNAME = dotenv_values()['USERNAME']
+    except: 
+        ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ['ACCESS_TOKEN_EXPIRE_MINUTES'])
+        USERNAME = os.environ['USERNAME']
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={'sub': USERNAME}, expires_delta=access_token_expires
