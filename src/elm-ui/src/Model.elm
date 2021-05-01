@@ -22,7 +22,7 @@ init flags =
         maybeToken = Maybe.map Token flags.storedToken
         -- _ = Debug.log "Flags" maybeToken
         init_model = { login_form = LoginForm "" ""
-                     , show_login = False
+                     , show_login = True
                      , token = maybeToken
                      , books = Nothing
                      , reading_history = Nothing 
