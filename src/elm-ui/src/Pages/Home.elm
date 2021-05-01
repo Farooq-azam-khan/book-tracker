@@ -1,4 +1,4 @@
-module Pages exposing (..)
+module Pages.Home exposing (loggedin_page, not_loggedin_page)
 import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
@@ -12,7 +12,7 @@ import Forms exposing (login_form_view, create_record_form)
 loggedin_page : Model -> Html Msg 
 loggedin_page model = 
     div [] 
-        [text "Welcome"
+        [ text "Welcome"
         , if not model.show_create_record_form 
             then button [onClick ToggleCreateRecord] [text "Create History Record"] 
             else create_record_form model.books model.history_record_form 
@@ -26,6 +26,7 @@ loggedin_page model =
                         text "Books do not exist"
                     Just books -> 
                         display_reading_history books read_hist
+        , button [] [text "logout"]
         ]
 
 display_reading_history : List Book -> List History -> Html Msg 
