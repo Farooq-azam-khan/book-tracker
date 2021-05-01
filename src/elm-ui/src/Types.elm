@@ -2,7 +2,8 @@ module Types exposing (..)
 
 type alias LoginForm = {username: String, password: String}
 type alias Book = 
-    {name : String
+    { id : Int 
+    , name : String
     , total_chapters : Int
     , total_pages : Int 
     , author: Int

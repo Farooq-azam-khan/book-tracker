@@ -13,7 +13,8 @@ auth_header (Token tkn) = Http.header "Authorization" ("Bearer " ++ tkn)
 
 book_decoder : D.Decoder Book 
 book_decoder = 
-    D.map4 Book 
+    D.map5 Book 
+        (D.field "id" D.int )
         (D.field "name" D.string) 
         (D.field "total_chapters" D.int) 
         (D.field "total_pages" D.int) 
