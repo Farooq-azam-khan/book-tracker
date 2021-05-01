@@ -38,10 +38,11 @@ getBooks = Http.get
 
 history_decoder : D.Decoder History 
 history_decoder = 
-    D.map3 History 
+    D.map4 History 
         (D.field "book" D.int)
         (D.field "page_mark" D.int)
         (D.field "chapter_mark" D.int)
+        (D.maybe (D.field "read_at" D.string))
 
 getBookProgress : Cmd Msg 
 getBookProgress = 
@@ -83,17 +84,28 @@ encodeHistory history_record_form =
         bk_val = ("book", E.int history_record_form.book)
         end_page_val = ("page_mark", E.int history_record_form.page_mark)
         chapter_val = ("chapter_mark", E.int history_record_form.chapter_mark)
+        read_at = ("read_at", E.string (Maybe.withDefault "" history_record_form.read_at))
     in
         E.object [bk_val, end_page_val, chapter_val]
     
 
-sendHistoryRecord : Token -> History -> Cmd Msg 
+encodeCreateHistory : CreateHistory -> E.Value 
+encodeCreateHistory history_record_form =
+    let
+        bk_val = ("book", E.int history_record_form.book)
+        end_page_val = ("page_mark", E.int history_record_form.page_mark)
+        chapter_val = ("chapter_mark", E.int history_record_form.chapter_mark)
+    in
+        E.object [bk_val, end_page_val, chapter_val]
+
+
+sendHistoryRecord : Token -> CreateHistory -> Cmd Msg 
 sendHistoryRecord token history_record_form = 
         Http.request 
             { url = "/history"
             , method = "post"
             , headers = [auth_header token]
-            , body = Http.jsonBody (encodeHistory history_record_form)
+            , body = Http.jsonBody (encodeCreateHistory history_record_form)
             , timeout = Nothing 
             , tracker = Nothing 
             , expect = Http.expectJson WasHistoryRecodedSuccessful (D.list history_decoder)
