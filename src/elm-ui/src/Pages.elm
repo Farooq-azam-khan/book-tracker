@@ -2,7 +2,7 @@ module Pages exposing (..)
 import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
-import Html exposing (Html, button, div, text, input, form, label, h1, ol, li, select, option)
+import Html exposing (Html, button, div, text, input, form, label, h1, ol, li, select, option, strong)
 import Html.Events exposing (onInput, onSubmit, onClick)
 import Html.Attributes exposing(type_, placeholder, for, value, id, attribute)
 import Round as R
@@ -21,21 +21,38 @@ loggedin_page model =
             Nothing -> 
                 text "loading history..."
             Just read_hist -> 
-                display_reading_history read_hist
+                case model.books of 
+                    Nothing -> 
+                        text "Books do not exist"
+                    Just books -> 
+                        display_reading_history books read_hist
         ]
 
-display_reading_history : List History -> Html Msg 
-display_reading_history reading_history = 
+display_reading_history : List Book -> List History -> Html Msg 
+display_reading_history books reading_history = 
     ol  [] 
-        (List.map display_single_history reading_history)
+        (List.map (display_single_history books) reading_history)
 
 
-display_single_history : History -> Html Msg 
-display_single_history hist = 
+display_single_history :  List Book -> History  -> Html Msg 
+display_single_history books hist = 
     li  []
-        [text ( String.fromInt hist.book ++ " page:" ++ String.fromInt hist.page_mark ++ "Chapter: " ++ String.fromInt hist.chapter_mark)]
+        [ case getBookById hist.book books of 
+            Nothing -> 
+                text ("Book with id " ++ String.fromInt hist.book ++ "does not exist.")
+            Just book -> 
+                div [] 
+                    [strong [] [text book.name]
+                    , text (" at page:" ++ String.fromInt hist.page_mark ++" (")
+                    , text ((R.round 2 (100*(toFloat hist.page_mark / toFloat book.total_pages))) ++ "%)")
+                    , text (" Chapter: " ++ String.fromInt hist.chapter_mark ++ " (")
+                    , text ((R.round 2 (100*(toFloat hist.chapter_mark / toFloat book.total_chapters))) ++ "%)")
+                    ]
+        ]
 
 
+getBookById : Int -> List Book -> Maybe Book 
+getBookById id books = List.head <| List.filter (\book -> book.id == id) books 
 
 
 not_loggedin_page : Model -> Html Msg 
