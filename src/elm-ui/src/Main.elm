@@ -54,39 +54,39 @@ update msg model =
 
         UpdateHistoryFormBook Nothing -> 
             let
-                new_hist = History 1 (model.history_record_form.page_mark) (model.history_record_form.chapter_mark)
+                new_hist = CreateHistory 1 (model.history_record_form.page_mark) (model.history_record_form.chapter_mark)
 
             in
                 ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryFormBook (Just val) -> 
             let
-                new_hist = History val (model.history_record_form.page_mark) (model.history_record_form.chapter_mark)
+                new_hist = CreateHistory val (model.history_record_form.page_mark) (model.history_record_form.chapter_mark)
             in
                 ({model | history_record_form = new_hist }, Cmd.none)
 
         UpdateHistoryPageMark Nothing -> 
             let
-                new_hist = History (model.history_record_form.book) 0 (model.history_record_form.chapter_mark)
+                new_hist = CreateHistory (model.history_record_form.book) 0 (model.history_record_form.chapter_mark)
 
             in
                 ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryPageMark (Just val) -> 
             let
-                new_hist = History (model.history_record_form.book) val (model.history_record_form.chapter_mark)
+                new_hist = CreateHistory (model.history_record_form.book) val (model.history_record_form.chapter_mark)
             in
                 ({model | history_record_form = new_hist }, Cmd.none)
 
         UpdateHistoryChapterMark Nothing -> 
             let
-                new_hist = History (model.history_record_form.book) (model.history_record_form.page_mark) 0
+                new_hist = CreateHistory (model.history_record_form.book) (model.history_record_form.page_mark) 0
             in
                 ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryChapterMark (Just val) ->
             let
-                new_hist = History (model.history_record_form.book) (model.history_record_form.page_mark) val
+                new_hist = CreateHistory (model.history_record_form.book) (model.history_record_form.page_mark) val
             in
                 ({model | history_record_form = new_hist }, Cmd.none)
         
@@ -106,7 +106,7 @@ update msg model =
             let
                 clear_form = LoginForm "" ""
                 -- _ = Debug.log "Login in successful, storing token and getting history for uesr"
-                new_model = {model | token = Just (Token response), login_form = clear_form}
+                new_model = {model | token = Just (Token response), login_form = clear_form, show_login = False}
                 commands = Cmd.batch [storeToken response, getReadingHistory (Token response)]
             in
             
@@ -146,7 +146,7 @@ update msg model =
         WasHistoryRecodedSuccessful (Ok response) -> 
             let
                 -- _ = Debug.log "response after adding history" response 
-                new_model = {model | history_record_form = History 0 0 0}
+                new_model = {model | history_record_form = CreateHistory 0 0 0, show_create_record_form = False}
                 new_reading_list = case model.reading_history of 
                     Nothing -> 
                        Just response 
