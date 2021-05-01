@@ -105,14 +105,15 @@ update msg model =
         LoginSuccessful (Ok response) -> 
             let
                 clear_form = LoginForm "" ""
+                _ = Debug.log "Login in successful, storing token and getting history for uesr"
                 new_model = {model | token = Just (Token response), login_form = clear_form}
-                commands = Cmd.batch [getReadingHistory (Token response), storeToken response]
+                commands = Cmd.batch [storeToken response, getReadingHistory (Token response)]
             in
             
             (new_model, commands)
 
-        BooksGetRequest (Err (Http.BadStatus 401)) ->             
-            log_user_out model 
+        -- BooksGetRequest (Err (Http.BadStatus 401)) ->             
+        --     log_user_out model 
 
         -- TODO: handle view 
         BooksGetRequest (Err _) -> 
@@ -136,8 +137,8 @@ update msg model =
         ToggleCreateRecord -> 
             ({model | show_create_record_form = not model.show_create_record_form}, Cmd.none)
         
-        WasHistoryRecodedSuccessful (Err (Http.BadStatus 401)) -> 
-                log_user_out model
+        -- WasHistoryRecodedSuccessful (Err (Http.BadStatus 401)) -> 
+        --         log_user_out model
 
         WasHistoryRecodedSuccessful (Err _) -> 
                 (model, Cmd.none) 
@@ -162,8 +163,8 @@ update msg model =
                 Just (Token tkn_str) -> 
                     (model, storeToken tkn_str)
         
-        GetActiveReadingList (Err (Http.BadStatus 401)) -> 
-            log_user_out model
+        -- GetActiveReadingList (Err (Http.BadStatus 401)) -> 
+        --     log_user_out model
         
         GetActiveReadingList (Err e) -> 
             (model, Cmd.none)

@@ -20,7 +20,7 @@ init : Flags -> (Model, Cmd Msg)
 init flags =
     let
         maybeToken = Maybe.map Token flags.storedToken
-        -- _ = Debug.log "Flags" maybeToken
+        _ = Debug.log "Flags" maybeToken
         init_model = { login_form = LoginForm "" ""
                      , show_login = False
                      , token = maybeToken
@@ -34,9 +34,12 @@ init flags =
             Nothing -> 
                 []
             Just token ->
+                let 
+                    _ = Debug.log "token in storage, getting history"
+                in
                  [getReadingHistory token]
         
-        commands = Cmd.batch (List.append auth_commands [getBookProgress])
+        commands = Cmd.batch (List.append auth_commands [getBookProgress, getBooks])
 
     in
         (init_model, commands)
