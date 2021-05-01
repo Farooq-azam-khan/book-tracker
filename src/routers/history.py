@@ -9,7 +9,7 @@ router = APIRouter()
 
 @router.get('/')
 async def get_history(current_user=Depends(get_current_user)):
-    query = history_table.select().order_by(sqlalchemy.desc(history_table.c.read_at))
+    query = history_table.select().where(history_table.c.read_at != None).order_by(sqlalchemy.desc(history_table.c.read_at))
     return await database.fetch_all(query)
 
 @router.post('/')
