@@ -105,7 +105,7 @@ update msg model =
         LoginSuccessful (Ok response) -> 
             let
                 clear_form = LoginForm "" ""
-                _ = Debug.log "Login in successful, storing token and getting history for uesr"
+                -- _ = Debug.log "Login in successful, storing token and getting history for uesr"
                 new_model = {model | token = Just (Token response), login_form = clear_form}
                 commands = Cmd.batch [storeToken response, getReadingHistory (Token response)]
             in
