@@ -18,4 +18,5 @@ type Msg = NoOp
          | WasHistoryRecodedSuccessful (Result Http.Error (List History))
          | GetActiveReadingList (Result Http.Error (List BookProgress))
          | StoreTokenAction 
+         | LogoutAction
          

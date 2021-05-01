@@ -12,7 +12,7 @@ import Msg exposing (..)
 import Types exposing (..)
 import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest)
 import Ports exposing (storeToken, deleteToken)
-
+import Html.Attributes exposing (class)
 import Pages.Home exposing (loggedin_page, not_loggedin_page)
 
 
@@ -155,7 +155,9 @@ update msg model =
 
             in
                 ({new_model|reading_history=new_reading_list}, Cmd.none)
-        
+        LogoutAction ->
+            log_user_out model 
+
         StoreTokenAction -> 
             case model.token of 
                 Nothing -> 
@@ -177,14 +179,15 @@ update msg model =
 
 
 log_user_out : Model -> (Model, Cmd msg)
-log_user_out model = ({model | token = Nothing}, deleteToken "")
+log_user_out model = ({model | token = Nothing, reading_history = Nothing}, deleteToken "")
 
 
 view : Model -> Html Msg 
 view model = 
+    div [class "bg-gray-800 text-white"] [
     case model.token of 
         Nothing -> 
             not_loggedin_page model 
         Just _ ->
             loggedin_page model 
-
+    ]
