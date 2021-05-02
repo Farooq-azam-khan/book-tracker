@@ -6620,7 +6620,6 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Msg$ToggleCreateRecord = {$: 8};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
@@ -6655,7 +6654,7 @@ var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
-var $author$project$Pages$Home$plus_icon = A2(
+var $author$project$Icons$plus_icon = A2(
 	$elm$svg$Svg$svg,
 	_List_fromArray(
 		[
@@ -6681,7 +6680,7 @@ var $author$project$Pages$Home$plus_icon = A2(
 var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Pages$Home$create_history_record_button = A2(
+var $author$project$Pages$Dashboard$create_history_record_button = A2(
 	$elm$html$Html$button,
 	_List_fromArray(
 		[
@@ -6694,7 +6693,7 @@ var $author$project$Pages$Home$create_history_record_button = A2(
 			$elm$html$Html$span,
 			_List_Nil,
 			_List_fromArray(
-				[$author$project$Pages$Home$plus_icon])),
+				[$author$project$Icons$plus_icon])),
 			A2(
 			$elm$html$Html$span,
 			_List_fromArray(
@@ -6746,6 +6745,7 @@ var $elm$core$Basics$composeL = F3(
 		return g(
 			f(x));
 	});
+var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
@@ -6839,7 +6839,10 @@ var $author$project$Forms$create_record_form = F2(
 			var book_list = maybe_books.a;
 			return A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('text-white')
+					]),
 				_List_fromArray(
 					[
 						A2(
@@ -7067,7 +7070,7 @@ var $elm$core$List$head = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
-var $author$project$Pages$Home$getBookById = F2(
+var $author$project$Pages$Dashboard$getBookById = F2(
 	function (id, books) {
 		return $elm$core$List$head(
 			A2(
@@ -7340,9 +7343,9 @@ var $myrho$elm_round$Round$round = $myrho$elm_round$Round$roundFun(
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$th = _VirtualDom_node('th');
 var $elm$html$Html$tr = _VirtualDom_node('tr');
-var $author$project$Pages$Home$display_single_history = F2(
+var $author$project$Pages$Dashboard$display_single_history = F2(
 	function (books, hist) {
-		var _v0 = A2($author$project$Pages$Home$getBookById, hist.Z, books);
+		var _v0 = A2($author$project$Pages$Dashboard$getBookById, hist.Z, books);
 		if (_v0.$ === 1) {
 			return $elm$html$Html$text(
 				'Book with id ' + ($elm$core$String$fromInt(hist.Z) + 'does not exist.'));
@@ -7410,13 +7413,13 @@ var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$table = _VirtualDom_node('table');
 var $elm$html$Html$tbody = _VirtualDom_node('tbody');
 var $elm$html$Html$thead = _VirtualDom_node('thead');
-var $author$project$Pages$Home$display_reading_history = F2(
+var $author$project$Pages$Dashboard$display_reading_history = F2(
 	function (books, reading_history) {
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('text-gray-900 flex flex-wrap mt-4 max-w-xl mx-auto')
+					$elm$html$Html$Attributes$class('font-serif text-gray-900 flex flex-wrap mt-4 max-w-xl mx-auto')
 				]),
 			_List_fromArray(
 				[
@@ -7483,7 +7486,7 @@ var $author$project$Pages$Home$display_reading_history = F2(
 															$elm$html$Html$button,
 															_List_fromArray(
 																[
-																	$elm$html$Html$Attributes$class('cursor-not-allowed bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1'),
+																	$elm$html$Html$Attributes$class('font-sans cursor-not-allowed bg-indigo-500 text-gray-300 active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1'),
 																	A2($elm$html$Html$Attributes$attribute, 'style', 'transition:all .15s ease'),
 																	$elm$html$Html$Attributes$type_('button'),
 																	A2($elm$html$Html$Attributes$attribute, 'diabled', 'disabled')
@@ -7568,7 +7571,7 @@ var $author$project$Pages$Home$display_reading_history = F2(
 													_List_Nil,
 													A2(
 														$elm$core$List$map,
-														$author$project$Pages$Home$display_single_history(books),
+														$author$project$Pages$Dashboard$display_single_history(books),
 														reading_history))
 												]))
 										]))
@@ -7577,7 +7580,7 @@ var $author$project$Pages$Home$display_reading_history = F2(
 				]));
 	});
 var $author$project$Msg$LogoutAction = {$: 16};
-var $author$project$Pages$Home$logout_icon = A2(
+var $author$project$Icons$logout_icon = A2(
 	$elm$svg$Svg$svg,
 	_List_fromArray(
 		[
@@ -7600,7 +7603,7 @@ var $author$project$Pages$Home$logout_icon = A2(
 				]),
 			_List_Nil)
 		]));
-var $author$project$Pages$Home$logout_button = A2(
+var $author$project$Pages$Dashboard$logout_button = A2(
 	$elm$html$Html$button,
 	_List_fromArray(
 		[
@@ -7613,7 +7616,7 @@ var $author$project$Pages$Home$logout_button = A2(
 			$elm$html$Html$span,
 			_List_Nil,
 			_List_fromArray(
-				[$author$project$Pages$Home$logout_icon])),
+				[$author$project$Icons$logout_icon])),
 			A2(
 			$elm$html$Html$span,
 			_List_Nil,
@@ -7622,7 +7625,7 @@ var $author$project$Pages$Home$logout_button = A2(
 					$elm$html$Html$text('logout')
 				]))
 		]));
-var $author$project$Pages$Home$loggedin_page = function (model) {
+var $author$project$Pages$Dashboard$dashboard_view = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -7636,7 +7639,7 @@ var $author$project$Pages$Home$loggedin_page = function (model) {
 						$elm$html$Html$Attributes$class('flex justify-end items-center space-x-3 mt-2 px-3')
 					]),
 				_List_fromArray(
-					[$author$project$Pages$Home$create_history_record_button, $author$project$Pages$Home$logout_button])),
+					[$author$project$Pages$Dashboard$create_history_record_button, $author$project$Pages$Dashboard$logout_button])),
 				function () {
 				var _v0 = model.N;
 				if (_v0.$ === 1) {
@@ -7648,7 +7651,7 @@ var $author$project$Pages$Home$loggedin_page = function (model) {
 						return $elm$html$Html$text('Books do not exist');
 					} else {
 						var books = _v1.a;
-						return A2($author$project$Pages$Home$display_reading_history, books, read_hist);
+						return A2($author$project$Pages$Dashboard$display_reading_history, books, read_hist);
 					}
 				}
 			}()
@@ -7707,7 +7710,7 @@ var $author$project$Pages$Home$progres_bar = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											A2($myrho$elm_round$Round$round, 1, percentage) + '%      ')
+											A2($myrho$elm_round$Round$round, 1, percentage) + '%')
 										]))
 								]))
 						])),
@@ -7777,21 +7780,50 @@ var $author$project$Pages$Home$book_view = function (prog_book) {
 };
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $author$project$Msg$ToggleLogin = {$: 4};
+var $author$project$Icons$login_icon = function (cls) {
+	return A2(
+		$elm$svg$Svg$svg,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$class(cls),
+				$elm$svg$Svg$Attributes$fill('none'),
+				A2($elm$html$Html$Attributes$attribute, 'stroke', 'currentColor'),
+				$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+				A2($elm$html$Html$Attributes$attribute, 'xmlns', 'http://www.w3.org/2000/svg')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$path,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$d('M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1'),
+						A2($elm$html$Html$Attributes$attribute, 'stroke-linecap', 'round'),
+						A2($elm$html$Html$Attributes$attribute, 'stroke-linejoin', 'round'),
+						A2($elm$html$Html$Attributes$attribute, 'stroke-width', '2')
+					]),
+				_List_Nil)
+			]));
+};
 var $author$project$Pages$Home$login_button = A2(
-	$elm$html$Html$div,
+	$elm$html$Html$button,
 	_List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('fixed z-10 top-0 right-0 mt-2 mr-2')
+			$elm$html$Html$Events$onClick($author$project$Msg$ToggleLogin),
+			$elm$html$Html$Attributes$class('inline-flex items-center space-x-2 text-lg justify-between bg-white text-gray-900 px-3 py-2 rounded-lg')
 		]),
 	_List_fromArray(
 		[
 			A2(
-			$elm$html$Html$button,
+			$elm$html$Html$span,
+			_List_Nil,
 			_List_fromArray(
 				[
-					$elm$html$Html$Events$onClick($author$project$Msg$ToggleLogin),
-					$elm$html$Html$Attributes$class('bg-white text-gray-900 px-3 py-2 text-sm rounded-lg')
-				]),
+					$author$project$Icons$login_icon('w-5 h-5')
+				])),
+			A2(
+			$elm$html$Html$span,
+			_List_Nil,
 			_List_fromArray(
 				[
 					$elm$html$Html$text('login')
@@ -7804,33 +7836,13 @@ var $author$project$Msg$UpdatePassword = function (a) {
 var $author$project$Msg$UpdateUserName = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Forms$login_icon = A2(
-	$elm$svg$Svg$svg,
-	_List_fromArray(
-		[
-			$elm$svg$Svg$Attributes$class('w-6 h-6'),
-			$elm$svg$Svg$Attributes$fill('none'),
-			A2($elm$html$Html$Attributes$attribute, 'stroke', 'currentColor'),
-			$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
-			A2($elm$html$Html$Attributes$attribute, 'xmlns', 'http://www.w3.org/2000/svg')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$elm$svg$Svg$path,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$d('M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1'),
-					A2($elm$html$Html$Attributes$attribute, 'stroke-linecap', 'round'),
-					A2($elm$html$Html$Attributes$attribute, 'stroke-linejoin', 'round'),
-					A2($elm$html$Html$Attributes$attribute, 'stroke-width', '2')
-				]),
-			_List_Nil)
-		]));
 var $author$project$Forms$login_form_view = function (login_form) {
 	return A2(
 		$elm$html$Html$div,
-		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('text-white')
+			]),
 		_List_fromArray(
 			[
 				A2(
@@ -7969,7 +7981,9 @@ var $author$project$Forms$login_form_view = function (login_form) {
 												$elm$html$Html$span,
 												_List_Nil,
 												_List_fromArray(
-													[$author$project$Forms$login_icon])),
+													[
+														$author$project$Icons$login_icon('w-6 h-6')
+													])),
 												A2(
 												$elm$html$Html$span,
 												_List_Nil,
@@ -7983,7 +7997,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 					]))
 			]));
 };
-var $author$project$Pages$Home$not_loggedin_page = function (model) {
+var $author$project$Pages$Home$home_view = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -7997,7 +8011,7 @@ var $author$project$Pages$Home$not_loggedin_page = function (model) {
 				$elm$html$Html$h1,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('text-2xl font-bold tracking-wide text-center')
+						$elm$html$Html$Attributes$class('text-3xl font-bold tracking-wide text-center text-white')
 					]),
 				_List_fromArray(
 					[
@@ -8007,7 +8021,7 @@ var $author$project$Pages$Home$not_loggedin_page = function (model) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('grid grid-flow-row grid-cols-1 sm:grid-cols-2 sm:gap-x-4 gap-y-4 mx-auto max-w-4xl')
+						$elm$html$Html$Attributes$class('grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif')
 					]),
 				A2($elm$core$List$map, $author$project$Pages$Home$book_view, model.bh))
 			]));
@@ -8017,16 +8031,16 @@ var $author$project$Main$view = function (model) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('bg-gray-800 text-white')
+				$elm$html$Html$Attributes$class('px-2 font-sans')
 			]),
 		_List_fromArray(
 			[
 				function () {
 				var _v0 = model.J;
 				if (_v0.$ === 1) {
-					return $author$project$Pages$Home$not_loggedin_page(model);
+					return $author$project$Pages$Home$home_view(model);
 				} else {
-					return $author$project$Pages$Home$loggedin_page(model);
+					return $author$project$Pages$Dashboard$dashboard_view(model);
 				}
 			}()
 			]));
