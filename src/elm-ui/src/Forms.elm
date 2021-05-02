@@ -125,6 +125,7 @@ login_form_view login_form =
                 , input [id "username"
                         , type_ "text"
                         , placeholder "Username"
+                        , attribute "autfocus" "true"
                         , value login_form.username
                         , onInput UpdateUserName
                         , class "w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800"
