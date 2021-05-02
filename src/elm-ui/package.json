@@ -4,9 +4,7 @@
   "description": "",
   "main": "elm.js",
   "scripts": {
-    "build:tailwind": "tailwindcss build styles.css -o tailwind.css",     
-    "build:tailwind_prod": "tailwindcss build styles.css -o tailwind_prod.css"
-
+    "build:tailwind": "tailwindcss build styles.css -o tailwind.css"
   },
   "author": "",
   "license": "ISC",

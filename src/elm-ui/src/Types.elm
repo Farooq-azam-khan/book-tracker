@@ -24,6 +24,13 @@ type alias CreateHistory =
     }
 
 
+-- TODO: login error fields 
+-- type alias LoginError = 
+--     { msg   : String 
+--     , type_ : String 
+--     , loc   : List String 
+--     }
+
 type alias BookProgress = 
     { book : Book 
     , read_before : Int 
