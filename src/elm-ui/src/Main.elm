@@ -13,8 +13,8 @@ import Types exposing (..)
 import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest)
 import Ports exposing (storeToken, deleteToken)
 import Html.Attributes exposing (class)
-import Pages.Home exposing (loggedin_page, not_loggedin_page)
-
+import Pages.Home exposing (home_view)
+import Pages.Dashboard exposing (dashboard_view)
 
 
 main: Program Flags Model Msg
@@ -187,7 +187,8 @@ view model =
     div [class "bg-gray-800 text-white"] [
     case model.token of 
         Nothing -> 
-            not_loggedin_page model 
+            home_view model 
         Just _ ->
-            loggedin_page model 
+            dashboard_view model 
+            -- loggedin_page model 
     ]
