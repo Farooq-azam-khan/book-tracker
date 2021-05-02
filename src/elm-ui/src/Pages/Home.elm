@@ -16,7 +16,7 @@ login_button :  Html Msg
 login_button  = 
     button 
         [ onClick ToggleLogin
-        , class "inline-flex items-center space-x-2 text-lg justify-between bg-white text-gray-900 px-3 py-2 rounded-lg"
+        , class "inline-flex items-center space-x-2 text-lg justify-between bg-indigo-100 text-indigo-900 font-semibold px-3 py-2 rounded-lg"
         ] 
         [ span [] [login_icon "w-5 h-5"]
         , span [] [text "login"]
@@ -32,10 +32,10 @@ home_view model =
             [ div [ class "flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t" ]
                 [ h3 [ class "text-indigo-500 text-xl font-semibold" ]
                     [ text "Recently Read Books" ]
-                
                 ]
             , div [ class "relative p-6 flex-auto text-gray-800" ]
-                [ p [ class "my-3 text-md leading-relaxed" ]
+                [ if model.show_login then login_form_view model.login_form  else login_button
+                , p [ class "my-3 text-md leading-relaxed" ]
                     [ text "Currently I do not have any progress to share about the books I am reading"] -- Here is a list of books I have read recently." ]
                 , case model.books of 
                     Nothing -> 
