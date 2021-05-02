@@ -7779,6 +7779,7 @@ var $author$project$Pages$Home$book_view = function (prog_book) {
 			]));
 };
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$li = _VirtualDom_node('li');
 var $author$project$Msg$ToggleLogin = {$: 4};
 var $author$project$Icons$login_icon = function (cls) {
 	return A2(
@@ -7810,7 +7811,7 @@ var $author$project$Pages$Home$login_button = A2(
 	_List_fromArray(
 		[
 			$elm$html$Html$Events$onClick($author$project$Msg$ToggleLogin),
-			$elm$html$Html$Attributes$class('inline-flex items-center space-x-2 text-lg justify-between bg-white text-gray-900 px-3 py-2 rounded-lg')
+			$elm$html$Html$Attributes$class('inline-flex items-center space-x-2 text-lg justify-between bg-indigo-100 text-indigo-900 font-semibold px-3 py-2 rounded-lg')
 		]),
 	_List_fromArray(
 		[
@@ -7856,7 +7857,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('mx-auto flex items-center justify-center fixed inset-0 z-30')
+						$elm$html$Html$Attributes$class('mx-auto flex items-center justify-center fixed inset-0 z-30 w-screen px-10')
 					]),
 				_List_fromArray(
 					[
@@ -7864,7 +7865,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('bg-gray-700 rounded-lg shadow-md')
+								$elm$html$Html$Attributes$class('bg-gray-700 rounded-lg shadow-md w-full')
 							]),
 						_List_fromArray(
 							[
@@ -7872,7 +7873,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('flex items-center rounded-t-lg  justify-between bg-gray-900 px-2 py-2 ')
+										$elm$html$Html$Attributes$class('flex items-center rounded-t-lg  justify-between bg-gray-900 px-4 py-4')
 									]),
 								_List_fromArray(
 									[
@@ -7902,7 +7903,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Events$onSubmit($author$project$Msg$LoginAction),
-										$elm$html$Html$Attributes$class('flex flex-col items-start space-y-3 px-3 py-3')
+										$elm$html$Html$Attributes$class('flex flex-col items-start space-y-3 px-4 py-4')
 									]),
 								_List_fromArray(
 									[
@@ -7910,7 +7911,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 										$elm$html$Html$div,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('flex flex-col items-start justify-between space-y-1')
+												$elm$html$Html$Attributes$class('flex flex-col items-start justify-between space-y-3 w-full')
 											]),
 										_List_fromArray(
 											[
@@ -7931,9 +7932,10 @@ var $author$project$Forms$login_form_view = function (login_form) {
 														$elm$html$Html$Attributes$id('username'),
 														$elm$html$Html$Attributes$type_('text'),
 														$elm$html$Html$Attributes$placeholder('Username'),
+														A2($elm$html$Html$Attributes$attribute, 'autfocus', 'true'),
 														$elm$html$Html$Attributes$value(login_form.bt),
 														$elm$html$Html$Events$onInput($author$project$Msg$UpdateUserName),
-														$elm$html$Html$Attributes$class('w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800')
+														$elm$html$Html$Attributes$class('px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full')
 													]),
 												_List_Nil)
 											])),
@@ -7941,7 +7943,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 										$elm$html$Html$div,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('flex flex-col items-start justify-between space-y-1')
+												$elm$html$Html$Attributes$class('flex flex-col items-start justify-between space-y-3 w-full')
 											]),
 										_List_fromArray(
 											[
@@ -7964,32 +7966,41 @@ var $author$project$Forms$login_form_view = function (login_form) {
 														$elm$html$Html$Attributes$placeholder('Password'),
 														$elm$html$Html$Attributes$value(login_form.be),
 														$elm$html$Html$Events$onInput($author$project$Msg$UpdatePassword),
-														$elm$html$Html$Attributes$class('w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800')
+														$elm$html$Html$Attributes$class('px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full')
 													]),
 												_List_Nil)
 											])),
 										A2(
-										$elm$html$Html$button,
+										$elm$html$Html$div,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('focus:ring-2 inline-block ml-auto flex items-center justify-between px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg'),
-												$elm$html$Html$Attributes$type_('submit')
+												$elm$html$Html$Attributes$class('w-full')
 											]),
 										_List_fromArray(
 											[
 												A2(
-												$elm$html$Html$span,
-												_List_Nil,
+												$elm$html$Html$button,
 												_List_fromArray(
 													[
-														$author$project$Icons$login_icon('w-6 h-6')
-													])),
-												A2(
-												$elm$html$Html$span,
-												_List_Nil,
+														$elm$html$Html$Attributes$class('mt-4 flex items-center justify-between focus:ring-2 inline-block ml-auto  px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg'),
+														$elm$html$Html$Attributes$type_('submit')
+													]),
 												_List_fromArray(
 													[
-														$elm$html$Html$text('Login')
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$author$project$Icons$login_icon('w-6 h-6')
+															])),
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Login')
+															]))
 													]))
 											]))
 									]))
@@ -7997,12 +8008,249 @@ var $author$project$Forms$login_form_view = function (login_form) {
 					]))
 			]));
 };
+var $elm$html$Html$ol = _VirtualDom_node('ol');
+var $elm$core$List$takeReverse = F3(
+	function (n, list, kept) {
+		takeReverse:
+		while (true) {
+			if (n <= 0) {
+				return kept;
+			} else {
+				if (!list.b) {
+					return kept;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs,
+						$temp$kept = A2($elm$core$List$cons, x, kept);
+					n = $temp$n;
+					list = $temp$list;
+					kept = $temp$kept;
+					continue takeReverse;
+				}
+			}
+		}
+	});
+var $elm$core$List$takeTailRec = F2(
+	function (n, list) {
+		return $elm$core$List$reverse(
+			A3($elm$core$List$takeReverse, n, list, _List_Nil));
+	});
+var $elm$core$List$takeFast = F3(
+	function (ctr, n, list) {
+		if (n <= 0) {
+			return _List_Nil;
+		} else {
+			var _v0 = _Utils_Tuple2(n, list);
+			_v0$1:
+			while (true) {
+				_v0$5:
+				while (true) {
+					if (!_v0.b.b) {
+						return list;
+					} else {
+						if (_v0.b.b.b) {
+							switch (_v0.a) {
+								case 1:
+									break _v0$1;
+								case 2:
+									var _v2 = _v0.b;
+									var x = _v2.a;
+									var _v3 = _v2.b;
+									var y = _v3.a;
+									return _List_fromArray(
+										[x, y]);
+								case 3:
+									if (_v0.b.b.b.b) {
+										var _v4 = _v0.b;
+										var x = _v4.a;
+										var _v5 = _v4.b;
+										var y = _v5.a;
+										var _v6 = _v5.b;
+										var z = _v6.a;
+										return _List_fromArray(
+											[x, y, z]);
+									} else {
+										break _v0$5;
+									}
+								default:
+									if (_v0.b.b.b.b && _v0.b.b.b.b.b) {
+										var _v7 = _v0.b;
+										var x = _v7.a;
+										var _v8 = _v7.b;
+										var y = _v8.a;
+										var _v9 = _v8.b;
+										var z = _v9.a;
+										var _v10 = _v9.b;
+										var w = _v10.a;
+										var tl = _v10.b;
+										return (ctr > 1000) ? A2(
+											$elm$core$List$cons,
+											x,
+											A2(
+												$elm$core$List$cons,
+												y,
+												A2(
+													$elm$core$List$cons,
+													z,
+													A2(
+														$elm$core$List$cons,
+														w,
+														A2($elm$core$List$takeTailRec, n - 4, tl))))) : A2(
+											$elm$core$List$cons,
+											x,
+											A2(
+												$elm$core$List$cons,
+												y,
+												A2(
+													$elm$core$List$cons,
+													z,
+													A2(
+														$elm$core$List$cons,
+														w,
+														A3($elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
+									} else {
+										break _v0$5;
+									}
+							}
+						} else {
+							if (_v0.a === 1) {
+								break _v0$1;
+							} else {
+								break _v0$5;
+							}
+						}
+					}
+				}
+				return list;
+			}
+			var _v1 = _v0.b;
+			var x = _v1.a;
+			return _List_fromArray(
+				[x]);
+		}
+	});
+var $elm$core$List$take = F2(
+	function (n, list) {
+		return A3($elm$core$List$takeFast, 0, n, list);
+	});
 var $author$project$Pages$Home$home_view = function (model) {
-	return A2(
+	return (!$elm$core$List$length(model.bh)) ? A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('space-y-3')
+				$elm$html$Html$Attributes$class('px-3 overflow-x-hidden overflow-y-auto justify-center items-center')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('relative w-auto my-6 mx-auto max-w-3xl')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$h3,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-indigo-500 text-xl font-semibold')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Recently Read Books')
+											]))
+									])),
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('relative p-6 flex-auto text-gray-800')
+									]),
+								_List_fromArray(
+									[
+										model.U ? $author$project$Forms$login_form_view(model.B) : $author$project$Pages$Home$login_button,
+										A2(
+										$elm$html$Html$p,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('my-3 text-md leading-relaxed')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Currently I do not have any progress to share about the books I am reading')
+											])),
+										function () {
+										var _v0 = model.aZ;
+										if (_v0.$ === 1) {
+											return $elm$html$Html$text('');
+										} else {
+											var books = _v0.a;
+											return A2(
+												$elm$html$Html$div,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$p,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Below are a list of books I have read recently.')
+															])),
+														A2(
+														$elm$html$Html$ol,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class('list-disc text-indigo-500')
+															]),
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$li,
+																_List_Nil,
+																A2(
+																	$elm$core$List$map,
+																	function (book) {
+																		return A2(
+																			$elm$html$Html$li,
+																			_List_Nil,
+																			_List_fromArray(
+																				[
+																					$elm$html$Html$text(book.a9)
+																				]));
+																	},
+																	A2($elm$core$List$take, 5, books)))
+															]))
+													]));
+										}
+									}()
+									]))
+							]))
+					]))
+			])) : A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('space-y-4')
 			]),
 		_List_fromArray(
 			[
