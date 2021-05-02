@@ -54,7 +54,7 @@ async def a_book_progress(book_id: int):
         
 
     ret['page_progress'] = min(1, ret['page_progress'] / ret['book']['total_pages'])
-    ret['chapter_progress'] = min(1, ret['page_progress'] / ret['book']['total_chapters'])
+    ret['chapter_progress'] = min(1, ret['chapter_progress'] / ret['book']['total_chapters'])
 
     return ret
 
