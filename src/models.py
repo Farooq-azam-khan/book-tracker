@@ -140,6 +140,8 @@ book_franchise_table = sqlalchemy.Table(
 )
 
 
+# TODO: add column `descritpion`
+
 
 book_table = sqlalchemy.Table(
     'book',
