@@ -961,12 +961,20 @@ select {
   margin-bottom: 3rem;
 }
 
+.mr-auto {
+  margin-right: auto;
+}
+
 .ml-auto {
   margin-left: auto;
 }
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .max-w-xl {

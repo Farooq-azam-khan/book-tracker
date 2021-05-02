@@ -7865,7 +7865,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('bg-gray-700 rounded-lg shadow-md w-full')
+								$elm$html$Html$Attributes$class('bg-gray-700 rounded-lg shadow-md w-full max-w-lg')
 							]),
 						_List_fromArray(
 							[
@@ -7903,7 +7903,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Events$onSubmit($author$project$Msg$LoginAction),
-										$elm$html$Html$Attributes$class('flex flex-col items-start space-y-3 px-4 py-4')
+										$elm$html$Html$Attributes$class('flex flex-col items-start space-y-3 px-4 py-4 w-full max-w-lg')
 									]),
 								_List_fromArray(
 									[
@@ -7982,7 +7982,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 												$elm$html$Html$button,
 												_List_fromArray(
 													[
-														$elm$html$Html$Attributes$class('mt-4 flex items-center justify-between focus:ring-2 inline-block ml-auto  px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg'),
+														$elm$html$Html$Attributes$class('mt-4 flex items-center justify-between focus:ring-2 inline-block mr-auto  px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg'),
 														$elm$html$Html$Attributes$type_('submit')
 													]),
 												_List_fromArray(

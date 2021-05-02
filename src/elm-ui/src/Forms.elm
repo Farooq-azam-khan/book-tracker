@@ -107,7 +107,7 @@ login_form_view login_form =
     div [class "text-white"]
         [ div [class "fixed z-20 inset-0 bg-black opacity-50"] []
         , div [ class "mx-auto flex items-center justify-center fixed inset-0 z-30 w-screen px-10"]
-        [ div [class "bg-gray-700 rounded-lg shadow-md w-full"] 
+        [ div [class "bg-gray-700 rounded-lg shadow-md w-full max-w-lg"] 
         [ div 
             [class "flex items-center rounded-t-lg  justify-between bg-gray-900 px-4 py-4"] 
             [ h2 [class "text-md tracking-wider font-semibold"] [text "Login"]
@@ -118,7 +118,9 @@ login_form_view login_form =
                     ] [x_icon]
             ]
         , form 
-            [onSubmit LoginAction, class "flex flex-col items-start space-y-3 px-4 py-4"] 
+            [onSubmit LoginAction
+            , class "flex flex-col items-start space-y-3 px-4 py-4 w-full max-w-lg"
+            ] 
             [ div 
                 [class "flex flex-col items-start justify-between space-y-3 w-full"] 
                 [label [for "username"] [text "Username"]
@@ -147,7 +149,7 @@ login_form_view login_form =
             , div 
                 [class "w-full"]
                 [ button 
-                    [class "mt-4 flex items-center justify-between focus:ring-2 inline-block ml-auto  px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg"
+                    [class "mt-4 flex items-center justify-between focus:ring-2 inline-block mr-auto  px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg"
                     , type_ "submit"
                     ] 
                     [ span [] [login_icon "w-6 h-6"]
