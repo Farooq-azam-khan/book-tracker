@@ -4,7 +4,7 @@ import Msg exposing (..)
 import Types exposing (..)
 import Html exposing (Html, button, div, text, input, form, 
                     label, h1, ol, li, select, option, strong, span, h2, h3, p,
-                    table, i, tbody, thead, td, th, tr)
+                    table, i, tbody, thead, td, th, tr, ol, li)
 import Html.Events exposing (onInput, onSubmit, onClick)
 import Html.Attributes exposing(attribute, class)
 import Round as R
@@ -24,14 +24,42 @@ login_button  =
 
 home_view : Model -> Html Msg 
 home_view model = 
-    div [class "space-y-3"] 
+    if List.length model.reading_list == 0 
+    then
+    div [ class "px-3 overflow-x-hidden overflow-y-auto justify-center items-center"]
+    [ div [ class "relative w-auto my-6 mx-auto max-w-3xl" ]
+        [ div [ class "border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" ]
+            [ div [ class "flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t" ]
+                [ h3 [ class "text-indigo-500 text-xl font-semibold" ]
+                    [ text "Recently Read Books" ]
+                
+                ]
+            , div [ class "relative p-6 flex-auto text-gray-800" ]
+                [ p [ class "my-3 text-md leading-relaxed" ]
+                    [ text "Currently I do not have any progress to share about the books I am reading"] -- Here is a list of books I have read recently." ]
+                , case model.books of 
+                    Nothing -> 
+                        text ""
+                    Just books -> 
+                        div [] 
+                            [ p [] [text "Below are a list of books I have read recently."]
+                            , ol [class "list-disc text-indigo-500"] [li [] (List.map (\book -> li [] [text book.name]) <| List.take 5 books)]
+                            ]
+                ]
+            
+            ]
+        ]
+        
+    ] 
+    else 
+    div [class "space-y-4"] 
         [ if model.show_login then login_form_view model.login_form  else login_button
         , h1 [class "text-3xl font-bold tracking-wide text-center text-white"] [text "Books I am Reading"]
-        , div 
-            [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
-            ] 
-            (List.map book_view model.reading_list) 
+        ,  div  [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
+                ] 
+                (List.map book_view model.reading_list) 
         ]
+    
 
 progres_bar : String -> Float -> Html Msg 
 progres_bar prog_type percentage = 
