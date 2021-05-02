@@ -44,7 +44,7 @@ dashboard_view model =
 
 display_reading_history : List Book -> List History -> Html Msg 
 display_reading_history books reading_history = 
-    div [ class "text-gray-900 flex flex-wrap mt-4 max-w-xl mx-auto" ]
+    div [ class "font-serif text-gray-900 flex flex-wrap mt-4 max-w-xl mx-auto" ]
         [ div [ class "w-full xl:w-8/12 mb-12 xl:mb-0 px-4" ]
             [ div [ class "relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded" ]
                 [ div [ class "rounded-t mb-0 px-4 py-3 border-0" ]
@@ -54,7 +54,7 @@ display_reading_history books reading_history =
                                 [ text "History" ]
                             ]
                         , div [ class "relative w-full px-4 max-w-full flex-grow flex-1 text-right" ]
-                            [ button [ class "cursor-not-allowed bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1", attribute "style" "transition:all .15s ease", type_ "button", attribute "diabled" "disabled" ]
+                            [ button [ class "font-sans cursor-not-allowed bg-indigo-500 text-gray-300 active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1", attribute "style" "transition:all .15s ease", type_ "button", attribute "diabled" "disabled" ]
                                 [ text "See all" ]
                             ]
                         ]
