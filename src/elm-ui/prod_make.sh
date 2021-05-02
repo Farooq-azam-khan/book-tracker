@@ -1,4 +1,6 @@
 # enable ts.config.js to purge
+# TODO: could potentially have different files for tailwind as well (much like elm_prod.js and elm.js)
+# that way, i will only need to change the index.html file and build for production 
 
 echo "Creating purgedcss file"
 sed -i "s/enabled: false/enabled: true/g" tailwind.config.js
@@ -8,8 +10,5 @@ npm run build:tailwind
 echo "Making optimized elm for production"
 elm make src/Main.elm --output=elm_prod.js --optimize
 
-# undo purge of tailwind css
-# echo "Updating tailwind css to be un-purged"
-# sed -i "s/enabled: true/enabled: false/g" tailwind.config.js
-# # build after undoing purge
-# npm run build:tailwind
+# replace elm.js in index.html with elm_prod.js
+sed -i  "s/path='elm.js'/path='elm_prod.js'/g" index.html
