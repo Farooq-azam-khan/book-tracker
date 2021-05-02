@@ -1,6 +1,13 @@
 # Book Tracking
 
 ## TODOS
+* [ ] make it into a PWA
+    * [ ] A2HS
+        * [ ] need HTTPS 
+        * [ ] need `manifest.json`
+        * [ ] need icon for homescreen 
+        * [ ] service workers registered
+
 * [ ] integrate tailwindcss (experiment with gradient) (priority: 1)
     * [ ] better form input needed for record creation (          ^)
 * [ ] delete routes for (book / hisotry / genre / franchise (in that order))
