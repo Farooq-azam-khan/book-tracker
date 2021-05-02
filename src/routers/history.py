@@ -14,6 +14,7 @@ async def get_history(current_user=Depends(get_current_user)):
 
 @router.post('/')
 async def get_history(create_history: CreateHistory, current_user=Depends(get_current_user)):
+    # make sure the page_mark and chapter_mark are bigger than previous entry for that book 
     query = history_table.insert().values(book=create_history.book, 
                                 page_mark=create_history.page_mark, 
                                 chapter_mark=create_history.chapter_mark, 
