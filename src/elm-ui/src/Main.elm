@@ -184,7 +184,7 @@ log_user_out model = ({model | token = Nothing, reading_history = Nothing}, dele
 
 view : Model -> Html Msg 
 view model = 
-    div [class "bg-gray-800 text-white"] [
+    div [class "px-2 font-sans"] [
     case model.token of 
         Nothing -> 
             home_view model 

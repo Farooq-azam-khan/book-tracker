@@ -10,23 +10,27 @@ import Html.Attributes exposing(attribute, class)
 import Round as R
 
 import Forms exposing (login_form_view)
+import Icons exposing (..)
 
-
-login_button : Html Msg 
-login_button = 
-    div 
-        [class "fixed z-10 top-0 right-0 mt-2 mr-2"] 
-        [ button 
-            [onClick ToggleLogin, class "bg-white text-gray-900 px-3 py-2 text-sm rounded-lg"] 
-            [text "login"]
+login_button :  Html Msg 
+login_button  = 
+    button 
+        [ onClick ToggleLogin
+        , class "inline-flex items-center space-x-2 text-lg justify-between bg-white text-gray-900 px-3 py-2 rounded-lg"
+        ] 
+        [ span [] [login_icon "w-5 h-5"]
+        , span [] [text "login"]
         ]
 
 home_view : Model -> Html Msg 
 home_view model = 
     div [class "space-y-3"] 
-        [ (if model.show_login then login_form_view model.login_form  else login_button)
-        , h1 [class "text-2xl font-bold tracking-wide text-center"] [text "Books I am Reading"]
-        , div [class "grid grid-flow-row grid-cols-1 sm:grid-cols-2 sm:gap-x-4 gap-y-4 mx-auto max-w-4xl"] (List.map book_view model.reading_list) 
+        [ if model.show_login then login_form_view model.login_form  else login_button
+        , h1 [class "text-3xl font-bold tracking-wide text-center text-white"] [text "Books I am Reading"]
+        , div 
+            [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
+            ] 
+            (List.map book_view model.reading_list) 
         ]
 
 progres_bar : String -> Float -> Html Msg 
@@ -40,7 +44,7 @@ progres_bar prog_type percentage =
                 ]
             , div [ class "text-right" ]
                 [ span [ class "text-xs font-semibold inline-block text-indigo-700" ]
-                    [ text ((R.round 1 percentage) ++ "%      ") ]
+                    [ text ((R.round 1 percentage) ++ "%") ]
                 ]
             ]
         , div 
@@ -66,9 +70,4 @@ book_view prog_book =
             ]
         ]
         
-
-view_book : Book -> Html Msg 
-view_book book = li [] [text book.name]
-
-
 

@@ -5,7 +5,7 @@ import Html.Attributes exposing (attribute, type_, value, placeholder, id, for, 
 import Html.Events exposing (onSubmit, onClick, onInput)
 import Svg exposing (svg, path)
 import Svg.Attributes as SA exposing (d, fill, viewBox)
-
+import Icons exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
 
@@ -17,7 +17,7 @@ create_record_form maybe_books history_form =
             text "sorry, you cannot add records at this moment. books are not loaded"
         Just book_list ->
             div 
-                []
+                [class "text-white"]
                 [ div [class "fixed z-20 inset-0 bg-black opacity-50"] [] 
                 , div 
                     [ class "mx-auto flex items-center justify-center fixed inset-0 z-30"]
@@ -100,14 +100,11 @@ x_icon =
         []
     ]
 
-login_icon = 
-    svg [ SA.class "w-6 h-6", fill "none", attribute "stroke" "currentColor", viewBox "0 0 24 24", attribute "xmlns" "http://www.w3.org/2000/svg" ]
-    [ path [ d "M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1", attribute "stroke-linecap" "round", attribute "stroke-linejoin" "round", attribute "stroke-width" "2" ]
-        []
-    ]
+
+
 login_form_view : LoginForm -> Html Msg 
 login_form_view login_form = 
-    div []
+    div [class "text-white"]
         [ div [class "fixed z-20 inset-0 bg-black opacity-50"] []
         , div [ class "mx-auto flex items-center justify-center fixed inset-0 z-30"]
         [ div [class "bg-gray-700 rounded-lg shadow-md"] 
@@ -148,7 +145,7 @@ login_form_view login_form =
             
             , button 
                 [class "focus:ring-2 inline-block ml-auto flex items-center justify-between px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg", type_ "submit"] 
-                [ span [] [login_icon]
+                [ span [] [login_icon "w-6 h-6"]
                 , span [] [text "Login"]
                 ]
             ]
