@@ -19,6 +19,7 @@ type alias History =
     , page_mark : Int
     , chapter_mark : Int
     , read_at : Maybe String --Maybe Time.Posix
+    --, id : Int 
     }
 
 type alias CreateHistory = 

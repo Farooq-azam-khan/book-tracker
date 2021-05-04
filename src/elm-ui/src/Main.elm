@@ -60,10 +60,10 @@ update msg model =
                     (model, Cmd.none)
         
         CreateHistoryRecord -> 
-            -- case model.token of 
-            --     Just token -> 
-            --         (model, sendHistoryRecord token model.history_record_form)
-            --     Nothing -> 
+            case model.user of 
+                LoggedIn token user_alias -> 
+                    (model, sendHistoryRecord token user_alias.history_record_form)
+                _ -> 
                     (model, Cmd.none)
         
 
@@ -77,18 +77,18 @@ update msg model =
 
         UpdateHistoryFormBook (Just val) -> 
             -- (model, Cmd.none)
-            let
-                new_user = case model.user of 
-                                LoggedIn token user_alias -> 
-                                    let 
-                                        old_hist = user_alias.history_record_form
-                                        new_hist = {old_hist | book = val}
-                                    in 
-                                    LoggedIn token ({user_alias | history_record_form = new_hist})
-                                _ -> model.user 
-            in
-                ({model | user = new_user }, Cmd.none)
-
+            -- let
+            --     new_user = case model.user of 
+            --                     LoggedIn token user_alias -> 
+            --                         let 
+            --                             old_hist = user_alias.history_record_form
+            --                             new_hist = {old_hist | book = val}
+            --                         in 
+            --                         LoggedIn token ({user_alias | history_record_form = new_hist})
+            --                     _ -> model.user 
+            -- in
+            --     ({model | user = new_user }, Cmd.none)
+            ({model | user = update_history_record_form model.user (BookField val)}, Cmd.none) 
         UpdateHistoryPageMark Nothing -> 
             (model, Cmd.none)
             -- let
@@ -98,11 +98,7 @@ update msg model =
             --     ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryPageMark (Just val) -> 
-            (model, Cmd.none)
-            -- let
-            --     new_hist = CreateHistory (model.history_record_form.book) val (model.history_record_form.chapter_mark)
-            -- in
-            --     ({model | history_record_form = new_hist }, Cmd.none)
+            ({model | user = update_history_record_form model.user (PageMarkField val)}, Cmd.none) 
 
         UpdateHistoryChapterMark Nothing -> 
             (model, Cmd.none)
@@ -112,7 +108,8 @@ update msg model =
             --     ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryChapterMark (Just val) ->
-            (model, Cmd.none)
+            -- (model, Cmd.none)
+            ({model | user = update_history_record_form model.user (ChapterMarkField val)}, Cmd.none) 
             -- let
             --     new_hist = CreateHistory (model.history_record_form.book) (model.history_record_form.page_mark) val
             -- in
@@ -175,18 +172,7 @@ update msg model =
                 ({model | user = new_user }, Cmd.none)
         
         ToggleCreateRecord -> 
-            let 
-                new_user = case model.user of 
-                            LoggedIn token user_alias -> 
-                                let
-                                    old_rec = user_alias.history_record_form
-                                    
-                                    new_hist_rec = { old_rec | show_form = not old_rec.show_form}
-                                in 
-                                LoggedIn token ({user_alias | history_record_form = new_hist_rec})
-                            _ -> model.user 
-            in 
-                ({model | user = new_user}, Cmd.none)
+            ({model | user = update_history_record_form model.user ShowHistForm}, Cmd.none)
         
         -- WasHistoryRecodedSuccessful (Err (Http.BadStatus 401)) -> 
         --         log_user_out model
@@ -196,7 +182,8 @@ update msg model =
 
         WasHistoryRecodedSuccessful (Ok response) -> 
             let 
-                new_user = case model.user of 
+                nu1 = update_history_record_form model.user ShowHistForm
+                new_user = case nu1 of 
                             LoggedIn token user_alias -> 
                                 let 
                                     updated_rh = case user_alias.reading_history of 
@@ -210,31 +197,13 @@ update msg model =
                                 model.user 
             in 
                 ({model | user = new_user}, Cmd.none)
-            -- (model, Cmd.none)
-            -- let
-            --     -- _ = Debug.log "response after adding history" response 
-            --     new_model = {model | history_record_form = CreateHistory 0 0 0, show_create_record_form = False}
-            --     new_reading_list = case model.reading_history of 
-            --         Nothing -> 
-            --            Just response 
-            --         Just old_reading_history -> 
-            --             Just (List.append response old_reading_history)
-
-            -- in
-            --     ({new_model|reading_history=new_reading_list}, Cmd.none)
+      
         LogoutAction ->
             log_user_out model 
 
         StoreTokenAction -> 
             (model, Cmd.none)
-            -- case model.token of 
-            --     Nothing -> 
-            --         (model, Cmd.none)
-            --     Just (Token tkn_str) -> 
-            --         (model, storeToken tkn_str)
-        
-        -- GetActiveReadingList (Err (Http.BadStatus 401)) -> 
-        --     log_user_out model
+      
         
         GetActiveReadingList (Err e) -> 
             (model, Cmd.none)
@@ -244,6 +213,26 @@ update msg model =
 
         
 
+type HistoryFormFieldType = BookField Int | PageMarkField Int | ChapterMarkField Int | ShowHistForm
+update_history_record_form : UserAuthentication -> HistoryFormFieldType -> UserAuthentication
+update_history_record_form user field  = 
+    case user of 
+        LoggedIn token user_alias -> 
+            let    
+                old_hist = user_alias.history_record_form
+                new_hist = case field of 
+                    BookField val -> 
+                        {old_hist | book = val}
+                    PageMarkField val -> 
+                        {old_hist | page_mark = val}
+                    ChapterMarkField val -> 
+                        {old_hist | chapter_mark = val}
+                    ShowHistForm -> 
+                        {old_hist | show_form = (not old_hist.show_form)}
+            in
+                LoggedIn token ({user_alias | history_record_form = new_hist})
+
+        _ -> user 
 
 
 log_user_out : Model -> (Model, Cmd msg)

@@ -105,14 +105,29 @@ create_history_record_button =
 
 display_single_history :  List Book -> History  -> Html Msg 
 display_single_history books hist = 
+    
      case getBookById hist.book books of 
         Nothing -> 
             text ("Book with id " ++ String.fromInt hist.book ++ "does not exist.")
         Just book -> 
+            let
+                pct = (toFloat hist.page_mark / toFloat book.total_pages)*100
+                prog = if pct <= 1 then R.round 2 pct else R.round 0 pct 
+            in 
             tr 
                 []
                 [ th [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left" ]
-                    [ text book.name ]
+                    [ div 
+                        [class "flex flex-col md:flex-row items-start md:items-center space-y-1 md:space-x-3"] 
+                        [ div 
+                            [class "flex space-x-1"] 
+                            [ button [class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"] [trash_icon "w-4 h-4"]
+                            , button [class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"] [pencil_icon "w-4 h-4"]
+                            ]
+                        , span [] [text book.name]
+                        ]
+                    
+                    ]
                 , td [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" ]
                     [ text <| String.fromInt hist.page_mark ]
                 , td [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" ]
@@ -120,7 +135,7 @@ display_single_history books hist =
                 , td [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" ]
                     [ i [ class "fas fa-arrow-down text-orange-500 mr-4" ]
                         []
-                    , text <| (R.round 0 (100*toFloat hist.page_mark / toFloat book.total_pages)) ++ "%"
+                    , text <| prog ++ "%"
                     --, " ++ (R.round 0 (100*toFloat hist.chapter_mark / toFloat book.total_chapters)) ++ "%"
                     ]
                 ]
