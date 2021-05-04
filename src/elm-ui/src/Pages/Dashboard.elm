@@ -19,25 +19,28 @@ getBookById id books = List.head <| List.filter (\book -> book.id == id) books
 dashboard_view : Model -> Html Msg 
 dashboard_view model = 
     div [] 
-        [ if not model.show_create_record_form 
-            then text ""
-            else div [] [text "TODO"] -- create_record_form model.books model.history_record_form 
+        [ case model.user of 
+            LoggedIn _ user -> 
+                if not user.history_record_form.show_form 
+                    then text ""
+                    else create_record_form model.books user.history_record_form
+            _ -> text "" 
         , div 
             [class "flex justify-end items-center space-x-3 mt-2 px-3"] -- md:fixed md:z-10 md:top-0 md:right-0 md:mt-2 md:mr-2"] 
             [ create_history_record_button
             , logout_button
             ]
-        -- ,  case model.reading_history of 
-        --     Nothing -> 
-        --         -- TODO: loading icon
-        --         -- div [class "fixed inset-0"] [div [class "bg-black opacity-50"] [], div [class "animate-spin"] [minus_icon]]
-        --         text "loading.."
-        --     Just read_hist -> 
-        --         case model.books of 
-        --             Nothing -> 
-        --                 text "Books do not exist"
-        --             Just books -> 
-        --                 display_reading_history books read_hist
+        , case model.user of 
+            LoggedIn _ user_alias -> 
+                case user_alias.reading_history of 
+                    Nothing -> text ""
+                    Just read_hist -> 
+                        case model.books of 
+                            Nothing -> 
+                                text "books do not exist"
+                            Just books -> 
+                                display_reading_history books read_hist
+            _ -> text ""
         
         ]
 

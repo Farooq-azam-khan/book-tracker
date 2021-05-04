@@ -134,7 +134,7 @@ update msg model =
         
         LoginSuccessful (Ok response) -> 
             let
-                user_alias = { history_record_form = CreateHistory 0 0 0, reading_history = Nothing }
+                user_alias = { history_record_form = CreateHistory 0 0 0 False, reading_history = Nothing }
                 new_user = LoggedIn (Token response) user_alias 
                 commands = Cmd.batch [storeToken response, getReadingHistory (Token response)]
             in
@@ -168,7 +168,18 @@ update msg model =
                 ({model | user = new_user }, Cmd.none)
         
         ToggleCreateRecord -> 
-            ({model | show_create_record_form = not model.show_create_record_form}, Cmd.none)
+            let 
+                new_user = case model.user of 
+                            LoggedIn token user_alias -> 
+                                let
+                                    old_rec = user_alias.history_record_form
+                                    
+                                    new_hist_rec = { old_rec | show_form = not old_rec.show_form}
+                                in 
+                                LoggedIn token ({user_alias | history_record_form = new_hist_rec})
+                            _ -> model.user 
+            in 
+                ({model | user = new_user}, Cmd.none)
         
         -- WasHistoryRecodedSuccessful (Err (Http.BadStatus 401)) -> 
         --         log_user_out model
@@ -177,7 +188,22 @@ update msg model =
                 (model, Cmd.none) 
 
         WasHistoryRecodedSuccessful (Ok response) -> 
-            (model, Cmd.none)
+            let 
+                new_user = case model.user of 
+                            LoggedIn token user_alias -> 
+                                let 
+                                    updated_rh = case user_alias.reading_history of 
+                                        Nothing ->
+                                            Just [] 
+                                        Just lst -> 
+                                            Just <| List.append response lst 
+                                in 
+                                    LoggedIn token ({user_alias | reading_history = updated_rh})
+                            _ -> 
+                                model.user 
+            in 
+                ({model | user = new_user}, Cmd.none)
+            -- (model, Cmd.none)
             -- let
             --     -- _ = Debug.log "response after adding history" response 
             --     new_model = {model | history_record_form = CreateHistory 0 0 0, show_create_record_form = False}

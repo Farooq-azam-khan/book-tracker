@@ -25,6 +25,7 @@ type alias CreateHistory =
     { book : Int 
     , page_mark : Int
     , chapter_mark : Int
+    , show_form : Bool 
     }
 
 
