@@ -76,11 +76,18 @@ update msg model =
             --     ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryFormBook (Just val) -> 
-            (model, Cmd.none)
-            -- let
-            --     new_hist = CreateHistory val (model.history_record_form.page_mark) (model.history_record_form.chapter_mark)
-            -- in
-            --     ({model | history_record_form = new_hist }, Cmd.none)
+            -- (model, Cmd.none)
+            let
+                new_user = case model.user of 
+                                LoggedIn token user_alias -> 
+                                    let 
+                                        old_hist = user_alias.history_record_form
+                                        new_hist = {old_hist | book = val}
+                                    in 
+                                    LoggedIn token ({user_alias | history_record_form = new_hist})
+                                _ -> model.user 
+            in
+                ({model | user = new_user }, Cmd.none)
 
         UpdateHistoryPageMark Nothing -> 
             (model, Cmd.none)

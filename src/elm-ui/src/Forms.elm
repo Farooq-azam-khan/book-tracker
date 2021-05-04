@@ -41,6 +41,7 @@ create_record_form maybe_books history_form =
                         , select 
                             [id "book"
                             , onInput (UpdateHistoryFormBook << String.toInt)
+                            , value <| String.fromInt history_form.book
                             , class "w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800"
                             ] 
                             ( if history_form.book == 0 
