@@ -21,30 +21,30 @@ dashboard_view model =
     div [] 
         [ if not model.show_create_record_form 
             then text ""
-            else create_record_form model.books model.history_record_form 
+            else div [] [text "TODO"] -- create_record_form model.books model.history_record_form 
         , div 
             [class "flex justify-end items-center space-x-3 mt-2 px-3"] -- md:fixed md:z-10 md:top-0 md:right-0 md:mt-2 md:mr-2"] 
             [ create_history_record_button
             , logout_button
             ]
-        ,  case model.reading_history of 
-            Nothing -> 
-                -- TODO: loading icon
-                -- div [class "fixed inset-0"] [div [class "bg-black opacity-50"] [], div [class "animate-spin"] [minus_icon]]
-                text "loading.."
-            Just read_hist -> 
-                case model.books of 
-                    Nothing -> 
-                        text "Books do not exist"
-                    Just books -> 
-                        display_reading_history books read_hist
+        -- ,  case model.reading_history of 
+        --     Nothing -> 
+        --         -- TODO: loading icon
+        --         -- div [class "fixed inset-0"] [div [class "bg-black opacity-50"] [], div [class "animate-spin"] [minus_icon]]
+        --         text "loading.."
+        --     Just read_hist -> 
+        --         case model.books of 
+        --             Nothing -> 
+        --                 text "Books do not exist"
+        --             Just books -> 
+        --                 display_reading_history books read_hist
         
         ]
 
 
 display_reading_history : List Book -> List History -> Html Msg 
 display_reading_history books reading_history = 
-    div [ class "font-serif text-gray-900 flex flex-wrap mt-4 max-w-xl mx-auto" ]
+    div [ class "font-serif text-gray-900 flex flex-wrap mt-4 max-w-xl md:max-w-5xl mx-auto" ]
         [ div [ class "w-full xl:w-8/12 mb-12 xl:mb-0 px-4" ]
             [ div [ class "relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded" ]
                 [ div [ class "rounded-t mb-0 px-4 py-3 border-0" ]

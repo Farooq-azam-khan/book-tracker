@@ -2,17 +2,13 @@ module Model exposing (..)
 import Api exposing (..)
 import Types exposing (..)
 import Msg exposing (..)
+
 type alias Flags = { storedToken : Maybe String }
 
-
 type alias Model = 
-    { login_form : LoginForm
-    , show_login: Bool
-    , token : Maybe Token
+    { user : UserAuthentication
     , books : Maybe (List Book)
-    , reading_history : Maybe (List History)
     , show_create_record_form : Bool 
-    , history_record_form : CreateHistory 
     , reading_list : List BookProgress
     }
 
@@ -20,16 +16,19 @@ init : Flags -> (Model, Cmd Msg)
 init flags =
     let
         maybeToken = Maybe.map Token flags.storedToken
-        -- _ = Debug.log "Flags" maybeToken
-        init_model = { login_form = LoginForm "" ""
-                     , show_login = False
-                     , token = maybeToken
+        init_model = { user = LoggedOut (LoginForm "" "" False)
                      , books = Nothing
-                     , reading_history = Nothing 
                      , show_create_record_form = False 
-                     , history_record_form = CreateHistory 0 0 0
                      , reading_list = []
                      }
+
+        init_model_2 = case maybeToken of 
+            Nothing -> 
+                init_model
+            Just token -> 
+                {init_model | user = LoggedIn token ({ history_record_form = CreateHistory 0 0 0, reading_history = Nothing})}
+        -- _ = Debug.log "Flags" maybeToken
+        
         auth_commands = case maybeToken of 
             Nothing -> 
                 []
@@ -37,6 +36,5 @@ init flags =
                 [getReadingHistory token]
         
         commands = Cmd.batch (List.append auth_commands [getBookProgress, getBooks])
-
     in
-        (init_model, commands)
+        (init_model_2, commands)

@@ -34,7 +34,11 @@ home_view model =
                     [ text "Recently Read Books" ]
                 ]
             , div [ class "relative p-6 flex-auto text-gray-800" ]
-                [ if model.show_login then login_form_view model.login_form  else login_button
+                [ case model.user of 
+                    Unknown -> text ""
+                    LoggedIn _ _ -> text ""
+                    LoggedOut login_form -> 
+                        if login_form.show_form then login_form_view login_form else login_button 
                 , p [ class "my-3 text-md leading-relaxed" ]
                     [ text "Currently I do not have any progress to share about the books I am reading"] -- Here is a list of books I have read recently." ]
                 , case model.books of 
@@ -53,7 +57,11 @@ home_view model =
     ] 
     else 
     div [class "space-y-4"] 
-        [ if model.show_login then login_form_view model.login_form  else login_button
+        [ case model.user of 
+            Unknown -> text ""
+            LoggedIn _ _ -> text ""
+            LoggedOut login_form -> 
+                if login_form.show_form then login_form_view login_form else login_button 
         , h1 [class "text-3xl font-bold tracking-wide text-center text-white"] [text "Books I am Reading"]
         ,  div  [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
                 ] 
