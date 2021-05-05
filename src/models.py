@@ -189,6 +189,8 @@ history_table = sqlalchemy.Table(
     sqlalchemy.Column('read_at', sqlalchemy.DateTime, default=datetime.datetime.utcnow)
 )
 
+
+
 engine = sqlalchemy.create_engine(
     config['DATABASE_URL'], 
     # connect_args={"check_same_thread": False}
