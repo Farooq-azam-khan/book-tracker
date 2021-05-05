@@ -1,16 +1,25 @@
 # Book Tracking
 
 ## TODOS
+
+## UI
 * [ ] make it into a PWA
     * [ ] A2HS
         * [ ] need HTTPS 
         * [ ] need `manifest.json`
         * [ ] need icon for homescreen 
         * [ ] service workers registered
-
 * [ ] integrate tailwindcss (experiment with gradient) (priority: 1)
-    * [ ] better form input needed for record creation (          ^)
+* [ ] 'Are you Sure?' modal for deleteing books/history, etc. 
+* [ ] display book pages and chapters in history tab 
+
+### Backend 
+    * [x] better form input needed for record creation (          ^)
 * [ ] delete routes for (book / hisotry / genre / franchise (in that order))
+    * [x] history 
+    * [ ] book 
+    * [ ] genre 
+    * [ ] francise 
 * [ ] update `history/genre/franchise` routes (priority: 2.1)
 * [ ] rate limit (priority: last)
 * [ ] pagination and order by title of book, author name, descenting read_at for book, author, history table respectively (priority: 2)
