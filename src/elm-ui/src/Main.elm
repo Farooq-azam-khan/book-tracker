@@ -10,7 +10,7 @@ import Json.Encode as E
 import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
-import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest, getBookProgress)
+import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest, getBookProgress, deleteHistory)
 import Ports exposing (storeToken, deleteToken)
 import Html.Attributes exposing (class)
 import Pages.Home exposing (home_view)
@@ -138,7 +138,7 @@ update msg model =
         
         LoginSuccessful (Ok response) -> 
             let
-                user_alias = { history_record_form = CreateHistory 0 0 0 False, reading_history = Nothing }
+                user_alias = { history_record_form = CreateHistory 0 0 0 False, reading_history = [] }
                 new_user = LoggedIn (Token response) user_alias 
                 commands = Cmd.batch [storeToken response, getReadingHistory (Token response)]
             in
@@ -165,7 +165,7 @@ update msg model =
             let 
                 new_user = case model.user of 
                             LoggedIn token user_alias -> 
-                                LoggedIn token ({user_alias | reading_history = Just response})
+                                LoggedIn token ({user_alias | reading_history = response})
                             _ -> model.user
             in 
             -- (model, Cmd.none)
@@ -186,11 +186,7 @@ update msg model =
                 new_user = case nu1 of 
                             LoggedIn token user_alias -> 
                                 let 
-                                    updated_rh = case user_alias.reading_history of 
-                                        Nothing ->
-                                            Just [] 
-                                        Just lst -> 
-                                            Just <| List.append response lst 
+                                    updated_rh = List.append response user_alias.reading_history
                                 in 
                                     LoggedIn token ({user_alias | reading_history = updated_rh})
                             _ -> 
@@ -210,6 +206,28 @@ update msg model =
         
         GetActiveReadingList (Ok response) -> 
             ({model | reading_list = response}, Cmd.none)
+        
+
+        DeleteRecordAction hist_id -> 
+            case model.user of 
+                LoggedIn token _ -> 
+                    (model, deleteHistory token hist_id)
+                _ -> 
+                    (model, Cmd.none)
+
+        HistoryDeleteRequest (Err e) -> 
+            (model, Cmd.none)
+        
+        HistoryDeleteRequest (Ok response) -> 
+            case model.user of 
+                LoggedIn token user_alias -> 
+                    let 
+                        filt_hist = List.filter (\hist -> not (hist.id == response)) user_alias.reading_history
+                        new_user_alias = {user_alias | reading_history = filt_hist}
+                        
+                    in 
+                        ({model | user = LoggedIn token new_user_alias}, Cmd.none)
+                _ ->  (model, Cmd.none)
 
         
 

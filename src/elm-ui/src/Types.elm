@@ -19,7 +19,7 @@ type alias History =
     , page_mark : Int
     , chapter_mark : Int
     , read_at : Maybe String --Maybe Time.Posix
-    --, id : Int 
+    , id : Int 
     }
 
 type alias CreateHistory = 
@@ -48,7 +48,7 @@ type Token = Token String
 
 type alias User =
     { history_record_form : CreateHistory
-    , reading_history : Maybe (List History)
+    , reading_history : List History
     }
     
 type UserAuthentication 

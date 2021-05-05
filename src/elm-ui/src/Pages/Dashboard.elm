@@ -32,14 +32,9 @@ dashboard_view model =
             ]
         , case model.user of 
             LoggedIn _ user_alias -> 
-                case user_alias.reading_history of 
-                    Nothing -> text ""
-                    Just read_hist -> 
-                        case model.books of 
-                            Nothing -> 
-                                text "books do not exist"
-                            Just books -> 
-                                display_reading_history books read_hist
+                case model.books of 
+                    Nothing -> text "books do not exist"
+                    Just books -> display_reading_history books user_alias.reading_history
             _ -> text ""
         
         ]
@@ -121,7 +116,11 @@ display_single_history books hist =
                         [class "flex flex-col md:flex-row items-start md:items-center space-y-1 md:space-x-3"] 
                         [ div 
                             [class "flex space-x-1"] 
-                            [ button [class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"] [trash_icon "w-4 h-4"]
+                            [ button 
+                                [onClick (DeleteRecordAction hist.id)
+                                , class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"
+                                ] 
+                                [trash_icon "w-4 h-4"]
                             , button [class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"] [pencil_icon "w-4 h-4"]
                             ]
                         , span [] [text book.name]

@@ -10,6 +10,7 @@ type Msg = NoOp
          | LoginSuccessful (Result Http.Error String)
          | BooksGetRequest (Result Http.Error (List Book))
          | HistoryGetRequest (Result Http.Error (List History))
+         | HistoryDeleteRequest (Result Http.Error Int)
          | ToggleCreateRecord
          | CreateHistoryRecord
          | UpdateHistoryFormBook (Maybe Int)
@@ -19,4 +20,5 @@ type Msg = NoOp
          | GetActiveReadingList (Result Http.Error (List BookProgress))
          | StoreTokenAction 
          | LogoutAction
+         | DeleteRecordAction Int 
          

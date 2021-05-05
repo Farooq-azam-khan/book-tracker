@@ -38,11 +38,12 @@ getBooks = Http.get
 
 history_decoder : D.Decoder History 
 history_decoder = 
-    D.map4 History 
+    D.map5 History 
         (D.field "book" D.int)
         (D.field "page_mark" D.int)
         (D.field "chapter_mark" D.int)
         (D.maybe (D.field "read_at" D.string))
+        (D.field "id" D.int)
 
 getBookProgress : Cmd Msg 
 getBookProgress = 
@@ -53,15 +54,29 @@ getBookProgress =
 
 getReadingHistory : Token -> Cmd Msg 
 getReadingHistory token = 
-                    Http.request 
-                        { url = "/history"
-                        , method = "get"
-                        , headers = [auth_header token]
-                        , body = Http.emptyBody
-                        , timeout = Nothing 
-                        , tracker = Nothing 
-                        , expect = Http.expectJson HistoryGetRequest (D.list history_decoder)
-                        }
+    Http.request 
+        { url = "/history/"
+        , method = "get"
+        , headers = [auth_header token]
+        , body = Http.emptyBody
+        , timeout = Nothing 
+        , tracker = Nothing 
+        , expect = Http.expectJson HistoryGetRequest (D.list history_decoder)
+        }
+
+
+deleteHistory : Token -> Int -> Cmd Msg 
+deleteHistory token hist_id = 
+    Http.request
+        { url = "/history/" ++ String.fromInt hist_id
+        , method = "delete"
+        , headers = [auth_header token]
+        , body = Http.emptyBody
+        , timeout = Nothing 
+        , tracker = Nothing 
+        , expect = Http.expectJson HistoryDeleteRequest D.int
+        }
+
 
 sendLoginRequest : LoginForm -> Cmd Msg 
 sendLoginRequest login_form = 

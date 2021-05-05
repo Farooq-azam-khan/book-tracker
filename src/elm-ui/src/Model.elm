@@ -24,7 +24,7 @@ init flags =
             Nothing -> 
                 init_model
             Just token -> 
-                {init_model | user = LoggedIn token ({ history_record_form = CreateHistory 0 0 0 False, reading_history = Nothing})}
+                {init_model | user = LoggedIn token ({ history_record_form = CreateHistory 0 0 0 False, reading_history = []})}
         -- _ = Debug.log "Flags" maybeToken
         
         auth_commands = case maybeToken of 
