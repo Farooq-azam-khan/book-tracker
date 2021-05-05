@@ -6,7 +6,7 @@ import Html.Attributes exposing(type_, placeholder, for, value, id, attribute, c
 
 import Msg exposing (..)
 import Model exposing (..)
-
+import Components exposing (..)
 import Forms exposing (create_record_form)
 import Round as R
 import Types exposing (..)
@@ -135,7 +135,8 @@ display_single_history books hist =
                 , td [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" ]
                     [ i [ class "fas fa-arrow-down text-orange-500 mr-4" ]
                         []
-                    , text <| prog ++ "%"
+                    , progres_bar "Page" pct
+                    -- , text <| prog ++ "%"
                     --, " ++ (R.round 0 (100*toFloat hist.chapter_mark / toFloat book.total_chapters)) ++ "%"
                     ]
                 ]

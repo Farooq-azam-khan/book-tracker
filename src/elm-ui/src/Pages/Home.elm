@@ -8,7 +8,7 @@ import Html exposing (Html, button, div, text, input, form,
 import Html.Events exposing (onInput, onSubmit, onClick)
 import Html.Attributes exposing(attribute, class)
 import Round as R
-
+import Components exposing (..)
 import Forms exposing (login_form_view)
 import Icons exposing (..)
 
@@ -66,41 +66,34 @@ home_view model =
         ,  div  [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
                 ] 
                 (List.map book_view model.reading_list) 
+        , case model.books of 
+            Nothing -> 
+                text ""
+            Just books -> 
+                div [class "px-3 py-4 bg-white rounded-md relative w-auto my-6 mx-auto max-w-4xl"] 
+                    [ p [] [text "Below are a list of books I have read recently."]
+                    , ol [class "text-indigo-500"] [li [] (List.map (\book -> li [] [text book.name]) <| List.take 5 books)]
+                    ]
+            
+                
         ]
     
 
-progres_bar : String -> Float -> Html Msg 
-progres_bar prog_type percentage = 
-    div 
-        [ class "w-1/2 relative pt-1" ]
-        [ div [ class "flex mb-2 items-center justify-between" ]
-            [ div []
-                [ span [ class "text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-600 bg-indigo-200" ]
-                    [ text (prog_type  ++ "      ")]
-                ]
-            , div [ class "text-right" ]
-                [ span [ class "text-xs font-semibold inline-block text-indigo-700" ]
-                    [ text ((R.round 1 percentage) ++ "%") ]
-                ]
-            ]
-        , div 
-            [ class "overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200" ]
-            [ div 
-                [ class "shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500", attribute "style" ("width:"++ String.fromFloat percentage ++"%") ]
-                []
-            ]
-        ]
+
 
 lorem : String
 lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in vehicula sapien, in sollicitudin orci. "
 book_view : BookProgress -> Html Msg 
 book_view prog_book =
     div [class "flex flex-col space-y-3 px-3 py-4 rounded-md shadow-md text-gray-900 bg-white"] 
-        [ h3 [class "text-xl font-semibold tracking-wide capitalize"] [text prog_book.book.name]
+        [ div 
+            [ class "flex flex-col sm:flex-row sm:items-center justify-between"] 
+            [ h3 [class "text-xl sm:text-2xl font-semibold tracking-wide capitalize"] [text prog_book.book.name]
         
-        , p [class "text-gray-600 max-w-md text-md mt-2"] [text lorem]
+            , p [class "text-gray-600 max-w-md text-md mt-2"] [text lorem]
+        ]
         , div 
-            [class "flex space-x-3 justify-between items-center"] 
+            [class "flex flex-col sm:flex-row space-x-3 justify-between items-center"] 
             [progres_bar "page" (100*prog_book.page_progress)
             , progres_bar "chapter" (100*prog_book.chapter_progress)
             ]

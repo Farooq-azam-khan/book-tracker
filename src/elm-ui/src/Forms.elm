@@ -120,7 +120,7 @@ login_form_view login_form =
             ]
         , form 
             [onSubmit LoginAction
-            , class "flex flex-col items-start space-y-3 px-4 py-4 w-full max-w-lg"
+            , class "flex flex-col items-start space-y-3 px-4 py-4 w-full max-w-md mx-auto"
             ] 
             [ div 
                 [class "flex flex-col items-start justify-between space-y-3 w-full"] 

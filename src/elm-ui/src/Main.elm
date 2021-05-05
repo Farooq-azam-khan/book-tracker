@@ -10,7 +10,7 @@ import Json.Encode as E
 import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
-import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest)
+import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest, getBookProgress)
 import Ports exposing (storeToken, deleteToken)
 import Html.Attributes exposing (class)
 import Pages.Home exposing (home_view)
@@ -196,7 +196,7 @@ update msg model =
                             _ -> 
                                 model.user 
             in 
-                ({model | user = new_user}, Cmd.none)
+                ({model | user = new_user}, getBookProgress)
       
         LogoutAction ->
             log_user_out model 
