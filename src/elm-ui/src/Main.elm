@@ -31,6 +31,8 @@ update msg model =
     case msg of 
         NoOp -> 
             (model, Cmd.none) 
+        AreYouSure -> 
+            ({model | are_you_sure = not model.are_you_sure}, Cmd.none)
         UpdateUserName user_nm_inpt -> 
             case model.user of 
                 LoggedOut login_form -> 
@@ -47,11 +49,7 @@ update msg model =
                         in 
                             ({model | user = new_user}, Cmd.none)
                 _ -> (model, Cmd.none)
-            -- (model, Cmd.none)
-            -- let
-            --     lgn_frm = LoginForm (model.login_form.username) updt_pswd
-            -- in
-            --     ({model | login_form = lgn_frm}, Cmd.none)
+
         LoginAction -> 
             case model.user of 
                 LoggedOut login_form -> 
@@ -69,52 +67,21 @@ update msg model =
 
         UpdateHistoryFormBook Nothing -> 
             (model, Cmd.none)
-            -- let
-            --     new_hist = CreateHistory 1 (model.history_record_form.page_mark) (model.history_record_form.chapter_mark)
-
-            -- in
-            --     ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryFormBook (Just val) -> 
-            -- (model, Cmd.none)
-            -- let
-            --     new_user = case model.user of 
-            --                     LoggedIn token user_alias -> 
-            --                         let 
-            --                             old_hist = user_alias.history_record_form
-            --                             new_hist = {old_hist | book = val}
-            --                         in 
-            --                         LoggedIn token ({user_alias | history_record_form = new_hist})
-            --                     _ -> model.user 
-            -- in
-            --     ({model | user = new_user }, Cmd.none)
             ({model | user = update_history_record_form model.user (BookField val)}, Cmd.none) 
         UpdateHistoryPageMark Nothing -> 
             (model, Cmd.none)
-            -- let
-            --     new_hist = CreateHistory (model.history_record_form.book) 0 (model.history_record_form.chapter_mark)
-
-            -- in
-            --     ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryPageMark (Just val) -> 
             ({model | user = update_history_record_form model.user (PageMarkField val)}, Cmd.none) 
 
         UpdateHistoryChapterMark Nothing -> 
             (model, Cmd.none)
-            -- let
-            --     new_hist = CreateHistory (model.history_record_form.book) (model.history_record_form.page_mark) 0
-            -- in
-            --     ({model | history_record_form = new_hist}, Cmd.none)
 
         UpdateHistoryChapterMark (Just val) ->
-            -- (model, Cmd.none)
             ({model | user = update_history_record_form model.user (ChapterMarkField val)}, Cmd.none) 
-            -- let
-            --     new_hist = CreateHistory (model.history_record_form.book) (model.history_record_form.page_mark) val
-            -- in
-            --     ({model | history_record_form = new_hist }, Cmd.none)
-        
+   
         ToggleLogin ->
             let 
                 new_user = case model.user of 
@@ -226,7 +193,7 @@ update msg model =
                         new_user_alias = {user_alias | reading_history = filt_hist}
                         
                     in 
-                        ({model | user = LoggedIn token new_user_alias}, Cmd.none)
+                        ({model | user = LoggedIn token new_user_alias, are_you_sure=not model.are_you_sure}, Cmd.none)
                 _ ->  (model, Cmd.none)
 
         

@@ -55,3 +55,5 @@ type UserAuthentication
     = Unknown  
     | LoggedIn Token User
     | LoggedOut LoginForm
+
+type Close a = Close a 

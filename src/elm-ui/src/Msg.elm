@@ -21,4 +21,4 @@ type Msg = NoOp
          | StoreTokenAction 
          | LogoutAction
          | DeleteRecordAction Int 
-         
+         | AreYouSure

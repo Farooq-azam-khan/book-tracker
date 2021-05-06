@@ -9,6 +9,7 @@ type alias Model =
     { user : UserAuthentication
     , books : Maybe (List Book)
     , reading_list : List BookProgress
+    , are_you_sure : Bool  -- TODO: rename to `are_you_sure_history`
     }
 
 init : Flags -> (Model, Cmd Msg) 
@@ -18,6 +19,7 @@ init flags =
         init_model = { user = LoggedOut (LoginForm "" "" False)
                      , books = Nothing
                      , reading_list = []
+                     , are_you_sure = False 
                      }
 
         init_model_2 = case maybeToken of 

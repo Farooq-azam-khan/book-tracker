@@ -8,6 +8,7 @@ import Svg.Attributes as SA exposing (d, fill, viewBox)
 import Icons exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
+import Components exposing (..)
 
 create_record_form : Maybe (List Book) -> CreateHistory -> Html Msg 
 create_record_form maybe_books history_form =
@@ -17,7 +18,7 @@ create_record_form maybe_books history_form =
             text "sorry, you cannot add records at this moment. books are not loaded"
         Just book_list ->
             div 
-                [class "text-white"]
+                [class "text-white max-w-2xl"]
                 [ div [class "fixed z-20 inset-0 bg-black opacity-50"] [] 
                 , div 
                     [ class "mx-auto flex items-center justify-center fixed inset-0 z-30"]
@@ -44,12 +45,8 @@ create_record_form maybe_books history_form =
                             , value <| String.fromInt history_form.book
                             , class "w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800"
                             ] 
-                            ( if history_form.book == 0 
-                                then 
-                                (List.append [option [attribute "selected" "selected", attribute "disabled" "disabled", value "0"] [text "Choose a Book"]] (List.map bookOption book_list))
-                                else 
-                                (List.map bookOption book_list)
-                            )
+                            (List.append [option [attribute "selected" "selected", attribute "disabled" "disabled", value "0"] [text "Choose a Book"]] (List.map bookOption book_list))
+                            
                         ]    
                     , if history_form.book == 0
                         then  div  [] [] 
@@ -95,11 +92,6 @@ bookOption : Book -> Html Msg
 bookOption book = option [value <| String.fromInt book.id] [text book.name]
 
 
-x_icon = 
-    svg [ SA.class "w-5 h-5", SA.fill "none", attribute "stroke" "currentColor", SA.viewBox "0 0 24 24", attribute "xmlns" "http://www.w3.org/2000/svg" ]
-    [ path [ SA.d "M6 18L18 6M6 6l12 12", attribute "stroke-linecap" "round", attribute "stroke-linejoin" "round", attribute "stroke-width" "2" ]
-        []
-    ]
 
 
 

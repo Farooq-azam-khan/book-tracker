@@ -8,6 +8,13 @@ import Html.Events exposing (onInput, onSubmit, onClick)
 import Html.Attributes exposing(type_, placeholder, for, value, id, attribute)
 
 
+x_icon = 
+    svg [ SA.class "w-5 h-5", SA.fill "none", attribute "stroke" "currentColor", SA.viewBox "0 0 24 24", attribute "xmlns" "http://www.w3.org/2000/svg" ]
+    [ path [ SA.d "M6 18L18 6M6 6l12 12", attribute "stroke-linecap" "round", attribute "stroke-linejoin" "round", attribute "stroke-width" "2" ]
+        []
+    ]
+
+
 pencil_icon : String -> Html msg 
 pencil_icon cls = 
     svg [ SA.class cls, fill "none", attribute "stroke" "currentColor", viewBox "0 0 24 24", attribute "xmlns" "http://www.w3.org/2000/svg" ]

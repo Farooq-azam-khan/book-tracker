@@ -34,14 +34,14 @@ dashboard_view model =
             LoggedIn _ user_alias -> 
                 case model.books of 
                     Nothing -> text "books do not exist"
-                    Just books -> display_reading_history books user_alias.reading_history
+                    Just books -> display_reading_history books model.are_you_sure user_alias.reading_history
             _ -> text ""
         
         ]
 
 
-display_reading_history : List Book -> List History -> Html Msg 
-display_reading_history books reading_history = 
+display_reading_history : List Book -> Bool -> List History -> Html Msg 
+display_reading_history books are_you_sure reading_history = 
     div [ class "font-serif text-gray-900 flex flex-wrap mt-4 max-w-xl md:max-w-5xl mx-auto" ]
         [ div [ class "w-full xl:w-8/12 mb-12 xl:mb-0 px-4" ]
             [ div [ class "relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded" ]
@@ -72,7 +72,7 @@ display_reading_history books reading_history =
                                 ]
                             ]
                         , tbody []
-                            (List.map (display_single_history books) reading_history)
+                            (List.map (display_single_history  books are_you_sure) reading_history)
                         ]
                     ]
                 ]
@@ -98,8 +98,8 @@ create_history_record_button =
         ]
         
 
-display_single_history :  List Book -> History  -> Html Msg 
-display_single_history books hist = 
+display_single_history :  List Book -> Bool -> History  -> Html Msg 
+display_single_history books are_you_sure hist = 
     
      case getBookById hist.book books of 
         Nothing -> 
@@ -117,11 +117,17 @@ display_single_history books hist =
                         [ div 
                             [class "flex space-x-1"] 
                             [ button 
-                                [onClick (DeleteRecordAction hist.id)
+                                [onClick AreYouSure--(DeleteRecordAction hist.id)
                                 , class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"
                                 ] 
                                 [trash_icon "w-4 h-4"]
-                            , button [class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"] [pencil_icon "w-4 h-4"]
+                            , (if are_you_sure 
+                                then 
+                                    are_you_sure_modal (DeleteRecordAction hist.id) (Close AreYouSure) "Delete History" "Deleting book!!!"
+                                else text "")
+                            , button 
+                                [class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"] 
+                                [pencil_icon "w-4 h-4"]
                             ]
                         , span [] [text book.name]
                         ]
