@@ -79,7 +79,9 @@ home_view model =
         ]
     
 
-
+pluralize : Int -> String -> String -> String 
+pluralize amnt singular_word plural_word =
+    if amnt == 1 then singular_word else plural_word
 
 lorem : String
 lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in vehicula sapien, in sollicitudin orci. "
@@ -89,8 +91,15 @@ book_view prog_book =
         [ div 
             [ class "flex flex-col sm:flex-row sm:items-center justify-between"] 
             [ h3 [class "text-xl sm:text-2xl font-semibold tracking-wide capitalize"] [text prog_book.book.name]
-        
-            , p [class "text-gray-600 max-w-md text-md mt-2"] [text lorem]
+            , div 
+                [] 
+                [ span 
+                    [class "rounded-full px-2 py-1 font-sans text-xs bg-indigo-100 text-indigo-900"
+                    ] 
+                    [text <| ("read " ++ String.fromInt prog_book.read_before ++ pluralize prog_book.read_before " time" " times")
+                    ]
+                ]
+            -- , p [class "text-gray-600 max-w-md text-md mt-2"] [text lorem]
         ]
         , div 
             [class "flex flex-col sm:flex-row space-x-3 justify-between items-center"] 

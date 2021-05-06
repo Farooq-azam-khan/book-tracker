@@ -117,7 +117,7 @@ display_single_history books are_you_sure hist =
                         [ div 
                             [class "flex space-x-1"] 
                             [ button 
-                                [onClick AreYouSure--(DeleteRecordAction hist.id)
+                                [onClick AreYouSure
                                 , class "font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white"
                                 ] 
                                 [trash_icon "w-4 h-4"]
@@ -133,10 +133,16 @@ display_single_history books are_you_sure hist =
                         ]
                     
                     ]
-                , td [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" ]
-                    [ text <| String.fromInt hist.page_mark ]
-                , td [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" ]
-                    [ text <| String.fromInt hist.chapter_mark ]
+                , td 
+                    [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" 
+                    ]
+                    [ ratio_comp hist.page_mark book.total_pages
+                    ]
+                , td 
+                    [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" 
+                    ]
+                    [ ratio_comp hist.chapter_mark book.total_chapters 
+                    ]
                 , td [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" ]
                     [ i [ class "fas fa-arrow-down text-orange-500 mr-4" ]
                         []
@@ -145,3 +151,11 @@ display_single_history books are_you_sure hist =
                     --, " ++ (R.round 0 (100*toFloat hist.chapter_mark / toFloat book.total_chapters)) ++ "%"
                     ]
                 ]
+
+ratio_comp : Int -> Int -> Html Msg 
+ratio_comp num den = 
+     div 
+        [class "flex flex-col sm:flex-row sm:space-x-3 items-center"] 
+        [ div []  [text <| String.fromInt num ]
+        , div [class "text-gray-600"] [text <| ("/" ++ String.fromInt den) ]
+        ]
