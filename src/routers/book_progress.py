@@ -62,9 +62,10 @@ async def a_book_progress(book_id: int):
 async def get_acitve_book_progess():
     print('getting active')
     all_prog = await all_book_progress()
+    print(all_prog)
     non_zero_prog = []
     for progbk in all_prog:
-        if progbk['page_progress'] > 0:
+        if progbk['page_progress'] > 0 or progbk['read_before'] > 0:
             non_zero_prog.append(progbk)
 
     return non_zero_prog

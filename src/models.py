@@ -138,6 +138,21 @@ book_franchise_table = sqlalchemy.Table(
     sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
     sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True), 
 )
+'''
+update to: 
+book_franchise_order_table = sqlalchemy.Table(
+    'book_franchise', 
+    metadata, 
+    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), # TODO: primary key on (franchise, book)
+    sqlalchemy.Column('franchise', sqlalchemy.ForiegnKey('book_franchise.id'), nullable=False), 
+    sqlalchemy.ForeignKey('book.id', nullable=False), 
+    sqlalchemy.Column('book_order',
+                        sqlalchemy.Integer,
+                        nullable=False,
+                        sqlalchemy.CheckConstraint('book_order > 0'),
+                    )
+)
+'''
 
 
 # TODO: add column `descritpion`
@@ -169,10 +184,10 @@ book_table = sqlalchemy.Table(
     sqlalchemy.Column('franchise',
                         sqlalchemy.Integer, 
                         sqlalchemy.ForeignKey('book_franchise.id')
-                    ), 
+                    ), # TODO: remove 
     sqlalchemy.Column('book_order',
                         sqlalchemy.Integer
-                    )
+                    ) # TODO: remove
 )
 
 history_table = sqlalchemy.Table(
