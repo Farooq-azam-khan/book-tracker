@@ -31,5 +31,12 @@
 * [x] add column / table  `book-franchise` 
 * [x] add column / table `book-genre` https://blog.reedsy.com/book-genres/
 
+* https://schema.org/Book 
+    - `BookFormatType`: `enum {AudiobookFormat, EBook, GraphicNovel, Hardcover, Paperback }`
+    - `datePublished`
+    - `inLanguage`, `originalLanguage`
+    - `description`
+    - `imageURL` (encode or url)
+
 ## Backing up datbase
 - https://www.linode.com/docs/guides/how-to-back-up-your-postgresql-database/
