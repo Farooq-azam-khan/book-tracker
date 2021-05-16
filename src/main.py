@@ -1,17 +1,12 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from dotenv import load_dotenv, dotenv_values
 
-from .models import (Book, Author, CreateBook, CreateAuthor, CreateHistory,
-                    Token, TokenData,
-                    book_table, author_table,#, history_table,
-                    database
-                    )
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from passlib.context import CryptContext
-from .dependencies import authenticate_user, get_current_user, pwd_context
+from .models import Token,  database
+from fastapi.security import OAuth2PasswordRequestForm
+from .dependencies import authenticate_user
 from typing import Optional
 
-from jose import JWTError, jwt
+from jose import jwt
 from datetime import timedelta, datetime
 
 from fastapi.staticfiles import StaticFiles
@@ -25,9 +20,8 @@ from .routers import book_genre as book_genre_router
 from .routers import book_progress as book_progress_router
 import os 
 load_dotenv('.env')
-DATABASE_URL = os.environ['DATABASE_URL']#dotenv_values()['DATABASE_URL']
-SECRET_KEY = os.environ['SECRET_KEY']#dotenv_values()['SECRET_KEY']
-ALGORITHM = os.environ['ALGORITHM']#dotenv_values()['ALGORITHM']
+SECRET_KEY = os.environ['SECRET_KEY']
+ALGORITHM = os.environ['ALGORITHM']
 
 
 app = FastAPI()
@@ -37,17 +31,14 @@ templates = Jinja2Templates(directory='src/elm-ui')
 app.include_router( authors_router.router, prefix='/authors', tags=['Authors'])
 app.include_router( books_router.router, prefix='/books', tags=['Books'])
 app.include_router( history_router.router, prefix='/history', 
-                    # dependencies=[Depends(get_current_user)]
                     tags=['Reading History']
                     )
 app.include_router( book_franchise_router.router, 
                     prefix='/book_franchise',
-                    # dependencies=[Depends(get_current_user)], 
                     tags=['Book Franchises']
                 )
 app.include_router( book_genre_router.router, 
                     prefix='/book_genre',
-                    # dependencies=[Depends(get_current_user)], 
                     tags=['Book Genres']
                 )
 app.include_router(book_progress_router.router, 
