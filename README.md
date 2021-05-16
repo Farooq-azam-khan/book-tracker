@@ -18,6 +18,7 @@
 * [ ] table of all books
 * [ ] table of all authors
 * [ ] when finished book make fireworks / confetti
+* [ ] display *you have read x books this month/year*
 
 ### Backend 
 

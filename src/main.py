@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from dotenv import load_dotenv, dotenv_values
 
-from .models import Token,  database
+from .models import database
+from .types import Token 
 from fastapi.security import OAuth2PasswordRequestForm
 from .dependencies import authenticate_user
 from typing import Optional

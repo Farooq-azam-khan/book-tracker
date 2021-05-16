@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
-from src.models import (author_table, 
+from src.models import (
                         database, book_table, 
-                        CreateBook, UpdateBook, 
-                        book_franchise_table, book_genre_table)
-
+                        book_franchise_table, book_genre_table
+                        )
+                        
+from src.types import CreateBook, UpdateBook, Book
+from typing import List 
 from src.dependencies import get_current_user
 router = APIRouter()
 
@@ -13,23 +15,26 @@ async def books():
     query = book_table.select()
     return await database.fetch_all(query)
 
-@router.get('/{book_id}')
+@router.get('/{book_id}', response_model=Book)
 async def get_a_book(book_id: int):
     query = book_table.select().where(book_table.c.id == book_id).order_by(book_table.c.name)
-    return await database.fetch_all(query)
+    return await database.fetch_one(query)
 
 
-@router.post('/')
-async def create_book(create_book: CreateBook, current_user = Depends(get_current_user)):
-    query = book_table.insert().values(name=create_book.name, 
-                                total_pages=create_book.total_pages,
-                                total_chapters=create_book.total_chapters,
-                                author=create_book.author, 
-                                book_order=create_book.book_order, 
-                                franchise=create_book.franchise,
-                                genre=create_book.genre)
-    last_record_id = await database.execute(query)
-    return {**create_book.dict(), 'id': last_record_id}
+@router.post('/', response_model=Book)
+async def create_book(create_book: CreateBook, _ = Depends(get_current_user)):
+    try: 
+        query = book_table.insert().values(name=create_book.name, 
+                                    total_pages=create_book.total_pages,
+                                    total_chapters=create_book.total_chapters,
+                                    author=create_book.author, 
+                                    book_order=create_book.book_order, 
+                                    franchise=create_book.franchise,
+                                    genre=create_book.genre)
+        last_record_id = await database.execute(query)
+        return await database.fetch_one(book_table.select().where(book_table.c.id == last_record_id))
+    except: 
+        raise HTTPException(status_code=500, detail='Error creating book.')
 
 
 def either_or(orig, updt):
@@ -38,7 +43,7 @@ def either_or(orig, updt):
     return updt 
 
 @router.put('/{book_id}')
-async def update_a_book(book_id: int, update_book: UpdateBook, current_user = Depends(get_current_user)):
+async def update_a_book(book_id: int, update_book: UpdateBook, _ = Depends(get_current_user)):
 
 
     # check if new name is unique

@@ -16,60 +16,60 @@ else:
 database = databases.Database(config['DATABASE_URL'])
 
 
-class User(BaseModel):
-    username: str 
-    password: str 
+# class User(BaseModel):
+#     username: str 
+#     password: str 
 
-class Token(BaseModel):
-    access_token: str 
-    token_type: str 
+# class Token(BaseModel):
+#     access_token: str 
+#     token_type: str 
 
-class TokenData(BaseModel):
-    username: Optional[str] = None 
-
-
-class Book(BaseModel):
-    name: str
-    id: int 
+# class TokenData(BaseModel):
+#     username: Optional[str] = None 
 
 
-class CreateBook(BaseModel):
-    name: str
-    total_pages: int
-    total_chapters: int
-    author: int
-    book_order: Optional[int]
-    franchise: Optional[int]
-    genre: Optional[int]
+# class Book(BaseModel):
+#     name: str
+#     id: int 
 
-    @validator('total_pages')
-    def total_pages_positive(cls, v):
-        if v <= 0:
-            raise ValueError('total pages has to be bigger than 1')
-        return v 
 
-    @validator('total_chapters')
-    def total_chapters_positive(cls, v):
-        if v <= 0:
-            raise ValueError('total chapters has to be bigger than 1')
-        return v
+# class CreateBook(BaseModel):
+#     name: str
+#     total_pages: int
+#     total_chapters: int
+#     author: int
+#     book_order: Optional[int]
+#     franchise: Optional[int]
+#     genre: Optional[int]
+
+#     @validator('total_pages')
+#     def total_pages_positive(cls, v):
+#         if v <= 0:
+#             raise ValueError('total pages has to be bigger than 1')
+#         return v 
+
+#     @validator('total_chapters')
+#     def total_chapters_positive(cls, v):
+#         if v <= 0:
+#             raise ValueError('total chapters has to be bigger than 1')
+#         return v
     
-    @validator('book_order')
-    def book_order_is_pos(cls, v):
-        if v == None: 
-            return v 
-        if v <= 0:
-            raise ValueError('book order needs to be bigger than 1')
-        return v
+#     @validator('book_order')
+#     def book_order_is_pos(cls, v):
+#         if v == None: 
+#             return v 
+#         if v <= 0:
+#             raise ValueError('book order needs to be bigger than 1')
+#         return v
 
-class UpdateBook(CreateBook):
-    name: Optional[str]
-    total_pages: Optional[int]
-    total_chapters: Optional[int]
-    author: Optional[int]
-    book_order: Optional[int]
-    franchise: Optional[int]
-    genre: Optional[int]
+# class UpdateBook(CreateBook):
+#     name: Optional[str]
+#     total_pages: Optional[int]
+#     total_chapters: Optional[int]
+#     author: Optional[int]
+#     book_order: Optional[int]
+#     franchise: Optional[int]
+#     genre: Optional[int]
 
 
 

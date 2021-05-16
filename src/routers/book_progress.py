@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
-from src.models import author_table, database, book_genre_table, book_table, history_table
+from src.models import database,book_table
 
 
-from sqlalchemy.dialects import postgresql
+# from sqlalchemy.dialects import postgresql
 
 
 router = APIRouter()

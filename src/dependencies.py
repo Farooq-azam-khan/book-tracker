@@ -1,13 +1,13 @@
 from fastapi import Depends, HTTPException, status
 from dotenv import load_dotenv, dotenv_values
 import os 
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 
 from jose import JWTError, jwt
 
-from .models import Token, TokenData
+from .types import TokenData
 
 load_dotenv('.env')
 SECRET_KEY = os.environ['SECRET_KEY']#dotenv_values()['SECRET_KEY']
