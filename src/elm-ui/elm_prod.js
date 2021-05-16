@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.V.H === region.af.H)
+	if (region.Z.J === region.ai.J)
 	{
-		return 'on line ' + region.V.H;
+		return 'on line ' + region.Z.J;
 	}
-	return 'on lines ' + region.V.H + ' through ' + region.af.H;
+	return 'on lines ' + region.Z.J + ' through ' + region.ai.J;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a5,
-		impl.bq,
-		impl.bm,
+		impl.bc,
+		impl.bw,
+		impl.bs,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		t: func(record.t),
-		W: record.W,
-		T: record.T
+		v: func(record.v),
+		_: record._,
+		X: record.X
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.t;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.W;
+		var message = !tag ? value : tag < 3 ? value.a : value.v;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value._;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.T) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.X) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a5,
-		impl.bq,
-		impl.bm,
+		impl.bc,
+		impl.bw,
+		impl.bs,
 		function(sendToApp, initialModel) {
-			var view = impl.bs;
+			var view = impl.by;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a5,
-		impl.bq,
-		impl.bm,
+		impl.bc,
+		impl.bw,
+		impl.bs,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.U && impl.U(sendToApp)
-			var view = impl.bs;
+			var divertHrefToApp = impl.Y && impl.Y(sendToApp)
+			var view = impl.by;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.M);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.I);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bn) && (_VirtualDom_doc.title = title = doc.bn);
+				(title !== doc.bt) && (_VirtualDom_doc.title = title = doc.bt);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.a8;
-	var onUrlRequest = impl.a9;
+	var onUrlChange = impl.bf;
+	var onUrlRequest = impl.bg;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		U: function(sendToApp)
+		Y: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aA === next.aA
-							&& curr.am === next.am
-							&& curr.aw.a === next.aw.a
+							&& curr.aF === next.aF
+							&& curr.aq === next.aq
+							&& curr.aB.a === next.aB.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		a5: function(flags)
+		bc: function(flags)
 		{
-			return A3(impl.a5, flags, _Browser_getUrl(), key);
+			return A3(impl.bc, flags, _Browser_getUrl(), key);
 		},
-		bs: impl.bs,
-		bq: impl.bq,
-		bm: impl.bm
+		by: impl.by,
+		bw: impl.bw,
+		bs: impl.bs
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { a2: 'hidden', aY: 'visibilitychange' }
+		? { ba: 'hidden', a3: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { a2: 'mozHidden', aY: 'mozvisibilitychange' }
+		? { ba: 'mozHidden', a3: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { a2: 'msHidden', aY: 'msvisibilitychange' }
+		? { ba: 'msHidden', a3: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { a2: 'webkitHidden', aY: 'webkitvisibilitychange' }
-		: { a2: 'hidden', aY: 'visibilitychange' };
+		? { ba: 'webkitHidden', a3: 'webkitvisibilitychange' }
+		: { ba: 'hidden', a3: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aI: _Browser_getScene(),
-		aP: {
-			aR: _Browser_window.pageXOffset,
-			aS: _Browser_window.pageYOffset,
-			aQ: _Browser_doc.documentElement.clientWidth,
-			ak: _Browser_doc.documentElement.clientHeight
+		aO: _Browser_getScene(),
+		aV: {
+			aX: _Browser_window.pageXOffset,
+			aY: _Browser_window.pageYOffset,
+			aW: _Browser_doc.documentElement.clientWidth,
+			ao: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aQ: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ak: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aW: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ao: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aI: {
-				aQ: node.scrollWidth,
-				ak: node.scrollHeight
+			aO: {
+				aW: node.scrollWidth,
+				ao: node.scrollHeight
 			},
-			aP: {
-				aR: node.scrollLeft,
-				aS: node.scrollTop,
-				aQ: node.clientWidth,
-				ak: node.clientHeight
+			aV: {
+				aX: node.scrollLeft,
+				aY: node.scrollTop,
+				aW: node.clientWidth,
+				ao: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aI: _Browser_getScene(),
-			aP: {
-				aR: x,
-				aS: y,
-				aQ: _Browser_doc.documentElement.clientWidth,
-				ak: _Browser_doc.documentElement.clientHeight
+			aO: _Browser_getScene(),
+			aV: {
+				aX: x,
+				aY: y,
+				aW: _Browser_doc.documentElement.clientWidth,
+				ao: _Browser_doc.documentElement.clientHeight
 			},
-			a0: {
-				aR: x + rect.left,
-				aS: y + rect.top,
-				aQ: rect.width,
-				ak: rect.height
+			a7: {
+				aX: x + rect.left,
+				aY: y + rect.top,
+				aW: rect.width,
+				ao: rect.height
 			}
 		};
 	});
@@ -4365,25 +4365,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.B.a(response)));
+			callback(toTask(request.u.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.B.b, xhr)); });
-		$elm$core$Maybe$isJust(request.Y) && _Http_track(router, xhr, request.Y.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.u.b, xhr)); });
+		$elm$core$Maybe$isJust(request.U) && _Http_track(router, xhr, request.U.a);
 
 		try {
-			xhr.open(request.R, request.E, true);
+			xhr.open(request.R, request.y, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.E));
+			return done($elm$http$Http$BadUrl_(request.y));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.M.a && xhr.setRequestHeader('Content-Type', request.M.a);
-		xhr.send(request.M.b);
+		request.I.a && xhr.setRequestHeader('Content-Type', request.I.a);
+		xhr.send(request.I.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4398,9 +4398,9 @@ function _Http_configureRequest(xhr, request)
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.X.a || 0;
-	xhr.responseType = request.B.d;
-	xhr.withCredentials = request.aU;
+	xhr.timeout = request.T.a || 0;
+	xhr.responseType = request.u.d;
+	xhr.withCredentials = request.a_;
 }
 
 
@@ -4421,9 +4421,9 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		E: xhr.responseURL,
-		bj: xhr.status,
-		bk: xhr.statusText,
+		y: xhr.responseURL,
+		bp: xhr.status,
+		bq: xhr.statusText,
 		P: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
@@ -4519,15 +4519,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			bi: event.loaded,
-			aK: event.total
+			bo: event.loaded,
+			aQ: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			bg: event.loaded,
-			aK: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			bm: event.loaded,
+			aQ: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -5072,7 +5072,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {aj: fragment, am: host, au: path, aw: port_, aA: protocol, aB: query};
+		return {am: fragment, aq: host, az: path, aB: port_, aF: protocol, aG: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5354,7 +5354,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $author$project$Types$CreateHistory = F4(
 	function (book, page_mark, chapter_mark, show_form) {
-		return {aa: book, ac: chapter_mark, at: page_mark, O: show_form};
+		return {ac: book, af: chapter_mark, ay: page_mark, S: show_form};
 	});
 var $author$project$Types$LoggedIn = F2(
 	function (a, b) {
@@ -5365,7 +5365,7 @@ var $author$project$Types$LoggedOut = function (a) {
 };
 var $author$project$Types$LoginForm = F3(
 	function (username, password, show_form) {
-		return {bc: password, O: show_form, br: username};
+		return {bj: password, S: show_form, bx: username};
 	});
 var $author$project$Types$Token = $elm$core$Basics$identity;
 var $elm$core$List$append = F2(
@@ -5378,15 +5378,15 @@ var $elm$core$List$append = F2(
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $author$project$Msg$GetActiveReadingList = function (a) {
-	return {$: 15, a: a};
+	return {$: 16, a: a};
 };
 var $author$project$Types$BookProgress = F4(
 	function (book, read_before, page_progress, chapter_progress) {
-		return {aa: book, aZ: chapter_progress, bb: page_progress, be: read_before};
+		return {ac: book, a4: chapter_progress, bi: page_progress, aH: read_before};
 	});
 var $author$project$Types$Book = F5(
 	function (id, name, total_chapters, total_pages, author) {
-		return {aW: author, a3: id, a7: name, bo: total_chapters, bp: total_pages};
+		return {a0: author, ar: id, be: name, bu: total_chapters, bv: total_pages};
 	});
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$map5 = _Json_map5;
@@ -6000,7 +6000,7 @@ var $elm$http$Http$resolve = F2(
 			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.bj));
+					$elm$http$Http$BadStatus(metadata.bp));
 			default:
 				var body = response.b;
 				return A2(
@@ -6028,7 +6028,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {aD: reqs, aM: subs};
+		return {aJ: reqs, aS: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6072,7 +6072,7 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.Y;
+							var _v4 = req.U;
 							if (_v4.$ === 1) {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
@@ -6102,7 +6102,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.aD));
+			A3($elm$http$Http$updateReqs, router, cmds, state.aJ));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6145,7 +6145,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.aM)));
+					state.aS)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -6159,14 +6159,14 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					aU: r.aU,
-					M: r.M,
-					B: A2(_Http_mapExpect, func, r.B),
+					a_: r.a_,
+					I: r.I,
+					u: A2(_Http_mapExpect, func, r.u),
 					P: r.P,
 					R: r.R,
-					X: r.X,
-					Y: r.Y,
-					E: r.E
+					T: r.T,
+					U: r.U,
+					y: r.y
 				});
 		}
 	});
@@ -6189,31 +6189,31 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{aU: false, M: r.M, B: r.B, P: r.P, R: r.R, X: r.X, Y: r.Y, E: r.E}));
+			{a_: false, I: r.I, u: r.u, P: r.P, R: r.R, T: r.T, U: r.U, y: r.y}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{M: $elm$http$Http$emptyBody, B: r.B, P: _List_Nil, R: 'GET', X: $elm$core$Maybe$Nothing, Y: $elm$core$Maybe$Nothing, E: r.E});
+		{I: $elm$http$Http$emptyBody, u: r.u, P: _List_Nil, R: 'GET', T: $elm$core$Maybe$Nothing, U: $elm$core$Maybe$Nothing, y: r.y});
 };
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $author$project$Api$getBookProgress = $elm$http$Http$get(
 	{
-		B: A2(
+		u: A2(
 			$elm$http$Http$expectJson,
 			$author$project$Msg$GetActiveReadingList,
 			$elm$json$Json$Decode$list($author$project$Api$book_progress_decoder)),
-		E: '/progress/active/books'
+		y: '/progress/active/books'
 	});
 var $author$project$Msg$BooksGetRequest = function (a) {
 	return {$: 6, a: a};
 };
 var $author$project$Api$getBooks = $elm$http$Http$get(
 	{
-		B: A2(
+		u: A2(
 			$elm$http$Http$expectJson,
 			$author$project$Msg$BooksGetRequest,
 			$elm$json$Json$Decode$list($author$project$Api$book_decoder)),
-		E: '/books'
+		y: '/books/'
 	});
 var $author$project$Msg$HistoryGetRequest = function (a) {
 	return {$: 7, a: a};
@@ -6229,7 +6229,7 @@ var $author$project$Api$auth_header = function (_v0) {
 };
 var $author$project$Types$History = F5(
 	function (book, page_mark, chapter_mark, read_at, id) {
-		return {aa: book, ac: chapter_mark, a3: id, at: page_mark, bd: read_at};
+		return {ac: book, af: chapter_mark, ar: id, ay: page_mark, bk: read_at};
 	});
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
 var $elm$json$Json$Decode$maybe = function (decoder) {
@@ -6252,8 +6252,8 @@ var $author$project$Api$history_decoder = A6(
 var $author$project$Api$getReadingHistory = function (token) {
 	return $elm$http$Http$request(
 		{
-			M: $elm$http$Http$emptyBody,
-			B: A2(
+			I: $elm$http$Http$emptyBody,
+			u: A2(
 				$elm$http$Http$expectJson,
 				$author$project$Msg$HistoryGetRequest,
 				$elm$json$Json$Decode$list($author$project$Api$history_decoder)),
@@ -6262,11 +6262,31 @@ var $author$project$Api$getReadingHistory = function (token) {
 					$author$project$Api$auth_header(token)
 				]),
 			R: 'get',
-			X: $elm$core$Maybe$Nothing,
-			Y: $elm$core$Maybe$Nothing,
-			E: '/history/'
+			T: $elm$core$Maybe$Nothing,
+			U: $elm$core$Maybe$Nothing,
+			y: '/history/'
 		});
 };
+var $author$project$Msg$AuthorsGetRequest = function (a) {
+	return {$: 23, a: a};
+};
+var $author$project$Types$Author = F2(
+	function (id, name) {
+		return {ar: id, be: name};
+	});
+var $author$project$Api$author_decoder = A3(
+	$elm$json$Json$Decode$map2,
+	$author$project$Types$Author,
+	A2($elm$json$Json$Decode$field, 'id', $elm$json$Json$Decode$int),
+	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string));
+var $author$project$Api$get_authors = $elm$http$Http$get(
+	{
+		u: A2(
+			$elm$http$Http$expectJson,
+			$author$project$Msg$AuthorsGetRequest,
+			$elm$json$Json$Decode$list($author$project$Api$author_decoder)),
+		y: '/authors'
+	});
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
 		if (!maybe.$) {
@@ -6278,11 +6298,13 @@ var $elm$core$Maybe$map = F2(
 		}
 	});
 var $author$project$Model$init = function (flags) {
-	var maybeToken = A2($elm$core$Maybe$map, $elm$core$Basics$identity, flags.bl);
+	var maybeToken = A2($elm$core$Maybe$map, $elm$core$Basics$identity, flags.br);
 	var init_model = {
-		aX: $elm$core$Maybe$Nothing,
-		bf: _List_Nil,
-		d: $author$project$Types$LoggedOut(
+		O: false,
+		a1: $elm$core$Maybe$Nothing,
+		a2: $elm$core$Maybe$Nothing,
+		bl: _List_Nil,
+		c: $author$project$Types$LoggedOut(
 			A3($author$project$Types$LoginForm, '', '', false))
 	};
 	var init_model_2 = function () {
@@ -6290,16 +6312,15 @@ var $author$project$Model$init = function (flags) {
 			return init_model;
 		} else {
 			var token = maybeToken.a;
+			var user_fields = {
+				n: $elm$core$Maybe$Nothing,
+				Q: A4($author$project$Types$CreateHistory, 0, 0, 0, false),
+				E: _List_Nil
+			};
 			return _Utils_update(
 				init_model,
 				{
-					d: A2(
-						$author$project$Types$LoggedIn,
-						token,
-						{
-							N: A4($author$project$Types$CreateHistory, 0, 0, 0, false),
-							C: _List_Nil
-						})
+					c: A2($author$project$Types$LoggedIn, token, user_fields)
 				});
 		}
 	}();
@@ -6319,7 +6340,7 @@ var $author$project$Model$init = function (flags) {
 			$elm$core$List$append,
 			auth_commands,
 			_List_fromArray(
-				[$author$project$Api$getBookProgress, $author$project$Api$getBooks])));
+				[$author$project$Api$getBookProgress, $author$project$Api$getBooks, $author$project$Api$get_authors])));
 	return _Utils_Tuple2(init_model_2, commands);
 };
 var $elm$json$Json$Decode$null = _Json_decodeNull;
@@ -6345,16 +6366,16 @@ var $author$project$Api$deleteHistory = F2(
 	function (token, hist_id) {
 		return $elm$http$Http$request(
 			{
-				M: $elm$http$Http$emptyBody,
-				B: A2($elm$http$Http$expectJson, $author$project$Msg$HistoryDeleteRequest, $elm$json$Json$Decode$int),
+				I: $elm$http$Http$emptyBody,
+				u: A2($elm$http$Http$expectJson, $author$project$Msg$HistoryDeleteRequest, $elm$json$Json$Decode$int),
 				P: _List_fromArray(
 					[
 						$author$project$Api$auth_header(token)
 					]),
 				R: 'delete',
-				X: $elm$core$Maybe$Nothing,
-				Y: $elm$core$Maybe$Nothing,
-				E: '/history/' + $elm$core$String$fromInt(hist_id)
+				T: $elm$core$Maybe$Nothing,
+				U: $elm$core$Maybe$Nothing,
+				y: '/history/' + $elm$core$String$fromInt(hist_id)
 			});
 	});
 var $elm$core$List$filter = F2(
@@ -6376,15 +6397,16 @@ var $author$project$Main$log_user_out = function (model) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			model,
-			{d: new_user}),
+			{c: new_user}),
 		$author$project$Ports$deleteToken(''));
 };
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Basics$not = _Basics_not;
-var $author$project$Msg$WasHistoryRecodedSuccessful = function (a) {
-	return {$: 14, a: a};
+var $author$project$Msg$CreateBookRequest = function (a) {
+	return {$: 22, a: a};
 };
 var $elm$json$Json$Encode$int = _Json_wrap;
+var $elm$json$Json$Encode$null = _Json_encodeNull;
 var $elm$json$Json$Encode$object = function (pairs) {
 	return _Json_wrap(
 		A3(
@@ -6398,19 +6420,55 @@ var $elm$json$Json$Encode$object = function (pairs) {
 			_Json_emptyObject(0),
 			pairs));
 };
-var $author$project$Api$encodeCreateHistory = function (history_record_form) {
-	var end_page_val = _Utils_Tuple2(
-		'page_mark',
-		$elm$json$Json$Encode$int(history_record_form.at));
-	var chapter_val = _Utils_Tuple2(
-		'chapter_mark',
-		$elm$json$Json$Encode$int(history_record_form.ac));
-	var bk_val = _Utils_Tuple2(
-		'book',
-		$elm$json$Json$Encode$int(history_record_form.aa));
+var $author$project$Api$encodeCreateBook = function (book_form) {
+	var tot_pages = _Utils_Tuple2(
+		'total_pages',
+		$elm$json$Json$Encode$int(book_form.bv));
+	var tot_chapters = _Utils_Tuple2(
+		'total_chapters',
+		$elm$json$Json$Encode$int(book_form.bu));
+	var genre = function () {
+		var _v2 = book_form.a9;
+		if (!_v2.$) {
+			var val = _v2.a;
+			return _Utils_Tuple2(
+				'genre',
+				$elm$json$Json$Encode$int(val));
+		} else {
+			return _Utils_Tuple2('genre', $elm$json$Json$Encode$null);
+		}
+	}();
+	var franchise = function () {
+		var _v1 = book_form.ad;
+		if (!_v1.$) {
+			var val = _v1.a;
+			return _Utils_Tuple2(
+				'franchise',
+				$elm$json$Json$Encode$int(val));
+		} else {
+			return _Utils_Tuple2('franchise', $elm$json$Json$Encode$null);
+		}
+	}();
+	var book_order = function () {
+		var _v0 = book_form.ad;
+		if (!_v0.$) {
+			var val = _v0.a;
+			return _Utils_Tuple2(
+				'book_order',
+				$elm$json$Json$Encode$int(val));
+		} else {
+			return _Utils_Tuple2('book_order', $elm$json$Json$Encode$null);
+		}
+	}();
+	var bk_name = _Utils_Tuple2(
+		'name',
+		$elm$json$Json$Encode$string(book_form.be));
+	var author_id = _Utils_Tuple2(
+		'author',
+		$elm$json$Json$Encode$int(book_form.a0));
 	return $elm$json$Json$Encode$object(
 		_List_fromArray(
-			[bk_val, end_page_val, chapter_val]));
+			[bk_name, tot_pages, tot_chapters, author_id, book_order, franchise, genre]));
 };
 var $elm$http$Http$jsonBody = function (value) {
 	return A2(
@@ -6418,13 +6476,47 @@ var $elm$http$Http$jsonBody = function (value) {
 		'application/json',
 		A2($elm$json$Json$Encode$encode, 0, value));
 };
+var $author$project$Api$sendCreateBookPostRequest = F2(
+	function (token, book_values) {
+		return $elm$http$Http$request(
+			{
+				I: $elm$http$Http$jsonBody(
+					$author$project$Api$encodeCreateBook(book_values)),
+				u: A2($elm$http$Http$expectJson, $author$project$Msg$CreateBookRequest, $author$project$Api$book_decoder),
+				P: _List_fromArray(
+					[
+						$author$project$Api$auth_header(token)
+					]),
+				R: 'post',
+				T: $elm$core$Maybe$Nothing,
+				U: $elm$core$Maybe$Nothing,
+				y: '/books/'
+			});
+	});
+var $author$project$Msg$WasHistoryRecodedSuccessful = function (a) {
+	return {$: 15, a: a};
+};
+var $author$project$Api$encodeCreateHistory = function (history_record_form) {
+	var end_page_val = _Utils_Tuple2(
+		'page_mark',
+		$elm$json$Json$Encode$int(history_record_form.ay));
+	var chapter_val = _Utils_Tuple2(
+		'chapter_mark',
+		$elm$json$Json$Encode$int(history_record_form.af));
+	var bk_val = _Utils_Tuple2(
+		'book',
+		$elm$json$Json$Encode$int(history_record_form.ac));
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[bk_val, end_page_val, chapter_val]));
+};
 var $author$project$Api$sendHistoryRecord = F2(
 	function (token, history_record_form) {
 		return $elm$http$Http$request(
 			{
-				M: $elm$http$Http$jsonBody(
+				I: $elm$http$Http$jsonBody(
 					$author$project$Api$encodeCreateHistory(history_record_form)),
-				B: A2(
+				u: A2(
 					$elm$http$Http$expectJson,
 					$author$project$Msg$WasHistoryRecodedSuccessful,
 					$elm$json$Json$Decode$list($author$project$Api$history_decoder)),
@@ -6433,9 +6525,9 @@ var $author$project$Api$sendHistoryRecord = F2(
 						$author$project$Api$auth_header(token)
 					]),
 				R: 'post',
-				X: $elm$core$Maybe$Nothing,
-				Y: $elm$core$Maybe$Nothing,
-				E: '/history'
+				T: $elm$core$Maybe$Nothing,
+				U: $elm$core$Maybe$Nothing,
+				y: '/history'
 			});
 	});
 var $author$project$Msg$LoginSuccessful = function (a) {
@@ -6449,51 +6541,99 @@ var $elm$http$Http$multipartBody = function (parts) {
 };
 var $elm$http$Http$post = function (r) {
 	return $elm$http$Http$request(
-		{M: r.M, B: r.B, P: _List_Nil, R: 'POST', X: $elm$core$Maybe$Nothing, Y: $elm$core$Maybe$Nothing, E: r.E});
+		{I: r.I, u: r.u, P: _List_Nil, R: 'POST', T: $elm$core$Maybe$Nothing, U: $elm$core$Maybe$Nothing, y: r.y});
 };
 var $elm$http$Http$stringPart = _Http_pair;
 var $author$project$Api$token_decoder = A2($elm$json$Json$Decode$field, 'access_token', $elm$json$Json$Decode$string);
 var $author$project$Api$sendLoginRequest = function (login_form) {
 	return $elm$http$Http$post(
 		{
-			M: $elm$http$Http$multipartBody(
+			I: $elm$http$Http$multipartBody(
 				_List_fromArray(
 					[
-						A2($elm$http$Http$stringPart, 'username', login_form.br),
-						A2($elm$http$Http$stringPart, 'password', login_form.bc)
+						A2($elm$http$Http$stringPart, 'username', login_form.bx),
+						A2($elm$http$Http$stringPart, 'password', login_form.bj)
 					])),
-			B: A2($elm$http$Http$expectJson, $author$project$Msg$LoginSuccessful, $author$project$Api$token_decoder),
-			E: '/token'
+			u: A2($elm$http$Http$expectJson, $author$project$Msg$LoginSuccessful, $author$project$Api$token_decoder),
+			y: '/token'
 		});
 };
 var $author$project$Ports$storeToken = _Platform_outgoingPort('storeToken', $elm$json$Json$Encode$string);
-var $author$project$Main$update_history_record_form = F2(
+var $author$project$Types$init_create_book = {a0: 0, ad: $elm$core$Maybe$Nothing, an: $elm$core$Maybe$Nothing, a9: $elm$core$Maybe$Nothing, be: '', bu: 0, bv: 0};
+var $author$project$Main$update_book_form = F2(
 	function (user, field) {
 		if (user.$ === 1) {
 			var token = user.a;
 			var user_alias = user.b;
-			var old_hist = user_alias.N;
-			var new_hist = function () {
+			var form_values = function () {
 				switch (field.$) {
 					case 0:
-						var val = field.a;
-						return _Utils_update(
-							old_hist,
-							{aa: val});
+						var _v2 = user_alias.n;
+						if (_v2.$ === 1) {
+							return $elm$core$Maybe$Just($author$project$Types$init_create_book);
+						} else {
+							return $elm$core$Maybe$Nothing;
+						}
 					case 1:
-						var val = field.a;
-						return _Utils_update(
-							old_hist,
-							{at: val});
+						var name = field.a;
+						var _v3 = user_alias.n;
+						if (!_v3.$) {
+							var bk = _v3.a;
+							return $elm$core$Maybe$Just(
+								_Utils_update(
+									bk,
+									{be: name}));
+						} else {
+							return $elm$core$Maybe$Nothing;
+						}
 					case 2:
-						var val = field.a;
-						return _Utils_update(
-							old_hist,
-							{ac: val});
+						if (!field.a.$) {
+							var page_num = field.a.a;
+							var _v4 = user_alias.n;
+							if (!_v4.$) {
+								var bk = _v4.a;
+								return $elm$core$Maybe$Just(
+									_Utils_update(
+										bk,
+										{bv: page_num}));
+							} else {
+								return $elm$core$Maybe$Nothing;
+							}
+						} else {
+							return user_alias.n;
+						}
+					case 3:
+						if (!field.a.$) {
+							var ch_num = field.a.a;
+							var _v5 = user_alias.n;
+							if (!_v5.$) {
+								var bk = _v5.a;
+								return $elm$core$Maybe$Just(
+									_Utils_update(
+										bk,
+										{bu: ch_num}));
+							} else {
+								return $elm$core$Maybe$Nothing;
+							}
+						} else {
+							return user_alias.n;
+						}
 					default:
-						return _Utils_update(
-							old_hist,
-							{O: !old_hist.O});
+						if (!field.a.$) {
+							var authorId = field.a.a;
+							var _v6 = user_alias.n;
+							if (!_v6.$) {
+								var bk = _v6.a;
+								return $elm$core$Maybe$Just(
+									_Utils_update(
+										bk,
+										{a0: authorId}));
+							} else {
+								return $elm$core$Maybe$Nothing;
+							}
+						} else {
+							return user_alias.n;
+						}
 				}
 			}();
 			return A2(
@@ -6501,7 +6641,46 @@ var $author$project$Main$update_history_record_form = F2(
 				token,
 				_Utils_update(
 					user_alias,
-					{N: new_hist}));
+					{n: form_values}));
+		} else {
+			return user;
+		}
+	});
+var $author$project$Main$update_history_record_form = F2(
+	function (user, field) {
+		if (user.$ === 1) {
+			var token = user.a;
+			var user_alias = user.b;
+			var old_hist = user_alias.Q;
+			var new_hist = function () {
+				switch (field.$) {
+					case 0:
+						var val = field.a;
+						return _Utils_update(
+							old_hist,
+							{ac: val});
+					case 1:
+						var val = field.a;
+						return _Utils_update(
+							old_hist,
+							{ay: val});
+					case 2:
+						var val = field.a;
+						return _Utils_update(
+							old_hist,
+							{af: val});
+					default:
+						return _Utils_update(
+							old_hist,
+							{S: !old_hist.S});
+				}
+			}();
+			return A2(
+				$author$project$Types$LoggedIn,
+				token,
+				_Utils_update(
+					user_alias,
+					{Q: new_hist}));
 		} else {
 			return user;
 		}
@@ -6511,42 +6690,48 @@ var $author$project$Main$update = F2(
 		switch (msg.$) {
 			case 0:
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			case 20:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{O: !model.O}),
+					$elm$core$Platform$Cmd$none);
 			case 1:
 				var user_nm_inpt = msg.a;
-				var _v1 = model.d;
+				var _v1 = model.c;
 				if (_v1.$ === 2) {
 					var login_form = _v1.a;
 					var new_user = $author$project$Types$LoggedOut(
 						_Utils_update(
 							login_form,
-							{br: user_nm_inpt}));
+							{bx: user_nm_inpt}));
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{d: new_user}),
+							{c: new_user}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 2:
 				var updt_pswd = msg.a;
-				var _v2 = model.d;
+				var _v2 = model.c;
 				if (_v2.$ === 2) {
 					var login_form = _v2.a;
 					var new_user = $author$project$Types$LoggedOut(
 						_Utils_update(
 							login_form,
-							{bc: updt_pswd}));
+							{bj: updt_pswd}));
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{d: new_user}),
+							{c: new_user}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 3:
-				var _v3 = model.d;
+				var _v3 = model.c;
 				if (_v3.$ === 2) {
 					var login_form = _v3.a;
 					return _Utils_Tuple2(
@@ -6556,49 +6741,40 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 10:
-				var _v4 = model.d;
+				var _v4 = model.c;
 				if (_v4.$ === 1) {
 					var token = _v4.a;
 					var user_alias = _v4.b;
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Api$sendHistoryRecord, token, user_alias.N));
+						A2($author$project$Api$sendHistoryRecord, token, user_alias.Q));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 11:
-				if (msg.a.$ === 1) {
-					var _v5 = msg.a;
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-				} else {
-					var val = msg.a.a;
-					return _Utils_Tuple2(
-						_Utils_update(
+				var _v5 = model.c;
+				if (_v5.$ === 1) {
+					var token = _v5.a;
+					var user_alias = _v5.b;
+					var _v6 = user_alias.n;
+					if (_v6.$ === 1) {
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+					} else {
+						var book_form = _v6.a;
+						return _Utils_Tuple2(
 							model,
-							{
-								d: A2(
-									$author$project$Main$update_history_record_form,
-									model.d,
-									$author$project$Main$BookField(val))
-							}),
-						$elm$core$Platform$Cmd$none);
+							A2($author$project$Api$sendCreateBookPostRequest, token, book_form));
+					}
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 13:
+			case 22:
 				if (msg.a.$ === 1) {
-					var _v6 = msg.a;
+					var e = msg.a.a;
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				} else {
 					var val = msg.a.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								d: A2(
-									$author$project$Main$update_history_record_form,
-									model.d,
-									$author$project$Main$PageMarkField(val))
-							}),
-						$elm$core$Platform$Cmd$none);
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 12:
 				if (msg.a.$ === 1) {
@@ -6610,30 +6786,73 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								d: A2(
+								c: A2(
 									$author$project$Main$update_history_record_form,
-									model.d,
+									model.c,
+									$author$project$Main$BookField(val))
+							}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 14:
+				if (msg.a.$ === 1) {
+					var _v8 = msg.a;
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				} else {
+					var val = msg.a.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								c: A2(
+									$author$project$Main$update_history_record_form,
+									model.c,
+									$author$project$Main$PageMarkField(val))
+							}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 13:
+				if (msg.a.$ === 1) {
+					var _v9 = msg.a;
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				} else {
+					var val = msg.a.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								c: A2(
+									$author$project$Main$update_history_record_form,
+									model.c,
 									$author$project$Main$ChapterMarkField(val))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
+			case 21:
+				var action = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							c: A2($author$project$Main$update_book_form, model.c, action)
+						}),
+					$elm$core$Platform$Cmd$none);
 			case 4:
 				var new_user = function () {
-					var _v8 = model.d;
-					if (_v8.$ === 2) {
-						var login_form = _v8.a;
+					var _v10 = model.c;
+					if (_v10.$ === 2) {
+						var login_form = _v10.a;
 						var new_login_form = _Utils_update(
 							login_form,
-							{O: !login_form.O});
+							{S: !login_form.S});
 						return $author$project$Types$LoggedOut(new_login_form);
 					} else {
-						return model.d;
+						return model.c;
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{d: new_user}),
+						{c: new_user}),
 					$elm$core$Platform$Cmd$none);
 			case 5:
 				if (msg.a.$ === 1) {
@@ -6645,8 +6864,9 @@ var $author$project$Main$update = F2(
 				} else {
 					var response = msg.a.a;
 					var user_alias = {
-						N: A4($author$project$Types$CreateHistory, 0, 0, 0, false),
-						C: _List_Nil
+						n: $elm$core$Maybe$Nothing,
+						Q: A4($author$project$Types$CreateHistory, 0, 0, 0, false),
+						E: _List_Nil
 					};
 					var new_user = A2($author$project$Types$LoggedIn, response, user_alias);
 					var commands = $elm$core$Platform$Cmd$batch(
@@ -6658,7 +6878,7 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{d: new_user}),
+							{c: new_user}),
 						commands);
 				}
 			case 6:
@@ -6670,9 +6890,22 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								aX: $elm$core$Maybe$Just(response)
+								a2: $elm$core$Maybe$Just(response)
 							}),
 						$elm$core$Platform$Cmd$none);
+				}
+			case 23:
+				if (!msg.a.$) {
+					var r = msg.a.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								a1: $elm$core$Maybe$Just(r)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 7:
 				if (msg.a.$ === 1) {
@@ -6684,24 +6917,24 @@ var $author$project$Main$update = F2(
 				} else {
 					var response = msg.a.a;
 					var new_user = function () {
-						var _v9 = model.d;
-						if (_v9.$ === 1) {
-							var token = _v9.a;
-							var user_alias = _v9.b;
+						var _v11 = model.c;
+						if (_v11.$ === 1) {
+							var token = _v11.a;
+							var user_alias = _v11.b;
 							return A2(
 								$author$project$Types$LoggedIn,
 								token,
 								_Utils_update(
 									user_alias,
-									{C: response}));
+									{E: response}));
 						} else {
-							return model.d;
+							return model.c;
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{d: new_user}),
+							{c: new_user}),
 						$elm$core$Platform$Cmd$none);
 				}
 			case 9:
@@ -6709,41 +6942,41 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							d: A2($author$project$Main$update_history_record_form, model.d, $author$project$Main$ShowHistForm)
+							c: A2($author$project$Main$update_history_record_form, model.c, $author$project$Main$ShowHistForm)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 14:
+			case 15:
 				if (msg.a.$ === 1) {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				} else {
 					var response = msg.a.a;
-					var nu1 = A2($author$project$Main$update_history_record_form, model.d, $author$project$Main$ShowHistForm);
+					var nu1 = A2($author$project$Main$update_history_record_form, model.c, $author$project$Main$ShowHistForm);
 					var new_user = function () {
 						if (nu1.$ === 1) {
 							var token = nu1.a;
 							var user_alias = nu1.b;
-							var updated_rh = A2($elm$core$List$append, response, user_alias.C);
+							var updated_rh = A2($elm$core$List$append, response, user_alias.E);
 							return A2(
 								$author$project$Types$LoggedIn,
 								token,
 								_Utils_update(
 									user_alias,
-									{C: updated_rh}));
+									{E: updated_rh}));
 						} else {
-							return model.d;
+							return model.c;
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{d: new_user}),
+							{c: new_user}),
 						$author$project$Api$getBookProgress);
 				}
-			case 17:
+			case 18:
 				return $author$project$Main$log_user_out(model);
-			case 16:
+			case 17:
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 15:
+			case 16:
 				if (msg.a.$ === 1) {
 					var e = msg.a.a;
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -6752,14 +6985,14 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bf: response}),
+							{bl: response}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 18:
+			case 19:
 				var hist_id = msg.a;
-				var _v11 = model.d;
-				if (_v11.$ === 1) {
-					var token = _v11.a;
+				var _v13 = model.c;
+				if (_v13.$ === 1) {
+					var token = _v13.a;
 					return _Utils_Tuple2(
 						model,
 						A2($author$project$Api$deleteHistory, token, hist_id));
@@ -6772,24 +7005,25 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				} else {
 					var response = msg.a.a;
-					var _v12 = model.d;
-					if (_v12.$ === 1) {
-						var token = _v12.a;
-						var user_alias = _v12.b;
+					var _v14 = model.c;
+					if (_v14.$ === 1) {
+						var token = _v14.a;
+						var user_alias = _v14.b;
 						var filt_hist = A2(
 							$elm$core$List$filter,
 							function (hist) {
-								return !_Utils_eq(hist.a3, response);
+								return !_Utils_eq(hist.ar, response);
 							},
-							user_alias.C);
+							user_alias.E);
 						var new_user_alias = _Utils_update(
 							user_alias,
-							{C: filt_hist});
+							{E: filt_hist});
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									d: A2($author$project$Types$LoggedIn, token, new_user_alias)
+									O: !model.O,
+									c: A2($author$project$Types$LoggedIn, token, new_user_alias)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
@@ -6806,7 +7040,10 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $author$project$Msg$ToggleCreateRecord = {$: 9};
+var $author$project$Msg$ToggleBookForm = {$: 0};
+var $author$project$Msg$UpdateBookForm = function (a) {
+	return {$: 21, a: a};
+};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 0, a: a};
@@ -6866,11 +7103,12 @@ var $author$project$Icons$plus_icon = A2(
 var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Pages$Dashboard$create_history_record_button = A2(
+var $author$project$Pages$Dashboard$create_book_button = A2(
 	$elm$html$Html$button,
 	_List_fromArray(
 		[
-			$elm$html$Html$Events$onClick($author$project$Msg$ToggleCreateRecord),
+			$elm$html$Html$Events$onClick(
+			$author$project$Msg$UpdateBookForm($author$project$Msg$ToggleBookForm)),
 			$elm$html$Html$Attributes$class('flex items-center justify-between space-x-1 bg-white text-gray-900 px-3 py-2 text-sm rounded-lg hover:bg-red-700 hover:text-red-100')
 		]),
 	_List_fromArray(
@@ -6882,49 +7120,45 @@ var $author$project$Pages$Dashboard$create_history_record_button = A2(
 				[$author$project$Icons$plus_icon])),
 			A2(
 			$elm$html$Html$span,
+			_List_Nil,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('sm:block hidden')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Create History Record')
-				])),
-			A2(
-			$elm$html$Html$span,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('block sm:hidden')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Create Record')
+					$elm$html$Html$text('Create Book')
 				]))
 		]));
-var $author$project$Msg$CreateHistoryRecord = {$: 10};
-var $author$project$Msg$UpdateHistoryChapterMark = function (a) {
-	return {$: 12, a: a};
+var $author$project$Msg$ChangeName = function (a) {
+	return {$: 1, a: a};
 };
-var $author$project$Msg$UpdateHistoryFormBook = function (a) {
-	return {$: 11, a: a};
+var $author$project$Msg$ChapterCount = function (a) {
+	return {$: 3, a: a};
 };
-var $author$project$Msg$UpdateHistoryPageMark = function (a) {
-	return {$: 13, a: a};
+var $author$project$Types$Close = $elm$core$Basics$identity;
+var $author$project$Msg$PageCount = function (a) {
+	return {$: 2, a: a};
 };
+var $author$project$Msg$PostCreateBook = {$: 11};
 var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Forms$bookOption = function (book) {
+var $author$project$Forms$authorOption = function (author) {
 	return A2(
 		$elm$html$Html$option,
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$value(
-				$elm$core$String$fromInt(book.a3))
+				$elm$core$String$fromInt(author.ar))
 			]),
 		_List_fromArray(
 			[
-				$elm$html$Html$text(book.a7)
+				$elm$html$Html$text(author.be)
 			]));
+};
+var $author$project$Msg$BookAuthor = function (a) {
+	return {$: 4, a: a};
+};
+var $author$project$Forms$author_book_field_input = function (val) {
+	return $author$project$Msg$UpdateBookForm(
+		$author$project$Msg$BookAuthor(
+			$elm$core$String$toInt(val)));
 };
 var $elm$core$Basics$composeL = F3(
 	function (g, f, x) {
@@ -6934,10 +7168,102 @@ var $elm$core$Basics$composeL = F3(
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$form = _VirtualDom_node('form');
-var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $author$project$Icons$x_icon = A2(
+	$elm$svg$Svg$svg,
+	_List_fromArray(
+		[
+			$elm$svg$Svg$Attributes$class('w-5 h-5'),
+			$elm$svg$Svg$Attributes$fill('none'),
+			A2($elm$html$Html$Attributes$attribute, 'stroke', 'currentColor'),
+			$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+			A2($elm$html$Html$Attributes$attribute, 'xmlns', 'http://www.w3.org/2000/svg')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$d('M6 18L18 6M6 6l12 12'),
+					A2($elm$html$Html$Attributes$attribute, 'stroke-linecap', 'round'),
+					A2($elm$html$Html$Attributes$attribute, 'stroke-linejoin', 'round'),
+					A2($elm$html$Html$Attributes$attribute, 'stroke-width', '2')
+				]),
+			_List_Nil)
+		]));
+var $author$project$Forms$modal_preamble = F3(
+	function (_v0, header_title, inner_form) {
+		var close_action = _v0;
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('text-white max-w-2xl')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('fixed z-20 inset-0 bg-black opacity-50')
+						]),
+					_List_Nil),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('mx-auto flex items-center justify-center fixed inset-0 z-30')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('bg-gray-700 rounded-lg shadow-md')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('flex items-center rounded-t-lg  justify-between bg-gray-900 px-2 py-2 ')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$h2,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-md tracking-wider font-semibold')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text(header_title)
+												])),
+											A2(
+											$elm$html$Html$button,
+											_List_fromArray(
+												[
+													$elm$html$Html$Events$onClick(close_action),
+													$elm$html$Html$Attributes$type_('button'),
+													$elm$html$Html$Attributes$class('hover:text-white border-2 hover:border-indigo-300 border-white rounded-md')
+												]),
+											_List_fromArray(
+												[$author$project$Icons$x_icon]))
+										])),
+									inner_form
+								]))
+						]))
+				]));
+	});
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
@@ -6991,32 +7317,251 @@ var $elm$html$Html$Events$onSubmit = function (msg) {
 			$elm$html$Html$Events$alwaysPreventDefault,
 			$elm$json$Json$Decode$succeed(msg)));
 };
-var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$select = _VirtualDom_node('select');
-var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
-var $author$project$Forms$x_icon = A2(
-	$elm$svg$Svg$svg,
+var $author$project$Forms$create_book_form = F2(
+	function (maybe_authors, book_from_vals) {
+		if (maybe_authors.$ === 1) {
+			return $elm$html$Html$text('no authors');
+		} else {
+			var authors = maybe_authors.a;
+			return A3(
+				$author$project$Forms$modal_preamble,
+				$author$project$Msg$UpdateBookForm($author$project$Msg$ToggleBookForm),
+				'Create Book',
+				A2(
+					$elm$html$Html$form,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('flex flex-col items-start space-y-3 px-3 py-3 w-11/12 mx-auto'),
+							$elm$html$Html$Events$onSubmit($author$project$Msg$PostCreateBook)
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-col items-start justify-between space-y-1')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for('author')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Author')
+										])),
+									A2(
+									$elm$html$Html$select,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$id('author'),
+											$elm$html$Html$Events$onInput($author$project$Forms$author_book_field_input),
+											$elm$html$Html$Attributes$value(
+											$elm$core$String$fromInt(book_from_vals.a0)),
+											$elm$html$Html$Attributes$class('w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800')
+										]),
+									A2(
+										$elm$core$List$append,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$option,
+												_List_fromArray(
+													[
+														A2($elm$html$Html$Attributes$attribute, 'selected', 'selected'),
+														A2($elm$html$Html$Attributes$attribute, 'disabled', 'disabled'),
+														$elm$html$Html$Attributes$value('0')
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Choose the Author')
+													]))
+											]),
+										A2($elm$core$List$map, $author$project$Forms$authorOption, authors)))
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-col items-start justify-between space-y-1')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for('book-name')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Book Name')
+										])),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$value(book_from_vals.be),
+											$elm$html$Html$Events$onInput(
+											A2($elm$core$Basics$composeL, $author$project$Msg$UpdateBookForm, $author$project$Msg$ChangeName)),
+											$elm$html$Html$Attributes$class('px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full'),
+											$elm$html$Html$Attributes$type_('text')
+										]),
+									_List_Nil)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-col items-start justify-between space-y-1')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for('tot-pages')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Total Pages')
+										])),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$id('tot-pages'),
+											$elm$html$Html$Attributes$value(
+											$elm$core$String$fromInt(book_from_vals.bv)),
+											$elm$html$Html$Events$onInput(
+											A2(
+												$elm$core$Basics$composeL,
+												A2($elm$core$Basics$composeL, $author$project$Msg$UpdateBookForm, $author$project$Msg$PageCount),
+												$elm$core$String$toInt)),
+											$elm$html$Html$Attributes$class('px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full')
+										]),
+									_List_Nil)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-col items-start justify-between space-y-1')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for('tot-ch')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Total Chapters')
+										])),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$id('tot-ch'),
+											$elm$html$Html$Events$onInput(
+											A2(
+												$elm$core$Basics$composeL,
+												A2($elm$core$Basics$composeL, $author$project$Msg$UpdateBookForm, $author$project$Msg$ChapterCount),
+												$elm$core$String$toInt)),
+											$elm$html$Html$Attributes$value(
+											$elm$core$String$fromInt(book_from_vals.bu)),
+											$elm$html$Html$Attributes$class('px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full')
+										]),
+									_List_Nil)
+								])),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('focus:ring-2 inline-block ml-auto flex items-center justify-between px-3 py-2 rounded-md bg-indigo-500 hover:bg-indigo-700 hover:text-white shadow-lg'),
+									$elm$html$Html$Attributes$type_('submit')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$span,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Create Book')
+										]))
+								]))
+						])));
+		}
+	});
+var $author$project$Msg$ToggleCreateRecord = {$: 9};
+var $author$project$Pages$Dashboard$create_history_record_button = A2(
+	$elm$html$Html$button,
 	_List_fromArray(
 		[
-			$elm$svg$Svg$Attributes$class('w-5 h-5'),
-			$elm$svg$Svg$Attributes$fill('none'),
-			A2($elm$html$Html$Attributes$attribute, 'stroke', 'currentColor'),
-			$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
-			A2($elm$html$Html$Attributes$attribute, 'xmlns', 'http://www.w3.org/2000/svg')
+			$elm$html$Html$Events$onClick($author$project$Msg$ToggleCreateRecord),
+			$elm$html$Html$Attributes$class('flex items-center justify-between space-x-1 bg-white text-gray-900 px-3 py-2 text-sm rounded-lg hover:bg-red-700 hover:text-red-100')
 		]),
 	_List_fromArray(
 		[
 			A2(
-			$elm$svg$Svg$path,
+			$elm$html$Html$span,
+			_List_Nil,
+			_List_fromArray(
+				[$author$project$Icons$plus_icon])),
+			A2(
+			$elm$html$Html$span,
 			_List_fromArray(
 				[
-					$elm$svg$Svg$Attributes$d('M6 18L18 6M6 6l12 12'),
-					A2($elm$html$Html$Attributes$attribute, 'stroke-linecap', 'round'),
-					A2($elm$html$Html$Attributes$attribute, 'stroke-linejoin', 'round'),
-					A2($elm$html$Html$Attributes$attribute, 'stroke-width', '2')
+					$elm$html$Html$Attributes$class('sm:block hidden')
 				]),
-			_List_Nil)
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Create History Record')
+				])),
+			A2(
+			$elm$html$Html$span,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('block sm:hidden')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Create Record')
+				]))
 		]));
+var $author$project$Msg$CreateHistoryRecord = {$: 10};
+var $author$project$Msg$UpdateHistoryChapterMark = function (a) {
+	return {$: 13, a: a};
+};
+var $author$project$Msg$UpdateHistoryFormBook = function (a) {
+	return {$: 12, a: a};
+};
+var $author$project$Msg$UpdateHistoryPageMark = function (a) {
+	return {$: 14, a: a};
+};
+var $author$project$Forms$bookOption = function (book) {
+	return A2(
+		$elm$html$Html$option,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$value(
+				$elm$core$String$fromInt(book.ar))
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text(book.be)
+			]));
+};
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $author$project$Forms$create_record_form = F2(
 	function (maybe_books, history_form) {
 		if (maybe_books.$ === 1) {
@@ -7027,7 +7572,7 @@ var $author$project$Forms$create_record_form = F2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('text-white')
+						$elm$html$Html$Attributes$class('text-white max-w-2xl')
 					]),
 				_List_fromArray(
 					[
@@ -7081,7 +7626,7 @@ var $author$project$Forms$create_record_form = F2(
 														$elm$html$Html$Attributes$class('hover:text-white border-2 hover:border-indigo-300 border-white rounded-md')
 													]),
 												_List_fromArray(
-													[$author$project$Forms$x_icon]))
+													[$author$project$Icons$x_icon]))
 											])),
 										A2(
 										$elm$html$Html$form,
@@ -7118,10 +7663,10 @@ var $author$project$Forms$create_record_form = F2(
 																$elm$html$Html$Events$onInput(
 																A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryFormBook, $elm$core$String$toInt)),
 																$elm$html$Html$Attributes$value(
-																$elm$core$String$fromInt(history_form.aa)),
+																$elm$core$String$fromInt(history_form.ac)),
 																$elm$html$Html$Attributes$class('w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800')
 															]),
-														(!history_form.aa) ? A2(
+														A2(
 															$elm$core$List$append,
 															_List_fromArray(
 																[
@@ -7138,9 +7683,9 @@ var $author$project$Forms$create_record_form = F2(
 																			$elm$html$Html$text('Choose a Book')
 																		]))
 																]),
-															A2($elm$core$List$map, $author$project$Forms$bookOption, book_list)) : A2($elm$core$List$map, $author$project$Forms$bookOption, book_list))
+															A2($elm$core$List$map, $author$project$Forms$bookOption, book_list)))
 													])),
-												(!history_form.aa) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2(
+												(!history_form.ac) ? A2($elm$html$Html$div, _List_Nil, _List_Nil) : A2(
 												$elm$html$Html$div,
 												_List_fromArray(
 													[
@@ -7171,7 +7716,7 @@ var $author$project$Forms$create_record_form = F2(
 																_List_fromArray(
 																	[
 																		$elm$html$Html$Attributes$value(
-																		$elm$core$String$fromInt(history_form.at)),
+																		$elm$core$String$fromInt(history_form.ay)),
 																		$elm$html$Html$Attributes$id('page-mark'),
 																		$elm$html$Html$Events$onInput(
 																		A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryPageMark, $elm$core$String$toInt)),
@@ -7204,7 +7749,7 @@ var $author$project$Forms$create_record_form = F2(
 																_List_fromArray(
 																	[
 																		$elm$html$Html$Attributes$value(
-																		$elm$core$String$fromInt(history_form.ac)),
+																		$elm$core$String$fromInt(history_form.af)),
 																		$elm$html$Html$Attributes$id('chapter-mark'),
 																		$elm$html$Html$Events$onInput(
 																		A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryChapterMark, $elm$core$String$toInt)),
@@ -7238,9 +7783,118 @@ var $author$project$Forms$create_record_form = F2(
 					]));
 		}
 	});
+var $author$project$Msg$AreYouSure = {$: 20};
 var $author$project$Msg$DeleteRecordAction = function (a) {
-	return {$: 18, a: a};
+	return {$: 19, a: a};
 };
+var $author$project$Components$modal_component = F3(
+	function (title, _v0, content) {
+		var close = _v0;
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('text-white font-sans')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('fixed z-20 inset-0 bg-black opacity-50')
+						]),
+					_List_Nil),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('mx-auto flex items-center justify-center fixed inset-0 z-30 w-screen px-10')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('bg-gray-700 rounded-lg shadow-md w-full max-w-lg')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('flex items-center rounded-t-lg  justify-between bg-gray-900 px-4 py-4')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$h2,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-md tracking-wider font-semibold')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text(title)
+												])),
+											A2(
+											$elm$html$Html$button,
+											_List_fromArray(
+												[
+													$elm$html$Html$Events$onClick(close),
+													$elm$html$Html$Attributes$type_('button'),
+													$elm$html$Html$Attributes$class('hover:text-white border-2 hover:border-indigo-300 border-white rounded-md')
+												]),
+											_List_fromArray(
+												[$author$project$Icons$x_icon]))
+										])),
+									content
+								]))
+						]))
+				]));
+	});
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$Components$primary_button = F2(
+	function (action, content) {
+		return A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(action),
+					$elm$html$Html$Attributes$class('flex items-center justify-between space-x-1 bg-white text-gray-900 px-3 py-2 text-sm rounded-lg hover:bg-indigo-700 hover:text-indigo-100')
+				]),
+			_List_fromArray(
+				[content]));
+	});
+var $author$project$Components$are_you_sure_modal = F4(
+	function (action, close, title, descrip) {
+		return A3(
+			$author$project$Components$modal_component,
+			title,
+			close,
+			A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('flex flex-col items-start space-y-3 px-4 py-4 w-full max-w-md mx-auto')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(descrip)
+							])),
+						A2(
+						$author$project$Components$primary_button,
+						action,
+						$elm$html$Html$text('Yes'))
+					])));
+	});
 var $elm$core$List$head = function (list) {
 	if (list.b) {
 		var x = list.a;
@@ -7256,7 +7910,7 @@ var $author$project$Pages$Dashboard$getBookById = F2(
 			A2(
 				$elm$core$List$filter,
 				function (book) {
-					return _Utils_eq(book.a3, id);
+					return _Utils_eq(book.ar, id);
 				},
 				books));
 	});
@@ -7551,7 +8205,7 @@ var $author$project$Components$progres_bar = F2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('w-full relative pt-1')
+					$elm$html$Html$Attributes$class('w-full')
 				]),
 			_List_fromArray(
 				[
@@ -7622,6 +8276,37 @@ var $author$project$Components$progres_bar = F2(
 						]))
 				]));
 	});
+var $author$project$Pages$Dashboard$ratio_comp = F2(
+	function (num, den) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('flex flex-col sm:flex-row sm:space-x-3 items-center')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							$elm$core$String$fromInt(num))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('text-gray-600')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							'/' + $elm$core$String$fromInt(den))
+						]))
+				]));
+	});
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$th = _VirtualDom_node('th');
 var $elm$html$Html$tr = _VirtualDom_node('tr');
@@ -7650,15 +8335,15 @@ var $author$project$Icons$trash_icon = function (cls) {
 				_List_Nil)
 			]));
 };
-var $author$project$Pages$Dashboard$display_single_history = F2(
-	function (books, hist) {
-		var _v0 = A2($author$project$Pages$Dashboard$getBookById, hist.aa, books);
+var $author$project$Pages$Dashboard$display_single_history = F3(
+	function (books, are_you_sure, hist) {
+		var _v0 = A2($author$project$Pages$Dashboard$getBookById, hist.ac, books);
 		if (_v0.$ === 1) {
 			return $elm$html$Html$text(
-				'Book with id ' + ($elm$core$String$fromInt(hist.aa) + 'does not exist.'));
+				'Book with id ' + ($elm$core$String$fromInt(hist.ac) + 'does not exist.'));
 		} else {
 			var book = _v0.a;
-			var pct = (hist.at / book.bp) * 100;
+			var pct = (hist.ay / book.bv) * 100;
 			var prog = (pct <= 1) ? A2($myrho$elm_round$Round$round, 2, pct) : A2($myrho$elm_round$Round$round, 0, pct);
 			return A2(
 				$elm$html$Html$tr,
@@ -7693,14 +8378,19 @@ var $author$project$Pages$Dashboard$display_single_history = F2(
 												$elm$html$Html$button,
 												_List_fromArray(
 													[
-														$elm$html$Html$Events$onClick(
-														$author$project$Msg$DeleteRecordAction(hist.a3)),
+														$elm$html$Html$Events$onClick($author$project$Msg$AreYouSure),
 														$elm$html$Html$Attributes$class('font-sans px-2 py-1 text-xs font-light rounded-md bg-indigo-500 hover:bg-indigo-700 text-white')
 													]),
 												_List_fromArray(
 													[
 														$author$project$Icons$trash_icon('w-4 h-4')
 													])),
+												are_you_sure ? A4(
+												$author$project$Components$are_you_sure_modal,
+												$author$project$Msg$DeleteRecordAction(hist.ar),
+												$author$project$Msg$AreYouSure,
+												'Delete History',
+												'Deleting book!!!') : $elm$html$Html$text(''),
 												A2(
 												$elm$html$Html$button,
 												_List_fromArray(
@@ -7717,7 +8407,7 @@ var $author$project$Pages$Dashboard$display_single_history = F2(
 										_List_Nil,
 										_List_fromArray(
 											[
-												$elm$html$Html$text(book.a7)
+												$elm$html$Html$text(book.be)
 											]))
 									]))
 							])),
@@ -7729,8 +8419,7 @@ var $author$project$Pages$Dashboard$display_single_history = F2(
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(
-								$elm$core$String$fromInt(hist.at))
+								A2($author$project$Pages$Dashboard$ratio_comp, hist.ay, book.bv)
 							])),
 						A2(
 						$elm$html$Html$td,
@@ -7740,8 +8429,7 @@ var $author$project$Pages$Dashboard$display_single_history = F2(
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(
-								$elm$core$String$fromInt(hist.ac))
+								A2($author$project$Pages$Dashboard$ratio_comp, hist.af, book.bu)
 							])),
 						A2(
 						$elm$html$Html$td,
@@ -7767,8 +8455,8 @@ var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$table = _VirtualDom_node('table');
 var $elm$html$Html$tbody = _VirtualDom_node('tbody');
 var $elm$html$Html$thead = _VirtualDom_node('thead');
-var $author$project$Pages$Dashboard$display_reading_history = F2(
-	function (books, reading_history) {
+var $author$project$Pages$Dashboard$display_reading_history = F3(
+	function (books, are_you_sure, reading_history) {
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -7925,7 +8613,7 @@ var $author$project$Pages$Dashboard$display_reading_history = F2(
 													_List_Nil,
 													A2(
 														$elm$core$List$map,
-														$author$project$Pages$Dashboard$display_single_history(books),
+														A2($author$project$Pages$Dashboard$display_single_history, books, are_you_sure),
 														reading_history))
 												]))
 										]))
@@ -7933,7 +8621,7 @@ var $author$project$Pages$Dashboard$display_reading_history = F2(
 						]))
 				]));
 	});
-var $author$project$Msg$LogoutAction = {$: 17};
+var $author$project$Msg$LogoutAction = {$: 18};
 var $author$project$Icons$logout_icon = A2(
 	$elm$svg$Svg$svg,
 	_List_fromArray(
@@ -7986,10 +8674,25 @@ var $author$project$Pages$Dashboard$dashboard_view = function (model) {
 		_List_fromArray(
 			[
 				function () {
-				var _v0 = model.d;
+				var _v0 = model.c;
 				if (_v0.$ === 1) {
 					var user = _v0.b;
-					return (!user.N.O) ? $elm$html$Html$text('') : A2($author$project$Forms$create_record_form, model.aX, user.N);
+					return (!user.Q.S) ? $elm$html$Html$text('') : A2($author$project$Forms$create_record_form, model.a2, user.Q);
+				} else {
+					return $elm$html$Html$text('');
+				}
+			}(),
+				function () {
+				var _v1 = model.c;
+				if (_v1.$ === 1) {
+					var user = _v1.b;
+					var _v2 = user.n;
+					if (_v2.$ === 1) {
+						return $elm$html$Html$text('');
+					} else {
+						var bk_frm = _v2.a;
+						return A2($author$project$Forms$create_book_form, model.a1, bk_frm);
+					}
 				} else {
 					return $elm$html$Html$text('');
 				}
@@ -8001,17 +8704,17 @@ var $author$project$Pages$Dashboard$dashboard_view = function (model) {
 						$elm$html$Html$Attributes$class('flex justify-end items-center space-x-3 mt-2 px-3')
 					]),
 				_List_fromArray(
-					[$author$project$Pages$Dashboard$create_history_record_button, $author$project$Pages$Dashboard$logout_button])),
+					[$author$project$Pages$Dashboard$create_history_record_button, $author$project$Pages$Dashboard$create_book_button, $author$project$Pages$Dashboard$logout_button])),
 				function () {
-				var _v1 = model.d;
-				if (_v1.$ === 1) {
-					var user_alias = _v1.b;
-					var _v2 = model.aX;
-					if (_v2.$ === 1) {
+				var _v3 = model.c;
+				if (_v3.$ === 1) {
+					var user_alias = _v3.b;
+					var _v4 = model.a2;
+					if (_v4.$ === 1) {
 						return $elm$html$Html$text('books do not exist');
 					} else {
-						var books = _v2.a;
-						return A2($author$project$Pages$Dashboard$display_reading_history, books, user_alias.C);
+						var books = _v4.a;
+						return A3($author$project$Pages$Dashboard$display_reading_history, books, model.O, user_alias.E);
 					}
 				} else {
 					return $elm$html$Html$text('');
@@ -8019,8 +8722,10 @@ var $author$project$Pages$Dashboard$dashboard_view = function (model) {
 			}()
 			]));
 };
-var $author$project$Pages$Home$lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in vehicula sapien, in sollicitudin orci. ';
-var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$Pages$Home$pluralize = F3(
+	function (amnt, singular_word, plural_word) {
+		return (amnt === 1) ? singular_word : plural_word;
+	});
 var $author$project$Pages$Home$book_view = function (prog_book) {
 	return A2(
 		$elm$html$Html$div,
@@ -8046,17 +8751,24 @@ var $author$project$Pages$Home$book_view = function (prog_book) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(prog_book.aa.a7)
+								$elm$html$Html$text(prog_book.ac.be)
 							])),
 						A2(
-						$elm$html$Html$p,
+						$elm$html$Html$div,
+						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('text-gray-600 max-w-md text-md mt-2')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text($author$project$Pages$Home$lorem)
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('rounded-full px-2 py-1 font-sans text-xs bg-indigo-100 text-indigo-900')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										'read ' + ($elm$core$String$fromInt(prog_book.aH) + A3($author$project$Pages$Home$pluralize, prog_book.aH, ' time', ' times')))
+									]))
 							]))
 					])),
 				A2(
@@ -8067,8 +8779,8 @@ var $author$project$Pages$Home$book_view = function (prog_book) {
 					]),
 				_List_fromArray(
 					[
-						A2($author$project$Components$progres_bar, 'page', 100 * prog_book.bb),
-						A2($author$project$Components$progres_bar, 'chapter', 100 * prog_book.aZ)
+						A2($author$project$Components$progres_bar, 'page', 100 * prog_book.bi),
+						A2($author$project$Components$progres_bar, 'chapter', 100 * prog_book.a4)
 					]))
 			]));
 };
@@ -8190,7 +8902,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 												$elm$html$Html$Attributes$class('hover:text-white border-2 hover:border-indigo-300 border-white rounded-md')
 											]),
 										_List_fromArray(
-											[$author$project$Forms$x_icon]))
+											[$author$project$Icons$x_icon]))
 									])),
 								A2(
 								$elm$html$Html$form,
@@ -8227,7 +8939,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 														$elm$html$Html$Attributes$type_('text'),
 														$elm$html$Html$Attributes$placeholder('Username'),
 														A2($elm$html$Html$Attributes$attribute, 'autfocus', 'true'),
-														$elm$html$Html$Attributes$value(login_form.br),
+														$elm$html$Html$Attributes$value(login_form.bx),
 														$elm$html$Html$Events$onInput($author$project$Msg$UpdateUserName),
 														$elm$html$Html$Attributes$class('px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full')
 													]),
@@ -8258,7 +8970,7 @@ var $author$project$Forms$login_form_view = function (login_form) {
 														$elm$html$Html$Attributes$id('password'),
 														$elm$html$Html$Attributes$type_('password'),
 														$elm$html$Html$Attributes$placeholder('Password'),
-														$elm$html$Html$Attributes$value(login_form.bc),
+														$elm$html$Html$Attributes$value(login_form.bj),
 														$elm$html$Html$Events$onInput($author$project$Msg$UpdatePassword),
 														$elm$html$Html$Attributes$class('px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full')
 													]),
@@ -8430,7 +9142,7 @@ var $elm$core$List$take = F2(
 		return A3($elm$core$List$takeFast, 0, n, list);
 	});
 var $author$project$Pages$Home$home_view = function (model) {
-	return (!$elm$core$List$length(model.bf)) ? A2(
+	return (!$elm$core$List$length(model.bl)) ? A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
@@ -8482,7 +9194,7 @@ var $author$project$Pages$Home$home_view = function (model) {
 								_List_fromArray(
 									[
 										function () {
-										var _v0 = model.d;
+										var _v0 = model.c;
 										switch (_v0.$) {
 											case 0:
 												return $elm$html$Html$text('');
@@ -8490,7 +9202,7 @@ var $author$project$Pages$Home$home_view = function (model) {
 												return $elm$html$Html$text('');
 											default:
 												var login_form = _v0.a;
-												return login_form.O ? $author$project$Forms$login_form_view(login_form) : $author$project$Pages$Home$login_button;
+												return login_form.S ? $author$project$Forms$login_form_view(login_form) : $author$project$Pages$Home$login_button;
 										}
 									}(),
 										A2(
@@ -8504,7 +9216,7 @@ var $author$project$Pages$Home$home_view = function (model) {
 												$elm$html$Html$text('Currently I do not have any progress to share about the books I am reading')
 											])),
 										function () {
-										var _v1 = model.aX;
+										var _v1 = model.a2;
 										if (_v1.$ === 1) {
 											return $elm$html$Html$text('');
 										} else {
@@ -8540,7 +9252,7 @@ var $author$project$Pages$Home$home_view = function (model) {
 																			_List_Nil,
 																			_List_fromArray(
 																				[
-																					$elm$html$Html$text(book.a7)
+																					$elm$html$Html$text(book.be)
 																				]));
 																	},
 																	A2($elm$core$List$take, 5, books)))
@@ -8560,7 +9272,7 @@ var $author$project$Pages$Home$home_view = function (model) {
 		_List_fromArray(
 			[
 				function () {
-				var _v2 = model.d;
+				var _v2 = model.c;
 				switch (_v2.$) {
 					case 0:
 						return $elm$html$Html$text('');
@@ -8568,7 +9280,7 @@ var $author$project$Pages$Home$home_view = function (model) {
 						return $elm$html$Html$text('');
 					default:
 						var login_form = _v2.a;
-						return login_form.O ? $author$project$Forms$login_form_view(login_form) : $author$project$Pages$Home$login_button;
+						return login_form.S ? $author$project$Forms$login_form_view(login_form) : $author$project$Pages$Home$login_button;
 				}
 			}(),
 				A2(
@@ -8587,9 +9299,9 @@ var $author$project$Pages$Home$home_view = function (model) {
 					[
 						$elm$html$Html$Attributes$class('grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif')
 					]),
-				A2($elm$core$List$map, $author$project$Pages$Home$book_view, model.bf)),
+				A2($elm$core$List$map, $author$project$Pages$Home$book_view, model.bl)),
 				function () {
-				var _v3 = model.aX;
+				var _v3 = model.a2;
 				if (_v3.$ === 1) {
 					return $elm$html$Html$text('');
 				} else {
@@ -8628,7 +9340,7 @@ var $author$project$Pages$Home$home_view = function (model) {
 													_List_Nil,
 													_List_fromArray(
 														[
-															$elm$html$Html$text(book.a7)
+															$elm$html$Html$text(book.be)
 														]));
 											},
 											A2($elm$core$List$take, 5, books)))
@@ -8648,7 +9360,7 @@ var $author$project$Main$view = function (model) {
 		_List_fromArray(
 			[
 				function () {
-				var _v0 = model.d;
+				var _v0 = model.c;
 				switch (_v0.$) {
 					case 1:
 						return $author$project$Pages$Dashboard$dashboard_view(model);
@@ -8661,13 +9373,13 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{a5: $author$project$Model$init, bm: $author$project$Main$subscriptions, bq: $author$project$Main$update, bs: $author$project$Main$view});
+	{bc: $author$project$Model$init, bs: $author$project$Main$subscriptions, bw: $author$project$Main$update, by: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
 		function (storedToken) {
 			return $elm$json$Json$Decode$succeed(
-				{bl: storedToken});
+				{br: storedToken});
 		},
 		A2(
 			$elm$json$Json$Decode$field,

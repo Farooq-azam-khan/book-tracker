@@ -83,9 +83,6 @@ update msg model =
             (model, Cmd.none)
 
         CreateBookRequest (Ok val) -> 
-            let 
-                _ = Debug.log "got result" val 
-            in 
                 (model, Cmd.none)
         
 
@@ -108,10 +105,7 @@ update msg model =
    
         
         UpdateBookForm action -> 
-            let 
-                _ = Debug.log "updating book form"
-            in 
-                ({model | user = update_book_form model.user action}, Cmd.none)
+            ({model | user = update_book_form model.user action}, Cmd.none)
 
         ToggleLogin ->
             let 
