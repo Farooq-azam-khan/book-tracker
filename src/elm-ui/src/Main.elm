@@ -10,7 +10,13 @@ import Json.Encode as E
 import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
-import Api exposing (getReadingHistory, sendHistoryRecord, sendLoginRequest, getBookProgress, deleteHistory)
+import Api exposing ( sendCreateBookPostRequest
+                    , getReadingHistory
+                    , sendHistoryRecord
+                    , sendLoginRequest
+                    , getBookProgress
+                    , deleteHistory
+                    )
 import Ports exposing (storeToken, deleteToken)
 import Html.Attributes exposing (class)
 import Pages.Home exposing (home_view)
@@ -64,6 +70,24 @@ update msg model =
                 _ -> 
                     (model, Cmd.none)
         
+        PostCreateBook ->
+            case model.user of 
+                LoggedIn token user_alias -> 
+                    case user_alias.create_book_form of 
+                        Nothing -> (model, Cmd.none)
+                        Just book_form ->
+                            (model, sendCreateBookPostRequest token book_form)
+                _ -> (model, Cmd.none)
+
+        CreateBookRequest (Err e) -> 
+            (model, Cmd.none)
+
+        CreateBookRequest (Ok val) -> 
+            let 
+                _ = Debug.log "got result" val 
+            in 
+                (model, Cmd.none)
+        
 
         UpdateHistoryFormBook Nothing -> 
             (model, Cmd.none)
@@ -82,6 +106,13 @@ update msg model =
         UpdateHistoryChapterMark (Just val) ->
             ({model | user = update_history_record_form model.user (ChapterMarkField val)}, Cmd.none) 
    
+        
+        UpdateBookForm action -> 
+            let 
+                _ = Debug.log "updating book form"
+            in 
+                ({model | user = update_book_form model.user action}, Cmd.none)
+
         ToggleLogin ->
             let 
                 new_user = case model.user of 
@@ -105,7 +136,7 @@ update msg model =
         
         LoginSuccessful (Ok response) -> 
             let
-                user_alias = { history_record_form = CreateHistory 0 0 0 False, reading_history = [] }
+                user_alias = { history_record_form = CreateHistory 0 0 0 False, reading_history = [], create_book_form = Nothing }
                 new_user = LoggedIn (Token response) user_alias 
                 commands = Cmd.batch [storeToken response, getReadingHistory (Token response)]
             in
@@ -119,9 +150,13 @@ update msg model =
         
         
         BooksGetRequest (Ok response) -> 
-            ({model | books = Just (response)}, Cmd.none)
+            ({model | books = Just response}, Cmd.none)
 
-         
+        AuthorsGetRequest (Ok r) -> 
+            ({model | authors = Just r}, Cmd.none)
+        
+        AuthorsGetRequest (Err _) -> 
+            (model, Cmd.none)
         HistoryGetRequest (Err (Http.BadStatus 401)) -> 
                 log_user_out model 
         
@@ -141,8 +176,7 @@ update msg model =
         ToggleCreateRecord -> 
             ({model | user = update_history_record_form model.user ShowHistForm}, Cmd.none)
         
-        -- WasHistoryRecodedSuccessful (Err (Http.BadStatus 401)) -> 
-        --         log_user_out model
+
 
         WasHistoryRecodedSuccessful (Err _) -> 
                 (model, Cmd.none) 
@@ -196,7 +230,55 @@ update msg model =
                         ({model | user = LoggedIn token new_user_alias, are_you_sure=not model.are_you_sure}, Cmd.none)
                 _ ->  (model, Cmd.none)
 
-        
+
+
+
+update_book_form : UserAuthentication -> BookFormFields -> UserAuthentication
+update_book_form user field = 
+    case user of 
+        LoggedIn token user_alias -> 
+            let
+                form_values = case field of 
+                                ToggleBookForm -> 
+                                    case user_alias.create_book_form of 
+                                        Nothing -> 
+                                            Just init_create_book
+                                        Just _ -> 
+                                            Nothing 
+                                ChangeName name -> 
+                                    case user_alias.create_book_form of 
+                                        Just bk -> 
+                                            Just {bk | name = name }
+                                        Nothing -> Nothing 
+                                PageCount (Just page_num) -> 
+                                    case user_alias.create_book_form of 
+                                        Just bk -> 
+                                            Just {bk | total_pages = page_num}
+                                        _ -> Nothing 
+                                PageCount _ -> 
+                                    user_alias.create_book_form
+
+                                ChapterCount (Just ch_num) -> 
+                                    case user_alias.create_book_form of 
+                                        Just bk -> 
+                                            Just {bk | total_chapters = ch_num}
+                                        _ -> Nothing 
+                                ChapterCount _ -> 
+                                    user_alias.create_book_form
+                                
+                                BookAuthor (Just authorId) -> 
+                                    case user_alias.create_book_form of 
+                                        Just bk -> 
+                                            Just {bk | author = authorId}
+                                        Nothing -> Nothing 
+                                BookAuthor _ -> 
+                                    user_alias.create_book_form 
+
+
+                                
+            in 
+                LoggedIn token ({user_alias | create_book_form = form_values})
+        _ -> user 
 
 type HistoryFormFieldType = BookField Int | PageMarkField Int | ChapterMarkField Int | ShowHistForm
 update_history_record_form : UserAuthentication -> HistoryFormFieldType -> UserAuthentication

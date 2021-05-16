@@ -20,6 +20,11 @@ book_decoder =
         (D.field "total_pages" D.int) 
         (D.field "author" D.int)
 
+author_decoder : D.Decoder Author 
+author_decoder = 
+    D.map2 Author 
+        (D.field "id" D.int)
+        (D.field "name" D.string)
 
 book_progress_decoder : D.Decoder BookProgress 
 book_progress_decoder = 
@@ -31,10 +36,19 @@ book_progress_decoder =
 
 
 getBooks : Cmd Msg 
-getBooks = Http.get 
-            { url = "/books"
-            , expect = Http.expectJson BooksGetRequest (D.list book_decoder)
-            }
+getBooks = 
+    Http.get 
+        { url = "/books/"
+        , expect = Http.expectJson BooksGetRequest (D.list book_decoder)
+        }
+
+get_authors : Cmd Msg 
+get_authors = 
+    Http.get
+        { url = "/authors"
+        , expect = Http.expectJson AuthorsGetRequest (D.list author_decoder)
+        } 
+
 
 history_decoder : D.Decoder History 
 history_decoder = 
@@ -65,6 +79,19 @@ getReadingHistory token =
         }
 
 
+sendCreateBookPostRequest : Token -> CreateBook -> Cmd Msg 
+sendCreateBookPostRequest token book_values =
+    Http.request 
+        { url = "/books/"
+        , method = "post"
+        , headers = [auth_header token]
+        , body = Http.jsonBody (encodeCreateBook book_values)
+        , timeout = Nothing 
+        , tracker = Nothing 
+        , expect = Http.expectJson CreateBookRequest book_decoder
+        }
+
+
 deleteHistory : Token -> Int -> Cmd Msg 
 deleteHistory token hist_id = 
     Http.request
@@ -76,7 +103,6 @@ deleteHistory token hist_id =
         , tracker = Nothing 
         , expect = Http.expectJson HistoryDeleteRequest D.int
         }
-
 
 sendLoginRequest : LoginForm -> Cmd Msg 
 sendLoginRequest login_form = 
@@ -113,6 +139,33 @@ encodeCreateHistory history_record_form =
         chapter_val = ("chapter_mark", E.int history_record_form.chapter_mark)
     in
         E.object [bk_val, end_page_val, chapter_val]
+
+
+-- total_pages: int
+--     total_chapters: int
+--     author: int
+-- book_order: Optional[int]
+--     franchise: Optional[int]
+--     genre: Optional[int]
+
+encodeCreateBook : CreateBook -> E.Value 
+encodeCreateBook book_form = 
+    let 
+        bk_name = ("name", E.string book_form.name)
+        tot_pages = ("total_pages", E.int book_form.total_pages)
+        tot_chapters = ("total_chapters", E.int book_form.total_chapters)
+        author_id = ("author", E.int book_form.author)
+        book_order = case book_form.book_order of 
+                        Just val -> ("book_order", E.int val)
+                        Nothing -> ("book_order", E.null)
+        franchise = case book_form.book_order of 
+                        Just val -> ("franchise", E.int val)
+                        Nothing -> ("franchise", E.null)
+        genre = case book_form.genre of 
+                        Just val -> ("genre", E.int val)
+                        Nothing -> ("genre", E.null)
+    in 
+        E.object [bk_name, tot_pages, tot_chapters, author_id, book_order, franchise, genre]
 
 
 sendHistoryRecord : Token -> CreateHistory -> Cmd Msg 

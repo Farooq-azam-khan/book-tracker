@@ -2,6 +2,13 @@ module Msg exposing (..)
 import Types exposing (..)
 import Http exposing(stringPart)
 
+type BookFormFields 
+    = ToggleBookForm 
+    | ChangeName String 
+    | PageCount (Maybe Int) 
+    | ChapterCount (Maybe Int) 
+    | BookAuthor (Maybe Int)
+
 type Msg = NoOp 
          | UpdateUserName String 
          | UpdatePassword String 
@@ -11,8 +18,10 @@ type Msg = NoOp
          | BooksGetRequest (Result Http.Error (List Book))
          | HistoryGetRequest (Result Http.Error (List History))
          | HistoryDeleteRequest (Result Http.Error Int)
+         -- Navbar Actions
          | ToggleCreateRecord
          | CreateHistoryRecord
+         | PostCreateBook
          | UpdateHistoryFormBook (Maybe Int)
          | UpdateHistoryChapterMark (Maybe Int)
          | UpdateHistoryPageMark (Maybe Int)
@@ -22,3 +31,6 @@ type Msg = NoOp
          | LogoutAction
          | DeleteRecordAction Int 
          | AreYouSure
+         | UpdateBookForm BookFormFields
+         | CreateBookRequest (Result Http.Error Book)
+         | AuthorsGetRequest (Result Http.Error (List Author))

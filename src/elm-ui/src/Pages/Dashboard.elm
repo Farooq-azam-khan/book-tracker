@@ -7,7 +7,7 @@ import Html.Attributes exposing(type_, placeholder, for, value, id, attribute, c
 import Msg exposing (..)
 import Model exposing (..)
 import Components exposing (..)
-import Forms exposing (create_record_form)
+import Forms exposing (create_record_form, create_book_form)
 import Round as R
 import Types exposing (..)
 import Icons exposing (..)
@@ -25,9 +25,20 @@ dashboard_view model =
                     then text ""
                     else create_record_form model.books user.history_record_form
             _ -> text "" 
+        , case model.user of 
+            LoggedIn _ user -> 
+                case user.create_book_form of 
+                    Nothing -> 
+                        text ""
+                    Just bk_frm ->
+                        create_book_form model.authors bk_frm
+            _ -> text ""
+
+                
         , div 
             [class "flex justify-end items-center space-x-3 mt-2 px-3"] -- md:fixed md:z-10 md:top-0 md:right-0 md:mt-2 md:mr-2"] 
             [ create_history_record_button
+            , create_book_button
             , logout_button
             ]
         , case model.user of 
@@ -95,6 +106,16 @@ create_history_record_button =
         [span [] [plus_icon]
         , span [class "sm:block hidden"] [text "Create History Record"]
         , span [class "block sm:hidden"] [text "Create Record"]
+        ]
+
+create_book_button : Html Msg 
+create_book_button = 
+    button 
+        [ onClick <| UpdateBookForm ToggleBookForm
+        , class "flex items-center justify-between space-x-1 bg-white text-gray-900 px-3 py-2 text-sm rounded-lg hover:bg-red-700 hover:text-red-100"
+        ] 
+        [ span [] [plus_icon]
+        , span [] [text "Create Book"]
         ]
         
 
