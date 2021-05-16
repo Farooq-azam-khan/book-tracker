@@ -10,6 +10,7 @@ type alias Model =
     , books : Maybe (List Book)
     , reading_list : List BookProgress
     , are_you_sure : Bool  -- TODO: rename to `are_you_sure_history`
+    , authors : Maybe (List Author)
     }
 
 init : Flags -> (Model, Cmd Msg) 
@@ -20,13 +21,17 @@ init flags =
                      , books = Nothing
                      , reading_list = []
                      , are_you_sure = False 
+                     , authors = Nothing 
                      }
 
         init_model_2 = case maybeToken of 
             Nothing -> 
                 init_model
             Just token -> 
-                {init_model | user = LoggedIn token ({ history_record_form = CreateHistory 0 0 0 False, reading_history = []})}
+                let 
+                    user_fields = { history_record_form = CreateHistory 0 0 0 False, reading_history = [], create_book_form = Nothing }
+                in 
+                    {init_model | user = LoggedIn token user_fields}
         -- _ = Debug.log "Flags" maybeToken
         
         auth_commands = case maybeToken of 
@@ -35,6 +40,6 @@ init flags =
             Just token ->
                 [getReadingHistory token]
         
-        commands = Cmd.batch (List.append auth_commands [getBookProgress, getBooks])
+        commands = Cmd.batch (List.append auth_commands [getBookProgress, getBooks, get_authors])
     in
         (init_model_2, commands)

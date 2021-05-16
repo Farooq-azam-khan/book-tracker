@@ -5,6 +5,11 @@ type alias LoginForm =
     , password : String
     , show_form : Bool}
 
+type alias Author = 
+    { id : Int 
+    , name : String 
+    }
+
 type alias Book = 
     { id : Int 
     , name : String
@@ -29,7 +34,26 @@ type alias CreateHistory =
     , show_form : Bool 
     }
 
+type alias CreateBook = 
+    { name : String 
+    ,  total_pages : Int 
+    , total_chapters : Int 
+    , author : Int 
+    ,  book_order : Maybe Int 
+    , franchise : Maybe Int 
+    , genre : Maybe Int 
+    }
 
+init_create_book : CreateBook 
+init_create_book = 
+    { name = ""
+    ,  total_pages = 0 
+    , total_chapters = 0 
+    , author = 0 
+    ,  book_order = Nothing 
+    , franchise = Nothing 
+    , genre = Nothing 
+    }
 -- TODO: login error fields 
 -- type alias LoginError = 
 --     { msg   : String 
@@ -49,6 +73,7 @@ type Token = Token String
 type alias User =
     { history_record_form : CreateHistory
     , reading_history : List History
+    , create_book_form : Maybe CreateBook 
     }
     
 type UserAuthentication 
