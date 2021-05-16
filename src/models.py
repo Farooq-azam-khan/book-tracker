@@ -38,7 +38,7 @@ class CreateBook(BaseModel):
     total_pages: int
     total_chapters: int
     author: int
-    book_order: int
+    book_order: Optional[int]
     franchise: Optional[int]
     genre: Optional[int]
 
@@ -56,6 +56,8 @@ class CreateBook(BaseModel):
     
     @validator('book_order')
     def book_order_is_pos(cls, v):
+        if v == None: 
+            return v 
         if v <= 0:
             raise ValueError('book order needs to be bigger than 1')
         return v
