@@ -20,3 +20,11 @@ if [[ "$STR" == *"$SUB"* ]]; then
     sed -i "s/path='elm_prod.js'/path='elm.js'/g" index.html
 fi
 
+
+STR=$(grep "path='tailwind_prod.css'" index.html)
+SUB='tailwind_prod.css'
+if [[ "$STR" == *"$SUB"* ]]; then
+    echo "Switching to Dev build for tailwindcss"
+    sed -i "s/path='tailwind_prod.css'/path='tailwind.css'/g" index.html
+fi
+
