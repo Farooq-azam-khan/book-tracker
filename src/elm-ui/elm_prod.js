@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aF === next.aF
+							&& curr.aE === next.aE
 							&& curr.aq === next.aq
-							&& curr.aB.a === next.aB.a
+							&& curr.aA.a === next.aA.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ba: 'hidden', a3: 'visibilitychange' }
+		? { a9: 'hidden', a2: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ba: 'mozHidden', a3: 'mozvisibilitychange' }
+		? { a9: 'mozHidden', a2: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ba: 'msHidden', a3: 'msvisibilitychange' }
+		? { a9: 'msHidden', a2: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ba: 'webkitHidden', a3: 'webkitvisibilitychange' }
-		: { ba: 'hidden', a3: 'visibilitychange' };
+		? { a9: 'webkitHidden', a2: 'webkitvisibilitychange' }
+		: { a9: 'hidden', a2: 'visibilitychange' };
 }
 
 
@@ -4232,11 +4232,11 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aO: _Browser_getScene(),
-		aV: {
-			aX: _Browser_window.pageXOffset,
-			aY: _Browser_window.pageYOffset,
-			aW: _Browser_doc.documentElement.clientWidth,
+		aN: _Browser_getScene(),
+		aU: {
+			aW: _Browser_window.pageXOffset,
+			aX: _Browser_window.pageYOffset,
+			aV: _Browser_doc.documentElement.clientWidth,
 			ao: _Browser_doc.documentElement.clientHeight
 		}
 	};
@@ -4247,7 +4247,7 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aW: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aV: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
 		ao: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
@@ -4271,14 +4271,14 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aO: {
-				aW: node.scrollWidth,
+			aN: {
+				aV: node.scrollWidth,
 				ao: node.scrollHeight
 			},
-			aV: {
-				aX: node.scrollLeft,
-				aY: node.scrollTop,
-				aW: node.clientWidth,
+			aU: {
+				aW: node.scrollLeft,
+				aX: node.scrollTop,
+				aV: node.clientWidth,
 				ao: node.clientHeight
 			}
 		};
@@ -4309,17 +4309,17 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aO: _Browser_getScene(),
-			aV: {
-				aX: x,
-				aY: y,
-				aW: _Browser_doc.documentElement.clientWidth,
+			aN: _Browser_getScene(),
+			aU: {
+				aW: x,
+				aX: y,
+				aV: _Browser_doc.documentElement.clientWidth,
 				ao: _Browser_doc.documentElement.clientHeight
 			},
-			a7: {
-				aX: x + rect.left,
-				aY: y + rect.top,
-				aW: rect.width,
+			a6: {
+				aW: x + rect.left,
+				aX: y + rect.top,
+				aV: rect.width,
 				ao: rect.height
 			}
 		};
@@ -4400,7 +4400,7 @@ function _Http_configureRequest(xhr, request)
 	}
 	xhr.timeout = request.T.a || 0;
 	xhr.responseType = request.u.d;
-	xhr.withCredentials = request.a_;
+	xhr.withCredentials = request.aZ;
 }
 
 
@@ -4520,14 +4520,14 @@ function _Http_track(router, xhr, tracker)
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
 			bo: event.loaded,
-			aQ: event.total
+			aP: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
 			bm: event.loaded,
-			aQ: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			aP: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -5072,7 +5072,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {am: fragment, aq: host, az: path, aB: port_, aF: protocol, aG: query};
+		return {am: fragment, aq: host, ay: path, aA: port_, aE: protocol, aF: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5354,7 +5354,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $author$project$Types$CreateHistory = F4(
 	function (book, page_mark, chapter_mark, show_form) {
-		return {ac: book, af: chapter_mark, ay: page_mark, S: show_form};
+		return {ac: book, af: chapter_mark, ax: page_mark, S: show_form};
 	});
 var $author$project$Types$LoggedIn = F2(
 	function (a, b) {
@@ -5382,11 +5382,11 @@ var $author$project$Msg$GetActiveReadingList = function (a) {
 };
 var $author$project$Types$BookProgress = F4(
 	function (book, read_before, page_progress, chapter_progress) {
-		return {ac: book, a4: chapter_progress, bi: page_progress, aH: read_before};
+		return {ac: book, a3: chapter_progress, bi: page_progress, aG: read_before};
 	});
 var $author$project$Types$Book = F5(
 	function (id, name, total_chapters, total_pages, author) {
-		return {a0: author, ar: id, be: name, bu: total_chapters, bv: total_pages};
+		return {a$: author, ba: id, be: name, bu: total_chapters, bv: total_pages};
 	});
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$map5 = _Json_map5;
@@ -6028,7 +6028,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {aJ: reqs, aS: subs};
+		return {aI: reqs, aR: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6102,7 +6102,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.aJ));
+			A3($elm$http$Http$updateReqs, router, cmds, state.aI));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6145,7 +6145,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.aS)));
+					state.aR)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -6159,7 +6159,7 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					a_: r.a_,
+					aZ: r.aZ,
 					I: r.I,
 					u: A2(_Http_mapExpect, func, r.u),
 					P: r.P,
@@ -6189,7 +6189,7 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{a_: false, I: r.I, u: r.u, P: r.P, R: r.R, T: r.T, U: r.U, y: r.y}));
+			{aZ: false, I: r.I, u: r.u, P: r.P, R: r.R, T: r.T, U: r.U, y: r.y}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
@@ -6229,7 +6229,7 @@ var $author$project$Api$auth_header = function (_v0) {
 };
 var $author$project$Types$History = F5(
 	function (book, page_mark, chapter_mark, read_at, id) {
-		return {ac: book, af: chapter_mark, ar: id, ay: page_mark, bk: read_at};
+		return {ac: book, af: chapter_mark, ba: id, ax: page_mark, bk: read_at};
 	});
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
 var $elm$json$Json$Decode$maybe = function (decoder) {
@@ -6272,7 +6272,7 @@ var $author$project$Msg$AuthorsGetRequest = function (a) {
 };
 var $author$project$Types$Author = F2(
 	function (id, name) {
-		return {ar: id, be: name};
+		return {ba: id, be: name};
 	});
 var $author$project$Api$author_decoder = A3(
 	$elm$json$Json$Decode$map2,
@@ -6301,8 +6301,8 @@ var $author$project$Model$init = function (flags) {
 	var maybeToken = A2($elm$core$Maybe$map, $elm$core$Basics$identity, flags.br);
 	var init_model = {
 		O: false,
+		a0: $elm$core$Maybe$Nothing,
 		a1: $elm$core$Maybe$Nothing,
-		a2: $elm$core$Maybe$Nothing,
 		bl: _List_Nil,
 		c: $author$project$Types$LoggedOut(
 			A3($author$project$Types$LoginForm, '', '', false))
@@ -6428,7 +6428,7 @@ var $author$project$Api$encodeCreateBook = function (book_form) {
 		'total_chapters',
 		$elm$json$Json$Encode$int(book_form.bu));
 	var genre = function () {
-		var _v2 = book_form.a9;
+		var _v2 = book_form.a8;
 		if (!_v2.$) {
 			var val = _v2.a;
 			return _Utils_Tuple2(
@@ -6465,7 +6465,7 @@ var $author$project$Api$encodeCreateBook = function (book_form) {
 		$elm$json$Json$Encode$string(book_form.be));
 	var author_id = _Utils_Tuple2(
 		'author',
-		$elm$json$Json$Encode$int(book_form.a0));
+		$elm$json$Json$Encode$int(book_form.a$));
 	return $elm$json$Json$Encode$object(
 		_List_fromArray(
 			[bk_name, tot_pages, tot_chapters, author_id, book_order, franchise, genre]));
@@ -6499,7 +6499,7 @@ var $author$project$Msg$WasHistoryRecodedSuccessful = function (a) {
 var $author$project$Api$encodeCreateHistory = function (history_record_form) {
 	var end_page_val = _Utils_Tuple2(
 		'page_mark',
-		$elm$json$Json$Encode$int(history_record_form.ay));
+		$elm$json$Json$Encode$int(history_record_form.ax));
 	var chapter_val = _Utils_Tuple2(
 		'chapter_mark',
 		$elm$json$Json$Encode$int(history_record_form.af));
@@ -6559,7 +6559,7 @@ var $author$project$Api$sendLoginRequest = function (login_form) {
 		});
 };
 var $author$project$Ports$storeToken = _Platform_outgoingPort('storeToken', $elm$json$Json$Encode$string);
-var $author$project$Types$init_create_book = {a0: 0, ad: $elm$core$Maybe$Nothing, an: $elm$core$Maybe$Nothing, a9: $elm$core$Maybe$Nothing, be: '', bu: 0, bv: 0};
+var $author$project$Types$init_create_book = {a$: 0, ad: $elm$core$Maybe$Nothing, an: $elm$core$Maybe$Nothing, a8: $elm$core$Maybe$Nothing, be: '', bu: 0, bv: 0};
 var $author$project$Main$update_book_form = F2(
 	function (user, field) {
 		if (user.$ === 1) {
@@ -6627,7 +6627,7 @@ var $author$project$Main$update_book_form = F2(
 								return $elm$core$Maybe$Just(
 									_Utils_update(
 										bk,
-										{a0: authorId}));
+										{a$: authorId}));
 							} else {
 								return $elm$core$Maybe$Nothing;
 							}
@@ -6663,7 +6663,7 @@ var $author$project$Main$update_history_record_form = F2(
 						var val = field.a;
 						return _Utils_update(
 							old_hist,
-							{ay: val});
+							{ax: val});
 					case 2:
 						var val = field.a;
 						return _Utils_update(
@@ -6890,7 +6890,7 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								a2: $elm$core$Maybe$Just(response)
+								a1: $elm$core$Maybe$Just(response)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -6901,7 +6901,7 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								a1: $elm$core$Maybe$Just(r)
+								a0: $elm$core$Maybe$Just(r)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -7012,7 +7012,7 @@ var $author$project$Main$update = F2(
 						var filt_hist = A2(
 							$elm$core$List$filter,
 							function (hist) {
-								return !_Utils_eq(hist.ar, response);
+								return !_Utils_eq(hist.ba, response);
 							},
 							user_alias.E);
 						var new_user_alias = _Utils_update(
@@ -7040,11 +7040,276 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$html$Html$td = _VirtualDom_node('td');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$tr = _VirtualDom_node('tr');
+var $author$project$Components$display_book_row = F2(
+	function (maybe_authors, book) {
+		return A2(
+			$elm$html$Html$tr,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$td,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(book.be)
+						])),
+					A2(
+					$elm$html$Html$td,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							function () {
+								if (!maybe_authors.$) {
+									var authors = maybe_authors.a;
+									var author_name = A2(
+										$elm$core$List$filter,
+										function (author) {
+											return _Utils_eq(author.ba, book.a$);
+										},
+										authors);
+									var _v1 = $elm$core$List$head(author_name);
+									if (_v1.$ === 1) {
+										return $elm$core$String$fromInt(book.a$);
+									} else {
+										var author = _v1.a;
+										return author.be;
+									}
+								} else {
+									return $elm$core$String$fromInt(book.a$);
+								}
+							}())
+						])),
+					A2(
+					$elm$html$Html$td,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							$elm$core$String$fromInt(book.bv))
+						])),
+					A2(
+					$elm$html$Html$td,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							$elm$core$String$fromInt(book.bu))
+						]))
+				]));
+	});
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $elm$html$Html$table = _VirtualDom_node('table');
+var $elm$html$Html$tbody = _VirtualDom_node('tbody');
+var $elm$html$Html$th = _VirtualDom_node('th');
+var $elm$html$Html$thead = _VirtualDom_node('thead');
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $author$project$Components$books_table = F2(
+	function (maybe_authors, books) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('font-serif text-gray-900 flex flex-wrap mt-4 max-w-xl md:max-w-5xl mx-auto')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('w-full xl:w-8/12 mb-12 xl:mb-0 px-4')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('rounded-t mb-0 px-4 py-3 border-0')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('flex flex-wrap items-center')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$div,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('relative w-full px-4 max-w-full flex-grow flex-1')
+														]),
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$h3,
+															_List_fromArray(
+																[
+																	$elm$html$Html$Attributes$class('font-semibold text-base text-blueGray-700')
+																]),
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('Books')
+																]))
+														])),
+													A2(
+													$elm$html$Html$div,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('relative w-full px-4 max-w-full flex-grow flex-1 text-right')
+														]),
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$button,
+															_List_fromArray(
+																[
+																	$elm$html$Html$Attributes$class('font-sans cursor-not-allowed bg-indigo-500 text-gray-300 active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1'),
+																	A2($elm$html$Html$Attributes$attribute, 'style', 'transition:all .15s ease'),
+																	$elm$html$Html$Attributes$type_('button'),
+																	A2($elm$html$Html$Attributes$attribute, 'diabled', 'disabled')
+																]),
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('See all')
+																]))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('block w-full overflow-x-auto')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$table,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('items-center w-full bg-transparent border-collapse')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$thead,
+													_List_Nil,
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$tr,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	A2(
+																	$elm$html$Html$th,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$Attributes$class('px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left')
+																		]),
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$text('Book')
+																		])),
+																	A2(
+																	$elm$html$Html$th,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$Attributes$class('px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left')
+																		]),
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$text('Author')
+																		])),
+																	A2(
+																	$elm$html$Html$th,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$Attributes$class('px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left')
+																		]),
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$text('Total Pages')
+																		])),
+																	A2(
+																	$elm$html$Html$th,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$Attributes$class('px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left')
+																		]),
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$text('Total Chapters')
+																		]))
+																]))
+														])),
+													A2(
+													$elm$html$Html$tbody,
+													_List_Nil,
+													A2(
+														$elm$core$List$map,
+														$author$project$Components$display_book_row(maybe_authors),
+														books))
+												]))
+										]))
+								]))
+						]))
+				]));
+	});
 var $author$project$Msg$ToggleBookForm = {$: 0};
 var $author$project$Msg$UpdateBookForm = function (a) {
 	return {$: 21, a: a};
 };
-var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 0, a: a};
 };
@@ -7062,14 +7327,6 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
-var $elm$virtual_dom$VirtualDom$attribute = F2(
-	function (key, value) {
-		return A2(
-			_VirtualDom_attribute,
-			_VirtualDom_noOnOrFormAction(key),
-			_VirtualDom_noJavaScriptOrHtmlUri(value));
-	});
-var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
@@ -7101,8 +7358,6 @@ var $author$project$Icons$plus_icon = A2(
 			_List_Nil)
 		]));
 var $elm$html$Html$span = _VirtualDom_node('span');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Pages$Dashboard$create_book_button = A2(
 	$elm$html$Html$button,
 	_List_fromArray(
@@ -7145,7 +7400,7 @@ var $author$project$Forms$authorOption = function (author) {
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$value(
-				$elm$core$String$fromInt(author.ar))
+				$elm$core$String$fromInt(author.ba))
 			]),
 		_List_fromArray(
 			[
@@ -7165,14 +7420,12 @@ var $elm$core$Basics$composeL = F3(
 		return g(
 			f(x));
 	});
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
-var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $author$project$Icons$x_icon = A2(
 	$elm$svg$Svg$svg,
 	_List_fromArray(
@@ -7362,7 +7615,7 @@ var $author$project$Forms$create_book_form = F2(
 											$elm$html$Html$Attributes$id('author'),
 											$elm$html$Html$Events$onInput($author$project$Forms$author_book_field_input),
 											$elm$html$Html$Attributes$value(
-											$elm$core$String$fromInt(book_from_vals.a0)),
+											$elm$core$String$fromInt(book_from_vals.a$)),
 											$elm$html$Html$Attributes$class('w-full focus:border-indigo-500 focus:border-2 rounded-md text-gray-800')
 										]),
 									A2(
@@ -7554,7 +7807,7 @@ var $author$project$Forms$bookOption = function (book) {
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$value(
-				$elm$core$String$fromInt(book.ar))
+				$elm$core$String$fromInt(book.ba))
 			]),
 		_List_fromArray(
 			[
@@ -7716,7 +7969,7 @@ var $author$project$Forms$create_record_form = F2(
 																_List_fromArray(
 																	[
 																		$elm$html$Html$Attributes$value(
-																		$elm$core$String$fromInt(history_form.ay)),
+																		$elm$core$String$fromInt(history_form.ax)),
 																		$elm$html$Html$Attributes$id('page-mark'),
 																		$elm$html$Html$Events$onInput(
 																		A2($elm$core$Basics$composeL, $author$project$Msg$UpdateHistoryPageMark, $elm$core$String$toInt)),
@@ -7895,22 +8148,13 @@ var $author$project$Components$are_you_sure_modal = F4(
 						$elm$html$Html$text('Yes'))
 					])));
 	});
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
 var $author$project$Pages$Dashboard$getBookById = F2(
 	function (id, books) {
 		return $elm$core$List$head(
 			A2(
 				$elm$core$List$filter,
 				function (book) {
-					return _Utils_eq(book.ar, id);
+					return _Utils_eq(book.ba, id);
 				},
 				books));
 	});
@@ -8307,9 +8551,6 @@ var $author$project$Pages$Dashboard$ratio_comp = F2(
 						]))
 				]));
 	});
-var $elm$html$Html$td = _VirtualDom_node('td');
-var $elm$html$Html$th = _VirtualDom_node('th');
-var $elm$html$Html$tr = _VirtualDom_node('tr');
 var $author$project$Icons$trash_icon = function (cls) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -8343,7 +8584,7 @@ var $author$project$Pages$Dashboard$display_single_history = F3(
 				'Book with id ' + ($elm$core$String$fromInt(hist.ac) + 'does not exist.'));
 		} else {
 			var book = _v0.a;
-			var pct = (hist.ay / book.bv) * 100;
+			var pct = (hist.ax / book.bv) * 100;
 			var prog = (pct <= 1) ? A2($myrho$elm_round$Round$round, 2, pct) : A2($myrho$elm_round$Round$round, 0, pct);
 			return A2(
 				$elm$html$Html$tr,
@@ -8387,7 +8628,7 @@ var $author$project$Pages$Dashboard$display_single_history = F3(
 													])),
 												are_you_sure ? A4(
 												$author$project$Components$are_you_sure_modal,
-												$author$project$Msg$DeleteRecordAction(hist.ar),
+												$author$project$Msg$DeleteRecordAction(hist.ba),
 												$author$project$Msg$AreYouSure,
 												'Delete History',
 												'Deleting book!!!') : $elm$html$Html$text(''),
@@ -8419,7 +8660,7 @@ var $author$project$Pages$Dashboard$display_single_history = F3(
 							]),
 						_List_fromArray(
 							[
-								A2($author$project$Pages$Dashboard$ratio_comp, hist.ay, book.bv)
+								A2($author$project$Pages$Dashboard$ratio_comp, hist.ax, book.bv)
 							])),
 						A2(
 						$elm$html$Html$td,
@@ -8451,10 +8692,6 @@ var $author$project$Pages$Dashboard$display_single_history = F3(
 					]));
 		}
 	});
-var $elm$html$Html$h3 = _VirtualDom_node('h3');
-var $elm$html$Html$table = _VirtualDom_node('table');
-var $elm$html$Html$tbody = _VirtualDom_node('tbody');
-var $elm$html$Html$thead = _VirtualDom_node('thead');
 var $author$project$Pages$Dashboard$display_reading_history = F3(
 	function (books, are_you_sure, reading_history) {
 		return A2(
@@ -8677,7 +8914,7 @@ var $author$project$Pages$Dashboard$dashboard_view = function (model) {
 				var _v0 = model.c;
 				if (_v0.$ === 1) {
 					var user = _v0.b;
-					return (!user.Q.S) ? $elm$html$Html$text('') : A2($author$project$Forms$create_record_form, model.a2, user.Q);
+					return (!user.Q.S) ? $elm$html$Html$text('') : A2($author$project$Forms$create_record_form, model.a1, user.Q);
 				} else {
 					return $elm$html$Html$text('');
 				}
@@ -8691,7 +8928,7 @@ var $author$project$Pages$Dashboard$dashboard_view = function (model) {
 						return $elm$html$Html$text('');
 					} else {
 						var bk_frm = _v2.a;
-						return A2($author$project$Forms$create_book_form, model.a1, bk_frm);
+						return A2($author$project$Forms$create_book_form, model.a0, bk_frm);
 					}
 				} else {
 					return $elm$html$Html$text('');
@@ -8709,13 +8946,22 @@ var $author$project$Pages$Dashboard$dashboard_view = function (model) {
 				var _v3 = model.c;
 				if (_v3.$ === 1) {
 					var user_alias = _v3.b;
-					var _v4 = model.a2;
+					var _v4 = model.a1;
 					if (_v4.$ === 1) {
 						return $elm$html$Html$text('books do not exist');
 					} else {
 						var books = _v4.a;
 						return A3($author$project$Pages$Dashboard$display_reading_history, books, model.O, user_alias.E);
 					}
+				} else {
+					return $elm$html$Html$text('');
+				}
+			}(),
+				function () {
+				var _v5 = model.a1;
+				if (!_v5.$) {
+					var books = _v5.a;
+					return A2($author$project$Components$books_table, model.a0, books);
 				} else {
 					return $elm$html$Html$text('');
 				}
@@ -8767,7 +9013,7 @@ var $author$project$Pages$Home$book_view = function (prog_book) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										'read ' + ($elm$core$String$fromInt(prog_book.aH) + A3($author$project$Pages$Home$pluralize, prog_book.aH, ' time', ' times')))
+										'read ' + ($elm$core$String$fromInt(prog_book.aG) + A3($author$project$Pages$Home$pluralize, prog_book.aG, ' time', ' times')))
 									]))
 							]))
 					])),
@@ -8780,12 +9026,11 @@ var $author$project$Pages$Home$book_view = function (prog_book) {
 				_List_fromArray(
 					[
 						A2($author$project$Components$progres_bar, 'page', 100 * prog_book.bi),
-						A2($author$project$Components$progres_bar, 'chapter', 100 * prog_book.a4)
+						A2($author$project$Components$progres_bar, 'chapter', 100 * prog_book.a3)
 					]))
 			]));
 };
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $elm$html$Html$li = _VirtualDom_node('li');
 var $author$project$Msg$ToggleLogin = {$: 4};
 var $author$project$Icons$login_icon = function (cls) {
 	return A2(
@@ -9014,147 +9259,17 @@ var $author$project$Forms$login_form_view = function (login_form) {
 					]))
 			]));
 };
-var $elm$html$Html$ol = _VirtualDom_node('ol');
-var $elm$core$List$takeReverse = F3(
-	function (n, list, kept) {
-		takeReverse:
-		while (true) {
-			if (n <= 0) {
-				return kept;
-			} else {
-				if (!list.b) {
-					return kept;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs,
-						$temp$kept = A2($elm$core$List$cons, x, kept);
-					n = $temp$n;
-					list = $temp$list;
-					kept = $temp$kept;
-					continue takeReverse;
-				}
-			}
-		}
-	});
-var $elm$core$List$takeTailRec = F2(
-	function (n, list) {
-		return $elm$core$List$reverse(
-			A3($elm$core$List$takeReverse, n, list, _List_Nil));
-	});
-var $elm$core$List$takeFast = F3(
-	function (ctr, n, list) {
-		if (n <= 0) {
-			return _List_Nil;
-		} else {
-			var _v0 = _Utils_Tuple2(n, list);
-			_v0$1:
-			while (true) {
-				_v0$5:
-				while (true) {
-					if (!_v0.b.b) {
-						return list;
-					} else {
-						if (_v0.b.b.b) {
-							switch (_v0.a) {
-								case 1:
-									break _v0$1;
-								case 2:
-									var _v2 = _v0.b;
-									var x = _v2.a;
-									var _v3 = _v2.b;
-									var y = _v3.a;
-									return _List_fromArray(
-										[x, y]);
-								case 3:
-									if (_v0.b.b.b.b) {
-										var _v4 = _v0.b;
-										var x = _v4.a;
-										var _v5 = _v4.b;
-										var y = _v5.a;
-										var _v6 = _v5.b;
-										var z = _v6.a;
-										return _List_fromArray(
-											[x, y, z]);
-									} else {
-										break _v0$5;
-									}
-								default:
-									if (_v0.b.b.b.b && _v0.b.b.b.b.b) {
-										var _v7 = _v0.b;
-										var x = _v7.a;
-										var _v8 = _v7.b;
-										var y = _v8.a;
-										var _v9 = _v8.b;
-										var z = _v9.a;
-										var _v10 = _v9.b;
-										var w = _v10.a;
-										var tl = _v10.b;
-										return (ctr > 1000) ? A2(
-											$elm$core$List$cons,
-											x,
-											A2(
-												$elm$core$List$cons,
-												y,
-												A2(
-													$elm$core$List$cons,
-													z,
-													A2(
-														$elm$core$List$cons,
-														w,
-														A2($elm$core$List$takeTailRec, n - 4, tl))))) : A2(
-											$elm$core$List$cons,
-											x,
-											A2(
-												$elm$core$List$cons,
-												y,
-												A2(
-													$elm$core$List$cons,
-													z,
-													A2(
-														$elm$core$List$cons,
-														w,
-														A3($elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
-									} else {
-										break _v0$5;
-									}
-							}
-						} else {
-							if (_v0.a === 1) {
-								break _v0$1;
-							} else {
-								break _v0$5;
-							}
-						}
-					}
-				}
-				return list;
-			}
-			var _v1 = _v0.b;
-			var x = _v1.a;
-			return _List_fromArray(
-				[x]);
-		}
-	});
-var $elm$core$List$take = F2(
-	function (n, list) {
-		return A3($elm$core$List$takeFast, 0, n, list);
-	});
 var $author$project$Pages$Home$home_view = function (model) {
-	return (!$elm$core$List$length(model.bl)) ? A2(
+	return A2(
 		$elm$html$Html$div,
+		_List_Nil,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('px-3 overflow-x-hidden overflow-y-auto justify-center items-center')
-			]),
-		_List_fromArray(
-			[
-				A2(
+				(!$elm$core$List$length(model.bl)) ? A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('relative w-auto my-6 mx-auto max-w-3xl')
+						$elm$html$Html$Attributes$class('px-3 overflow-x-hidden overflow-y-auto justify-center items-center')
 					]),
 				_List_fromArray(
 					[
@@ -9162,7 +9277,7 @@ var $author$project$Pages$Home$home_view = function (model) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none')
+								$elm$html$Html$Attributes$class('relative w-auto my-6 mx-auto max-w-3xl')
 							]),
 						_List_fromArray(
 							[
@@ -9170,182 +9285,107 @@ var $author$project$Pages$Home$home_view = function (model) {
 								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t')
+										$elm$html$Html$Attributes$class('border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none')
 									]),
 								_List_fromArray(
 									[
 										A2(
-										$elm$html$Html$h3,
+										$elm$html$Html$div,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('text-indigo-500 text-xl font-semibold')
+												$elm$html$Html$Attributes$class('flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t')
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text('Recently Read Books')
-											]))
-									])),
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('relative p-6 flex-auto text-gray-800')
-									]),
-								_List_fromArray(
-									[
-										function () {
-										var _v0 = model.c;
-										switch (_v0.$) {
-											case 0:
-												return $elm$html$Html$text('');
-											case 1:
-												return $elm$html$Html$text('');
-											default:
-												var login_form = _v0.a;
-												return login_form.S ? $author$project$Forms$login_form_view(login_form) : $author$project$Pages$Home$login_button;
-										}
-									}(),
-										A2(
-										$elm$html$Html$p,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('my-3 text-md leading-relaxed')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Currently I do not have any progress to share about the books I am reading')
-											])),
-										function () {
-										var _v1 = model.a2;
-										if (_v1.$ === 1) {
-											return $elm$html$Html$text('');
-										} else {
-											var books = _v1.a;
-											return A2(
-												$elm$html$Html$div,
-												_List_Nil,
+												A2(
+												$elm$html$Html$h3,
 												_List_fromArray(
 													[
-														A2(
-														$elm$html$Html$p,
-														_List_Nil,
-														_List_fromArray(
-															[
-																$elm$html$Html$text('Below are a list of books I have read recently.')
-															])),
-														A2(
-														$elm$html$Html$ol,
-														_List_fromArray(
-															[
-																$elm$html$Html$Attributes$class('list-disc text-indigo-500')
-															]),
-														_List_fromArray(
-															[
-																A2(
-																$elm$html$Html$li,
-																_List_Nil,
-																A2(
-																	$elm$core$List$map,
-																	function (book) {
-																		return A2(
-																			$elm$html$Html$li,
-																			_List_Nil,
-																			_List_fromArray(
-																				[
-																					$elm$html$Html$text(book.be)
-																				]));
-																	},
-																	A2($elm$core$List$take, 5, books)))
-															]))
-													]));
-										}
-									}()
+														$elm$html$Html$Attributes$class('text-indigo-500 text-xl font-semibold')
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Recently Read Books')
+													]))
+											])),
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('relative p-6 flex-auto text-gray-800')
+											]),
+										_List_fromArray(
+											[
+												function () {
+												var _v0 = model.c;
+												switch (_v0.$) {
+													case 0:
+														return $elm$html$Html$text('');
+													case 1:
+														return $elm$html$Html$text('');
+													default:
+														var login_form = _v0.a;
+														return login_form.S ? $author$project$Forms$login_form_view(login_form) : $author$project$Pages$Home$login_button;
+												}
+											}(),
+												A2(
+												$elm$html$Html$p,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('my-3 text-md leading-relaxed')
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('No Progress at the moment.')
+													]))
+											]))
 									]))
 							]))
-					]))
-			])) : A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('space-y-4')
-			]),
-		_List_fromArray(
-			[
-				function () {
-				var _v2 = model.c;
-				switch (_v2.$) {
-					case 0:
-						return $elm$html$Html$text('');
-					case 1:
-						return $elm$html$Html$text('');
-					default:
-						var login_form = _v2.a;
-						return login_form.S ? $author$project$Forms$login_form_view(login_form) : $author$project$Pages$Home$login_button;
-				}
-			}(),
-				A2(
-				$elm$html$Html$h1,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('text-3xl font-bold tracking-wide text-center text-white')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Books I am Reading')
-					])),
-				A2(
+					])) : A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif')
+						$elm$html$Html$Attributes$class('space-y-4')
 					]),
-				A2($elm$core$List$map, $author$project$Pages$Home$book_view, model.bl)),
-				function () {
-				var _v3 = model.a2;
-				if (_v3.$ === 1) {
-					return $elm$html$Html$text('');
-				} else {
-					var books = _v3.a;
-					return A2(
-						$elm$html$Html$div,
+				_List_fromArray(
+					[
+						function () {
+						var _v1 = model.c;
+						switch (_v1.$) {
+							case 0:
+								return $elm$html$Html$text('');
+							case 1:
+								return $elm$html$Html$text('');
+							default:
+								var login_form = _v1.a;
+								return login_form.S ? $author$project$Forms$login_form_view(login_form) : $author$project$Pages$Home$login_button;
+						}
+					}(),
+						A2(
+						$elm$html$Html$h1,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('px-3 py-4 bg-white rounded-md relative w-auto my-6 mx-auto max-w-4xl')
+								$elm$html$Html$Attributes$class('text-3xl font-bold tracking-wide text-center text-white')
 							]),
 						_List_fromArray(
 							[
-								A2(
-								$elm$html$Html$p,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Below are a list of books I have read recently.')
-									])),
-								A2(
-								$elm$html$Html$ol,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('text-indigo-500')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$li,
-										_List_Nil,
-										A2(
-											$elm$core$List$map,
-											function (book) {
-												return A2(
-													$elm$html$Html$li,
-													_List_Nil,
-													_List_fromArray(
-														[
-															$elm$html$Html$text(book.be)
-														]));
-											},
-											A2($elm$core$List$take, 5, books)))
-									]))
-							]));
+								$elm$html$Html$text('Books I am Reading')
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif')
+							]),
+						A2($elm$core$List$map, $author$project$Pages$Home$book_view, model.bl))
+					])),
+				function () {
+				var _v2 = model.a1;
+				if (_v2.$ === 1) {
+					return $elm$html$Html$text('');
+				} else {
+					var books = _v2.a;
+					return A2($author$project$Components$books_table, model.a0, books);
 				}
 			}()
 			]));

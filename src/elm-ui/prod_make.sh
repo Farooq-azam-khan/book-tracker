@@ -4,7 +4,7 @@
 
 echo "Creating purgedcss file"
 sed -i "s/enabled: false/enabled: true/g" tailwind.config.js
-npm run build:tailwind
+npm run build:tailwind_prod
 
 # make optimized elm
 echo "Making optimized elm for production"
@@ -12,3 +12,4 @@ elm make src/Main.elm --output=elm_prod.js --optimize
 
 # replace elm.js in index.html with elm_prod.js
 sed -i  "s/path='elm.js'/path='elm_prod.js'/g" index.html
+sed -i  "s/path='tailwind.css'/path='tailwind_prod.css'/g" index.html
