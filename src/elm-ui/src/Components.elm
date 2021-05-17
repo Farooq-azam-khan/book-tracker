@@ -6,7 +6,7 @@ import Round as R
 import Icons exposing (..)
 import Html.Events exposing (..)
 import Msg exposing (Msg)
-import Types exposing (Close(..))
+import Types exposing (..)
 
 
 are_you_sure_modal : Msg -> Close Msg -> String -> String -> Html Msg 
@@ -78,4 +78,83 @@ progres_bar prog_type percentage =
                 [ class "shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500", attribute "style" ("width:"++ String.fromFloat percentage ++"%") ]
                 []
             ]
+        ]
+
+books_table : Maybe (List Author) -> List Book -> Html Msg 
+books_table maybe_authors books = 
+    div [ class "font-serif text-gray-900 flex flex-wrap mt-4 max-w-xl md:max-w-5xl mx-auto" ]
+        [ div [ class "w-full xl:w-8/12 mb-12 xl:mb-0 px-4" ]
+            [ div [ class "relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded" ]
+                [ div [ class "rounded-t mb-0 px-4 py-3 border-0" ]
+                    [ div [ class "flex flex-wrap items-center" ]
+                        [ div [ class "relative w-full px-4 max-w-full flex-grow flex-1" ]
+                            [ h3 [ class "font-semibold text-base text-blueGray-700" ]
+                                [ text "Books" ]
+                            ]
+                        , div [ class "relative w-full px-4 max-w-full flex-grow flex-1 text-right" ]
+                            [ button [ class "font-sans cursor-not-allowed bg-indigo-500 text-gray-300 active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1", attribute "style" "transition:all .15s ease", type_ "button", attribute "diabled" "disabled" ]
+                                [ text "See all" ]
+                            ]
+                        ]
+                    ]
+                , div [ class "block w-full overflow-x-auto" ]
+                    [ table [ class "items-center w-full bg-transparent border-collapse" ]
+                        [ thead []
+                            [ tr []
+                                [ th 
+                                    [ class "px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" ]
+                                    [ text "Book" ]
+                                , th 
+                                    [ class "px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" ]
+                                    [ text "Author" ]
+                                , th [ class "px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" ]
+                                    [ text "Total Pages" ]
+                                , th [ class "px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" ]
+                                    [ text "Total Chapters" ]
+                                ]
+                            ]
+                        , tbody []
+                            (List.map (display_book_row maybe_authors) books)
+                        ]
+                    ]
+                ]
+            ]
+    ]
+
+display_book_row : Maybe (List Author) -> Book -> Html Msg 
+display_book_row maybe_authors book =
+    tr 
+        []
+        [ td 
+            [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" 
+            ] 
+            [ text book.name
+            ]
+        , td 
+            [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" 
+            ]
+            [ text <| 
+                case maybe_authors of 
+                    Just authors -> 
+                        let 
+                            author_name = List.filter (\author -> author.id == book.author) authors
+                        in 
+                            case List.head author_name of 
+                                Nothing -> String.fromInt book.author 
+                                Just author -> 
+                                    author.name
+                    Nothing -> String.fromInt book.author 
+            ]
+        , td 
+            [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" 
+            ] 
+            [ text <| String.fromInt book.total_pages
+            ]
+
+        , td 
+            [ class "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" 
+            ] 
+            [ text <| String.fromInt book.total_chapters
+            ]
+
         ]

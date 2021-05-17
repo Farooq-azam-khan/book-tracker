@@ -47,7 +47,11 @@ dashboard_view model =
                     Nothing -> text "books do not exist"
                     Just books -> display_reading_history books model.are_you_sure user_alias.reading_history
             _ -> text ""
-        
+        , case model.books of 
+            Just books -> 
+                books_table model.authors books
+            Nothing -> 
+                text ""
         ]
 
 

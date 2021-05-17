@@ -24,7 +24,7 @@ login_button  =
 
 home_view : Model -> Html Msg 
 home_view model = 
-    if List.length model.reading_list == 0 
+    div [] [if List.length model.reading_list == 0 
     then
     div [ class "px-3 overflow-x-hidden overflow-y-auto justify-center items-center"]
     [ div [ class "relative w-auto my-6 mx-auto max-w-3xl" ]
@@ -40,15 +40,15 @@ home_view model =
                     LoggedOut login_form -> 
                         if login_form.show_form then login_form_view login_form else login_button 
                 , p [ class "my-3 text-md leading-relaxed" ]
-                    [ text "Currently I do not have any progress to share about the books I am reading"] -- Here is a list of books I have read recently." ]
-                , case model.books of 
-                    Nothing -> 
-                        text ""
-                    Just books -> 
-                        div [] 
-                            [ p [] [text "Below are a list of books I have read recently."]
-                            , ol [class "list-disc text-indigo-500"] [li [] (List.map (\book -> li [] [text book.name]) <| List.take 5 books)]
-                            ]
+                    [ text "No Progress at the moment."] -- Here is a list of books I have read recently." ]
+                -- , case model.books of 
+                --     Nothing -> 
+                --         text ""
+                --     Just books -> 
+                --         div [] 
+                --             [ p [] [text "Below are a list of books I have read recently."]
+                --             , ol [class "list-disc text-indigo-500"] [li [] (List.map (\book -> li [] [text book.name]) <| List.take 5 books)]
+                --             ]
                 ]
             
             ]
@@ -66,17 +66,23 @@ home_view model =
         ,  div  [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
                 ] 
                 (List.map book_view model.reading_list) 
+        -- , case model.books of 
+        --     Nothing -> 
+        --         text ""
+        --     Just books -> 
+        --         div [class "px-3 py-4 bg-white rounded-md relative w-auto my-6 mx-auto max-w-4xl"] 
+        --             [ p [] [text "Below are a list of books I have read recently."]
+        --             , ol [class "text-indigo-500"] [li [] (List.map (\book -> li [] [text book.name]) <| List.take 5 books)]
+        --             ]
+            
+            
+        ]
         , case model.books of 
             Nothing -> 
                 text ""
             Just books -> 
-                div [class "px-3 py-4 bg-white rounded-md relative w-auto my-6 mx-auto max-w-4xl"] 
-                    [ p [] [text "Below are a list of books I have read recently."]
-                    , ol [class "text-indigo-500"] [li [] (List.map (\book -> li [] [text book.name]) <| List.take 5 books)]
-                    ]
-            
-                
-        ]
+                books_table model.authors books   
+    ]
     
 
 pluralize : Int -> String -> String -> String 
