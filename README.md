@@ -12,10 +12,10 @@
 * [ ] integrate tailwindcss (experiment with gradient) (priority: 1)
 * [ ] 'Are you Sure?' modal for deleteing books/history, etc. 
 * [ ] update hisotry record form 
-* [ ] display book pages and chapters in history tab 
+* [x] display book pages and chapters in history tab 
 * [x] create book form 
 * [ ] create author form
-* [ ] table of all books
+* [x] table of all books
 * [ ] table of all authors
 * [ ] when finished book make fireworks / confetti
 * [ ] display *you have read x books this month/year*
