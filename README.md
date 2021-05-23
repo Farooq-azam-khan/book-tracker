@@ -37,8 +37,32 @@
 * [x] porgress route 
 * [x] update `books/author` routes 
 * [x] add column / table  `book-franchise` 
+    * [ ] many to many relation and book order for franchises. that way there are no null values in book table
+    * [ ] can display book franchise as a table with progress on it 
 * [x] add column / table `book-genre` https://blog.reedsy.com/book-genres/
+    * [ ] a book is a list of genres (i.e. many to many relation or list of genre ints as column)
+* [ ] add column `bookmark` as `json` column
 
+```elm
+type Bookmark = Bookmark {name: String, page: Int}
+type BookmarColumn = List Bookmark 
+```
+```python
+calss Bookmark(BaseModel):
+    name: str 
+    page: int 
+    book: int
+'''
+eg: 
+[ {book:1, name:"chapter 1", page: 1},
+  {book:1, name:"Part 2", page: 149}
+]
+'''
+```
+* [ ] add column read amount (default to 0). 
+    * [ ] increment every time history table progresses to 100%
+        - that way its a lookup when fetching instead of having to run an expensive algorithm
+        - also beneficial for books read before history oldest date 
 * https://schema.org/Book 
     - `BookFormatType`: `enum {AudiobookFormat, EBook, GraphicNovel, Hardcover, Paperback }`
     - `datePublished`
