@@ -40,8 +40,9 @@
     * [ ] many to many relation and book order for franchises. that way there are no null values in book table
     * [ ] can display book franchise as a table with progress on it 
 * [x] add column / table `book-genre` https://blog.reedsy.com/book-genres/
-    * [ ] a book is a list of genres (i.e. many to many relation or list of genre ints as column)
-* [ ] add column `bookmark` as `json` column
+    * [x] a book has a list of genres (i.e. many to many relation or list of genre ints as column)
+    - pick: second options - list of ints
+* [ ] add column `contents` as `json` column
 
 ```elm
 type Bookmark = Bookmark {name: String, page: Int}

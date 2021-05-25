@@ -155,17 +155,17 @@ encodeCreateBook book_form =
         tot_pages = ("total_pages", E.int book_form.total_pages)
         tot_chapters = ("total_chapters", E.int book_form.total_chapters)
         author_id = ("author", E.int book_form.author)
-        book_order = case book_form.book_order of 
-                        Just val -> ("book_order", E.int val)
-                        Nothing -> ("book_order", E.null)
-        franchise = case book_form.book_order of 
-                        Just val -> ("franchise", E.int val)
-                        Nothing -> ("franchise", E.null)
-        genre = case book_form.genre of 
-                        Just val -> ("genre", E.int val)
-                        Nothing -> ("genre", E.null)
+        -- book_order = case book_form.book_order of 
+        --                 Just val -> ("book_order", E.int val)
+        --                 Nothing -> ("book_order", E.null)
+        -- franchise = case book_form.book_order of 
+        --                 Just val -> ("franchise", E.int val)
+        --                 Nothing -> ("franchise", E.null)
+        -- genre = case book_form.genre of 
+        --                 Just val -> ("genre", E.int val)
+        --                 Nothing -> ("genre", E.null)
     in 
-        E.object [bk_name, tot_pages, tot_chapters, author_id, book_order, franchise, genre]
+        E.object [bk_name, tot_pages, tot_chapters, author_id]--, book_order, franchise, genre]
 
 
 sendHistoryRecord : Token -> CreateHistory -> Cmd Msg 

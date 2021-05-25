@@ -1,5 +1,8 @@
 from fastapi import APIRouter
-from src.models import author_table, database, book_genre_table, CreateGenre, Genre
+from fastapi.param_functions import Depends
+from src.models import database, book_genre_table
+from src.types import CreateGenre
+from src.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -17,7 +20,7 @@ async def get_a_book_genre(genre_d: int):
 
 
 @router.post('/')
-async def create_a_genre(create_genre: CreateGenre):
+async def create_a_genre(create_genre: CreateGenre, _ = Depends(get_current_user)):
     query = book_genre_table.insert().values(name=create_genre.name)
     last_record_id = await database.execute(query)
     query = book_genre_table.select().where(book_genre_table.c.id == last_record_id)

@@ -4,13 +4,13 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Book Tracker Application</title>
-		<link href="{{ url_for('static', path='tailwind_prod.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static', path='tailwind.css') }}" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	</head>
 	<body class="bg-gray-800">
 		<div id="elm-app"></div>
-		<script src="{{ url_for('static', path='elm_prod.js') }}"></script>
+		<script src="{{ url_for('static', path='elm.js') }}"></script>
 		<script>
 			const root = document.querySelector('#elm-app')
 			const TOKEN_KEY = '__BOOK_TRACKER__TOKEN__'

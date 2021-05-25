@@ -1,9 +1,7 @@
-from pydantic import BaseModel
-from typing import Optional
 import datetime 
-import sqlalchemy
+import sqlalchemy as sql
 from dotenv import load_dotenv, dotenv_values
-
+from sqlalchemy.dialects.postgresql import JSON
 
 import databases
 import os 
@@ -18,86 +16,40 @@ database = databases.Database(config['DATABASE_URL'])
 
 
 
+metadata = sql.MetaData()
 
-class CreateFranchise(BaseModel):
-    name: str 
-
-class Franchise(CreateFranchise):
-    id: int 
-
-class CreateGenre(BaseModel):
-    name: str 
-
-class Genre(CreateGenre):
-    id: int 
-
-class CreateAuthor(BaseModel):
-    name: str 
-
-
-class Author(BaseModel):
-    name: str 
-    id: int 
-
-
-class CreateHistory(BaseModel):
-    book: int 
-    page_mark: int
-    chapter_mark: int
-    read_at: Optional[datetime.datetime]
-
-    # TODO: validate page_mark and chapter_mark 
-    # against previous entries
-    # keep in mind that the book might have been read before 
-    # and it is being read a second(or third, etc.) time 
-
-class History(BaseModel):
-    id: int 
-    book: int 
-    start_page: Optional[int]
-    end_page: int
-
-
-metadata = sqlalchemy.MetaData()
-
-author_table = sqlalchemy.Table(
+author_table = sql.Table(
     'author', 
     metadata, 
-    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
-    sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True),
+    sql.Column('id', sql.Integer, primary_key=True), 
+    sql.Column('name', sql.String, nullable=False, unique=True),
 )
 
-
-class UpdateAuthor(CreateAuthor):
-    pass
-
-
-
-book_genre_table = sqlalchemy.Table(
+book_genre_table = sql.Table(
     'book_genre', 
     metadata, 
-    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
-    sqlalchemy.Column('name', sqlalchemy.String,nullable=False, unique=True), 
+    sql.Column('id', sql.Integer, primary_key=True), 
+    sql.Column('name', sql.String,nullable=False, unique=True), 
 )
 
-book_franchise_table = sqlalchemy.Table(
+book_franchise_table = sql.Table(
     'book_franchise', 
     metadata, 
-    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
-    sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True), 
+    sql.Column('id', sql.Integer, primary_key=True), 
+    sql.Column('name', sql.String, nullable=False, unique=True), 
 )
 '''
 update to: 
-book_franchise_order_table = sqlalchemy.Table(
+book_franchise_order_table = sql.Table(
     'book_franchise', 
     metadata, 
-    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), # TODO: primary key on (franchise, book)
-    sqlalchemy.Column('franchise', sqlalchemy.ForiegnKey('book_franchise.id'), nullable=False), 
-    sqlalchemy.ForeignKey('book.id', nullable=False), 
-    sqlalchemy.Column('book_order',
-                        sqlalchemy.Integer,
+    sql.Column('id', sql.Integer, primary_key=True), # TODO: primary key on (franchise, book)
+    sql.Column('franchise', sql.ForiegnKey('book_franchise.id'), nullable=False), 
+    sql.ForeignKey('book.id', nullable=False), 
+    sql.Column('book_order',
+                        sql.Integer,
                         nullable=False,
-                        sqlalchemy.CheckConstraint('book_order > 0'),
+                        sql.CheckConstraint('book_order > 0'),
                     )
 )
 '''
@@ -106,56 +58,47 @@ book_franchise_order_table = sqlalchemy.Table(
 # TODO: add column `descritpion`
 
 
-book_table = sqlalchemy.Table(
+book_table = sql.Table(
     'book',
     metadata,
-    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column('name', sqlalchemy.String, nullable=False, unique=True),
-    sqlalchemy.Column('total_pages', sqlalchemy.Integer, 
-                        sqlalchemy.CheckConstraint('total_pages > 0'),
-                        nullable=False, default=1,
-                    ),
-    sqlalchemy.Column('total_chapters', 
-                        sqlalchemy.Integer, 
-                        sqlalchemy.CheckConstraint('total_chapters > 0'), 
-                        nullable=False, default=1
-                    ),
-    sqlalchemy.Column('author', 
-                        sqlalchemy.Integer, 
-                        sqlalchemy.ForeignKey('author.id'), 
-                        nullable=False
-                    ),
-    sqlalchemy.Column('genre',
-                        sqlalchemy.Integer, 
-                        sqlalchemy.ForeignKey('book_genre.id')
-                    ),
-    sqlalchemy.Column('franchise',
-                        sqlalchemy.Integer, 
-                        sqlalchemy.ForeignKey('book_franchise.id')
-                    ), # TODO: remove 
-    sqlalchemy.Column('book_order',
-                        sqlalchemy.Integer
-                    ) # TODO: remove
+    sql.Column('id', sql.Integer, primary_key=True),
+    sql.Column('name', sql.String, nullable=False, unique=True),
+    sql.Column('total_pages', sql.Integer, 
+                sql.CheckConstraint('total_pages > 0'),
+                nullable=False, default=1,
+            ),
+    sql.Column('total_chapters', 
+                sql.Integer, 
+                sql.CheckConstraint('total_chapters > 0'), 
+                nullable=False, default=1
+            ),
+    sql.Column('author', 
+                sql.Integer, 
+                sql.ForeignKey('author.id'), 
+                nullable=False
+            ),
+    sql.Column('genres',JSON),
+    sql.Column('contents', JSON)
 )
 
-history_table = sqlalchemy.Table(
+history_table = sql.Table(
     'history', 
     metadata, 
-    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True), 
-    sqlalchemy.Column('book', sqlalchemy.Integer, sqlalchemy.ForeignKey('book.id'), nullable=False), 
-    sqlalchemy.Column('page_mark', sqlalchemy.Integer, 
-                        sqlalchemy.CheckConstraint('page_mark > 0'),nullable=False
+    sql.Column('id', sql.Integer, primary_key=True), 
+    sql.Column('book', sql.Integer, sql.ForeignKey('book.id'), nullable=False), 
+    sql.Column('page_mark', sql.Integer, 
+                        sql.CheckConstraint('page_mark > 0'),nullable=False
                     ), 
-    sqlalchemy.Column('chapter_mark', 
-                        sqlalchemy.Integer, sqlalchemy.CheckConstraint('chapter_mark > 0'),nullable=False
+    sql.Column('chapter_mark', 
+                        sql.Integer, sql.CheckConstraint('chapter_mark > 0'),nullable=False
                     ), 
-    sqlalchemy.Column('read_at', sqlalchemy.DateTime, default=datetime.datetime.utcnow)
+    sql.Column('read_at', sql.DateTime, default=datetime.datetime.utcnow)
 )
 
 
 
-engine = sqlalchemy.create_engine(
+engine = sql.create_engine(
     config['DATABASE_URL'], 
     # connect_args={"check_same_thread": False}
 )
-# metadata.create_all(engine)
+#metadata.create_all(engine)

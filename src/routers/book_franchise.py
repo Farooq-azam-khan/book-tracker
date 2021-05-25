@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 from src.models import (database, 
                         book_franchise_table, 
-                        CreateFranchise)
+                        )
+from src.types import CreateFranchise, Franchise
 from fastapi import Depends
-from src.types import Franchise
 from typing import List
 from src.dependencies import get_current_user
 

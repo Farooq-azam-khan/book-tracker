@@ -1,7 +1,7 @@
 module.exports = {
   // mode: 'jit',
   purge: {
-    enabled: true,
+    enabled: false,
     content: [
       './src/**/*.elm',
       'index.html'

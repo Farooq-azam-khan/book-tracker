@@ -1,7 +1,7 @@
 from pydantic import BaseModel, validator
 from typing import Optional
-import datetime 
-
+# import datetime 
+from typing import List 
 
 class User(BaseModel):
     username: str 
@@ -15,19 +15,18 @@ class TokenData(BaseModel):
     username: Optional[str] = None 
 
 
-class Book(BaseModel):
-    name: str
-    id: int 
 
+class TableOfContent(BaseModel):
+    name: str 
+    page: int 
 
 class CreateBook(BaseModel):
     name: str
     total_pages: int
     total_chapters: int
     author: int
-    book_order: Optional[int]
-    franchise: Optional[int]
-    genre: Optional[int]
+    genres: Optional[List[int]]
+    contents: Optional[List[TableOfContent]]
 
     @validator('total_pages')
     def total_pages_positive(cls, v):
@@ -41,22 +40,16 @@ class CreateBook(BaseModel):
             raise ValueError('total chapters has to be bigger than 1')
         return v
     
-    @validator('book_order')
-    def book_order_is_pos(cls, v):
-        if v == None: 
-            return v 
-        if v <= 0:
-            raise ValueError('book order needs to be bigger than 1')
-        return v
+    
+class Book(CreateBook):
+    id: int 
+
 
 class UpdateBook(CreateBook):
     name: Optional[str]
     total_pages: Optional[int]
     total_chapters: Optional[int]
     author: Optional[int]
-    book_order: Optional[int]
-    franchise: Optional[int]
-    genre: Optional[int]
 
 
 
@@ -75,6 +68,9 @@ class Genre(CreateGenre):
 class CreateAuthor(BaseModel):
     name: str 
 
+class UpdateAuthor(CreateAuthor):
+    pass
+
 
 class Author(BaseModel):
     name: str 
@@ -85,7 +81,7 @@ class CreateHistory(BaseModel):
     book: int 
     page_mark: int
     chapter_mark: int
-    read_at: Optional[datetime.datetime] # str
+    #read_at: Optional[datetime.datetime] # str
 
     # TODO: validate page_mark and chapter_mark 
     # against previous entries
@@ -98,6 +94,3 @@ class History(BaseModel):
     start_page: Optional[int]
     end_page: int
 
-
-class UpdateAuthor(CreateAuthor):
-    pass

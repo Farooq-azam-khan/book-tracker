@@ -39,9 +39,9 @@ type alias CreateBook =
     ,  total_pages : Int 
     , total_chapters : Int 
     , author : Int 
-    ,  book_order : Maybe Int 
-    , franchise : Maybe Int 
-    , genre : Maybe Int 
+    -- ,  book_order : Maybe Int 
+    -- , franchise : Maybe Int 
+    -- , genre : Maybe Int 
     }
 
 init_create_book : CreateBook 
@@ -50,9 +50,9 @@ init_create_book =
     ,  total_pages = 0 
     , total_chapters = 0 
     , author = 0 
-    ,  book_order = Nothing 
-    , franchise = Nothing 
-    , genre = Nothing 
+    -- ,  book_order = Nothing 
+    -- , franchise = Nothing 
+    -- , genre = Nothing 
     }
 -- TODO: login error fields 
 -- type alias LoginError = 
