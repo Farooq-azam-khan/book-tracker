@@ -22,13 +22,15 @@ login_button  =
         , span [] [text "login"]
         ]
 
+
 home_view : Model -> Html Msg 
 home_view model = 
-    div [] [if List.length model.reading_list == 0 
-    then
-    div [ class "px-3 overflow-x-hidden overflow-y-auto justify-center items-center"]
-    [ div [ class "relative w-auto my-6 mx-auto max-w-3xl" ]
-        [ div [ class "border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" ]
+    div [] 
+        [ if List.length model.reading_list == 0 
+            then
+            div [ class "px-3 overflow-x-hidden overflow-y-auto justify-center items-center"]
+                [ div [ class "relative w-auto my-6 mx-auto max-w-3xl" ]
+                [ div [ class "border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" ]
             [ div [ class "flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t" ]
                 [ h3 [ class "text-indigo-500 text-xl font-semibold" ]
                     [ text "Recently Read Books" ]

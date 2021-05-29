@@ -1,7 +1,7 @@
 module Msg exposing (..)
 import Types exposing (..)
 import Http exposing(stringPart)
-
+import WorldMapTypes exposing (WorldMap)
 type BookFormFields 
     = ToggleBookForm 
     | ChangeName String 
@@ -34,3 +34,5 @@ type Msg = NoOp
          | UpdateBookForm BookFormFields
          | CreateBookRequest (Result Http.Error Book)
          | AuthorsGetRequest (Result Http.Error (List Author))
+         | WorldAtlasJson (Result Http.Error WorldMap)
+         | ToggleMap 

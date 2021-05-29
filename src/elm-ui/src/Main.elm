@@ -7,6 +7,8 @@ import Http
 import Json.Decode as D
 import Json.Encode as E
 
+
+
 import Model exposing (..)
 import Msg exposing (..)
 import Types exposing (..)
@@ -17,7 +19,7 @@ import Api exposing ( sendCreateBookPostRequest
                     , getBookProgress
                     , deleteHistory
                     )
-import Ports exposing (storeToken, deleteToken)
+import Ports exposing (storeToken, deleteToken, toggle_map)
 import Html.Attributes exposing (class)
 import Pages.Home exposing (home_view)
 import Pages.Dashboard exposing (dashboard_view)
@@ -37,6 +39,8 @@ update msg model =
     case msg of 
         NoOp -> 
             (model, Cmd.none) 
+        ToggleMap -> 
+            ({model | map_toggle = not model.map_toggle}, toggle_map (not model.map_toggle))
         AreYouSure -> 
             ({model | are_you_sure = not model.are_you_sure}, Cmd.none)
         UpdateUserName user_nm_inpt -> 
@@ -169,8 +173,6 @@ update msg model =
         
         ToggleCreateRecord -> 
             ({model | user = update_history_record_form model.user ShowHistForm}, Cmd.none)
-        
-
 
         WasHistoryRecodedSuccessful (Err _) -> 
                 (model, Cmd.none) 
@@ -223,6 +225,16 @@ update msg model =
                     in 
                         ({model | user = LoggedIn token new_user_alias, are_you_sure=not model.are_you_sure}, Cmd.none)
                 _ ->  (model, Cmd.none)
+
+        WorldAtlasJson (Err e) -> 
+            (model, Cmd.none)
+
+        WorldAtlasJson (Ok response) -> 
+            let 
+                _ = Debug.log "world atlas response" response 
+            in 
+                (model, Cmd.none)
+        
 
 
 
@@ -304,15 +316,19 @@ log_user_out model =
     in 
     ({model | user = new_user} , deleteToken "")
 
+
+-- toggle_map_btn : Html Msg 
+-- toggle_map_btn = button [onClick ToggleMap, class "text-md px-4 py-3 bg-gray-100 text-black font-semibold"] [text "Toggle Map"]
+
 view : Model -> Html Msg 
 view model = 
     div 
         [class "px-2 font-sans"] 
         [ case model.user of 
             LoggedIn _ _ -> 
-                dashboard_view model 
+                dashboard_view model
             Unknown -> 
                 text "loading..."
             LoggedOut _ -> 
-                home_view model 
+                home_view model
         ]

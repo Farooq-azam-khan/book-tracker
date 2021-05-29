@@ -4,14 +4,34 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Book Tracker Application</title>
-		<link href="{{ url_for('static', path='tailwind_prod.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static', path='tailwind.css') }}" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+		<!-- d3js and topojson -->
+		<script src="https://unpkg.com/d3@5.6.0/dist/d3.min.js"></script>
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+
+		<style>
+			.sphere {
+				fill: #4242e4;
+			}
+
+			.country {
+				fill: lightgreen;
+				stroke: black;
+				stroke-opacity: 0.1;
+			}
+		</style>
 	</head>
 	<body class="bg-gray-800">
 		<div id="elm-app"></div>
-		<script src="{{ url_for('static', path='elm_prod.js') }}"></script>
+		<svg id="map-nationality" width="960" height="500"></svg>
+
+
+		<script src="{{ url_for('static', path='elm.js') }}"></script>
 		<script>
+			const svg = d3.select('#map-nationality');
+
 			const root = document.querySelector('#elm-app')
 			const TOKEN_KEY = '__BOOK_TRACKER__TOKEN__'
 			if (root) {
@@ -27,7 +47,34 @@
 				app.ports.deleteToken.subscribe(() => {
 					localStorage.removeItem(TOKEN_KEY)
 				})
+
+				
+				app.ports.toggle_map.subscribe((msg) => {
+					console.log('message received', msg)
+					if (msg) {
+						svg.style.display = "block";
+					} else {
+						svg.style.display = "none";
+					}
+				})
 			}
+				
+				const projection = d3.geoNaturalEarth1();
+				const pathGenerator = d3.geoPath().projection(projection);
+
+				svg.append('path')
+						.attr('class', 'sphere')
+						.attr('d', pathGenerator({type: 'Sphere'}));
+
+				d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json')
+					.then(data => {
+						const countries = topojson.feature(data, data.objects.countries);
+						// console.log(countries)  
+					svg.selectAll('path').data(countries.features)
+							.enter().append('path')
+								.attr('class', 'country')
+								.attr('d', pathGenerator);
+					});
 			</script>
 	</body>
 </html>

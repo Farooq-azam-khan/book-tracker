@@ -3,6 +3,7 @@ import Types exposing (..)
 import Http
 import Json.Decode as D
 import Json.Encode as E
+import WorldMapTypes exposing (worldMapDecoder)
 
 import Msg exposing (..)
 
@@ -179,3 +180,16 @@ sendHistoryRecord token history_record_form =
             , tracker = Nothing 
             , expect = Http.expectJson WasHistoryRecodedSuccessful (D.list history_decoder)
             }
+
+
+
+world_atlas : String 
+world_atlas = "https://unpkg.com/world-atlas@1.1.4/world/110m.json"
+
+
+get_topo_json : Cmd Msg 
+get_topo_json =
+    Http.get 
+        { url = world_atlas
+        , expect = Http.expectJson WorldAtlasJson worldMapDecoder
+        }
