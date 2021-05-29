@@ -1001,6 +1001,10 @@ select {
   max-width: 56rem;
 }
 
+.max-w-5xl {
+  max-width: 64rem;
+}
+
 .max-w-full {
   max-width: 100%;
 }
