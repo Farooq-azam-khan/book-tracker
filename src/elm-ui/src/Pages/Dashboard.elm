@@ -57,7 +57,7 @@ dashboard_view model =
 
 display_reading_history : List Book -> Bool -> List History -> Html Msg 
 display_reading_history books are_you_sure reading_history = 
-    div [ class "font-serif text-gray-900 flex flex-wrap mt-4 max-w-xl md:max-w-5xl mx-auto" ]
+    div [ class "font-serif text-gray-900 flex justify-center flex-wrap mt-4 max-w-xl md:max-w-5xl mx-auto" ]
         [ div [ class "w-full xl:w-8/12 mb-12 xl:mb-0 px-4" ]
             [ div [ class "relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded" ]
                 [ div [ class "rounded-t mb-0 px-4 py-3 border-0" ]

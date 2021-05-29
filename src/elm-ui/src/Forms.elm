@@ -13,13 +13,13 @@ import Components exposing (..)
 modal_preamble : Close Msg -> String -> Html Msg -> Html Msg 
 modal_preamble (Close close_action) header_title inner_form  = 
     div 
-        [class "text-white max-w-2xl"
+        [class "text-white max-w-4xl"
         ]
         [ div [class "fixed z-20 inset-0 bg-black opacity-50"] [] 
         , div 
             [ class "mx-auto flex items-center justify-center fixed inset-0 z-30"]
             [ div 
-                [ class "bg-gray-700 rounded-lg shadow-md"]
+                [ class "bg-gray-700 rounded-lg shadow-md max-w-5xl"]
                 [ div 
                     [class "flex items-center rounded-t-lg  justify-between bg-gray-900 px-2 py-2 "] 
                     [ h2 [class "text-md tracking-wider font-semibold"] [text header_title]
