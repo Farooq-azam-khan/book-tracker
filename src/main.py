@@ -61,7 +61,14 @@ async def startup():
 @app.on_event('shutdown')
 async def shutdown():
     await database.disconnect()
-
+    
+@app.get('/books_by_country')
+async def get_books_by_country():
+    print(10*'-', '\n', 'reading book')
+    return [
+        {'country':'USA', 'books': [{'name': 'The Final Empire'}]}, 
+        {'country': 'Canada', 'books': [{'name': 'A Fine Balance'}]}
+    ]
 
 @app.post('/token', response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):

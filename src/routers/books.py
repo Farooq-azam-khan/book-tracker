@@ -1,24 +1,27 @@
 from fastapi import APIRouter, Depends, HTTPException
 from src.models import (
-                        database, book_table, 
-                        book_franchise_table, book_genre_table
+                        database, book_table, book_genre_table
                         )
                         
 from src.types import CreateBook, TableOfContent, UpdateBook, Book
-from typing import List , Optional
+from typing import List, Optional
 from src.dependencies import get_current_user
 router = APIRouter()
 
 
-@router.get('/')
+@router.get('/', response_model=List[Book])
 async def books():
     query = book_table.select()
     return await database.fetch_all(query)
+
+
 
 @router.get('/{book_id}', response_model=Book)
 async def get_a_book(book_id: int):
     query = book_table.select().where(book_table.c.id == book_id).order_by(book_table.c.name)
     return await database.fetch_one(query)
+
+
 
 async def valid_genres(book_genres: List[int]) -> bool:
     all_genres = set(list(map(lambda x: x['id'], await database.fetch_all(book_genre_table.select()))))
@@ -42,7 +45,8 @@ async def create_book(create_book: CreateBook, _ = Depends(get_current_user)):
                                     total_chapters=create_book.total_chapters,
                                     author=create_book.author, 
                                     genres=create_book.genres if create_book.genres is not None else [], 
-                                    contents=contents
+                                    contents=contents, 
+                                    read_amount=create_book.read_amount
         )
         last_record_id = await database.execute(query)
         return await database.fetch_one(book_table.select().where(book_table.c.id == last_record_id))
@@ -94,3 +98,6 @@ async def update_a_book(book_id: int, update_book: UpdateBook, _ = Depends(get_c
     )
     await database.execute(query)
     return await database.fetch_one(book_table.select().where(book_table.c.id == book_id))
+
+
+

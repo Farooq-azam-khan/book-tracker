@@ -79,7 +79,8 @@ book_table = sql.Table(
                 nullable=False
             ),
     sql.Column('genres',JSON),
-    sql.Column('contents', JSON)
+    sql.Column('contents', JSON), 
+    sql.Column('read_amount', sql.Integer, default=0)
 )
 
 history_table = sql.Table(
@@ -102,4 +103,4 @@ engine = sql.create_engine(
     config['DATABASE_URL'], 
     # connect_args={"check_same_thread": False}
 )
-#metadata.create_all(engine)
+# metadata.create_all(engine)

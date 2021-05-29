@@ -27,6 +27,7 @@ class CreateBook(BaseModel):
     author: int
     genres: Optional[List[int]]
     contents: Optional[List[TableOfContent]]
+    read_amount: Optional[int]
 
     @validator('total_pages')
     def total_pages_positive(cls, v):
@@ -41,7 +42,7 @@ class CreateBook(BaseModel):
         return v
     
     
-class Book(CreateBook):
+class Book(CreateBook): 
     id: int 
 
 
@@ -82,6 +83,7 @@ class CreateHistory(BaseModel):
     page_mark: int
     chapter_mark: int
     read_at: Optional[str]
+    
 
     # TODO: validate page_mark and chapter_mark 
     # against previous entries
