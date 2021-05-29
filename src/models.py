@@ -23,6 +23,7 @@ author_table = sql.Table(
     metadata, 
     sql.Column('id', sql.Integer, primary_key=True), 
     sql.Column('name', sql.String, nullable=False, unique=True),
+    sql.Column('nationality', sql.String)
 )
 
 book_genre_table = sql.Table(
