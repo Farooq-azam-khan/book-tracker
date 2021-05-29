@@ -42,8 +42,11 @@
 * [x] add column / table `book-genre` https://blog.reedsy.com/book-genres/
     * [x] a book has a list of genres (i.e. many to many relation or list of genre ints as column)
     - pick: second options - list of ints
-* [ ] add column `contents` as `json` column
-
+    * [ ] route to add list of genres to book 
+    * [x] route to update list of genres
+* [x] add column `contents` as `json` column
+    * [x] route to add list of contents to existing book 
+    * [x] route to update contents to existing book 
 ```elm
 type Bookmark = Bookmark {name: String, page: Int}
 type BookmarColumn = List Bookmark 
