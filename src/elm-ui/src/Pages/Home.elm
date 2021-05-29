@@ -61,11 +61,12 @@ home_view model =
             Unknown -> text ""
             LoggedIn _ _ -> text ""
             LoggedOut login_form -> 
+                -- text ""
                 if login_form.show_form then login_form_view login_form else login_button 
-        , h1 [class "text-3xl font-bold tracking-wide text-center text-white"] [text "Books I am Reading"]
-        ,  div  [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
-                ] 
-                (List.map book_view model.reading_list) 
+        -- , h1 [class "text-3xl font-bold tracking-wide text-center text-white"] [text "Books I am Reading"]
+        -- ,  div  [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
+        --         ] 
+        --         (List.map book_view model.reading_list) 
         -- , case model.books of 
         --     Nothing -> 
         --         text ""
