@@ -19,16 +19,26 @@ async def get_author(author_id: int):
 
 @router.post('/', response_model=Author)
 async def create_author(create_author: CreateAuthor, _=Depends(get_current_user)):
-    query = author_table.insert().values(name=create_author.name)
+    query = author_table.insert().values(name=create_author.name, nationality=create_author.nationality)
     last_record_id = await database.execute(query)
     return {**create_author.dict(), 'id': last_record_id}
 
+
+
+def either_or(orig, updt):
+    if updt == None:
+        return orig 
+    return updt 
+
+
 @router.put('/{author_id}')
 async def update_an_author(author_id: int, author: UpdateAuthor, _=Depends(get_current_user)):
-    author_names = await database.fetch_all(author_table.select().where(author_table.c.name == author.name))
-    if len(author_names) >= 1:
-        raise HTTPException(status_code=400, detail='Name already exists in database')
-    query = author_table.update().where(author_table.c.id == author_id).values(name=author.name)
+    current_author = await database.fetch_one(author_table.select().where(author_table.c.id == author_id))
+
+    query = author_table.update().where(author_table.c.id == author_id)\
+            .values(name=either_or(current_author['name'], author.name), 
+            nationality=either_or(current_author['nationality'], author.nationality)
+        )
     await database.execute(query)
     query = author_table.select().where(author_table.c.id == author_id)
     return await database.fetch_one(query)

@@ -67,13 +67,13 @@ class Genre(CreateGenre):
 
 class CreateAuthor(BaseModel):
     name: str 
+    nationality: Optional[str]
 
 class UpdateAuthor(CreateAuthor):
-    pass
+    name: Optional[str]
 
 
-class Author(BaseModel):
-    name: str 
+class Author(CreateAuthor):
     id: int 
 
 
@@ -81,7 +81,7 @@ class CreateHistory(BaseModel):
     book: int 
     page_mark: int
     chapter_mark: int
-    #read_at: Optional[datetime.datetime] # str
+    read_at: Optional[str]
 
     # TODO: validate page_mark and chapter_mark 
     # against previous entries
