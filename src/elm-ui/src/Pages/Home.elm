@@ -8,8 +8,8 @@ import Html exposing (Html, button, div, text, input, form,
 import Html.Events exposing (onInput, onSubmit, onClick)
 import Html.Attributes exposing(attribute, class)
 import Round as R
-import Components exposing (..)
-import Forms exposing (login_form_view)
+import Components exposing (books_table, progress_bar)
+import LoginForm exposing (login_form_view)
 import Icons exposing (..)
 
 login_button :  Html Msg 
@@ -22,63 +22,43 @@ login_button  =
         , span [] [text "login"]
         ]
 
-
+home_view_actions_card : Model -> Html Msg
+home_view_actions_card model = 
+    div 
+        [ class "max-w-3xl mt-3 md:max-w-5xl mx-auto px-3 overflow-x-hidden overflow-y-auto justify-center items-center"]
+        [ div 
+            [ class "relative" ]
+            [ div 
+                [ class "border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" ]
+                [ div 
+                    [ class "flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t" ]
+                    [ h3 
+                        [ class "text-indigo-500 text-xl font-semibold" ]
+                        [ text "Actions" ]
+                    ]
+                , div 
+                    [ class "relative p-6 flex-auto text-gray-800" ]
+                    [ case model.user of 
+                        Unknown -> text ""
+                        LoggedIn _ _ -> text ""
+                        LoggedOut login_form ->  if login_form.show_form then login_form_view login_form else login_button  
+                    ]
+                ]
+            ]
+        ] 
 home_view : Model -> Html Msg 
 home_view model = 
-    div [] 
-        [ if List.length model.reading_list == 0 
-            then
-            div [ class "px-3 overflow-x-hidden overflow-y-auto justify-center items-center"]
-                [ div [ class "relative w-auto my-6 mx-auto max-w-3xl" ]
-                [ div [ class "border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" ]
-            [ div [ class "flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t" ]
-                [ h3 [ class "text-indigo-500 text-xl font-semibold" ]
-                    [ text "Recently Read Books" ]
-                ]
-            , div [ class "relative p-6 flex-auto text-gray-800" ]
-                [ case model.user of 
-                    Unknown -> text ""
-                    LoggedIn _ _ -> text ""
-                    LoggedOut login_form -> 
-                        if login_form.show_form then login_form_view login_form else login_button 
-                , p [ class "my-3 text-md leading-relaxed" ]
-                    [ text "No Progress at the moment."] -- Here is a list of books I have read recently." ]
-                -- , case model.books of 
-                --     Nothing -> 
-                --         text ""
-                --     Just books -> 
-                --         div [] 
-                --             [ p [] [text "Below are a list of books I have read recently."]
-                --             , ol [class "list-disc text-indigo-500"] [li [] (List.map (\book -> li [] [text book.name]) <| List.take 5 books)]
-                --             ]
-                ]
-            
-            ]
-        ]
-        
-    ] 
+    div 
+        [] 
+        [ if List.length model.reading_list == 0  then
+            home_view_actions_card model 
     else 
     div [class "space-y-4"] 
         [ case model.user of 
             Unknown -> text ""
             LoggedIn _ _ -> text ""
             LoggedOut login_form -> 
-                -- text ""
-                if login_form.show_form then login_form_view login_form else login_button 
-        -- , h1 [class "text-3xl font-bold tracking-wide text-center text-white"] [text "Books I am Reading"]
-        -- ,  div  [ class "grid grid-flow-row grid-cols-1 gap-y-3 max-w-4xl mx-auto font-serif"
-        --         ] 
-        --         (List.map book_view model.reading_list) 
-        -- , case model.books of 
-        --     Nothing -> 
-        --         text ""
-        --     Just books -> 
-        --         div [class "px-3 py-4 bg-white rounded-md relative w-auto my-6 mx-auto max-w-4xl"] 
-        --             [ p [] [text "Below are a list of books I have read recently."]
-        --             , ol [class "text-indigo-500"] [li [] (List.map (\book -> li [] [text book.name]) <| List.take 5 books)]
-        --             ]
-            
-            
+                if login_form.show_form then login_form_view login_form else login_button       
         ]
         , case model.books of 
             Nothing -> 
@@ -92,8 +72,6 @@ pluralize : Int -> String -> String -> String
 pluralize amnt singular_word plural_word =
     if amnt == 1 then singular_word else plural_word
 
-lorem : String
-lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in vehicula sapien, in sollicitudin orci. "
 book_view : BookProgress -> Html Msg 
 book_view prog_book =
     div [class "flex flex-col space-y-3 px-3 py-4 rounded-md shadow-md text-gray-900 bg-white"] 
@@ -108,12 +86,11 @@ book_view prog_book =
                     [text <| ("read " ++ String.fromInt prog_book.read_before ++ pluralize prog_book.read_before " time" " times")
                     ]
                 ]
-            -- , p [class "text-gray-600 max-w-md text-md mt-2"] [text lorem]
         ]
         , div 
             [class "flex flex-col sm:flex-row space-x-3 justify-between items-center"] 
-            [progres_bar "page" (100*prog_book.page_progress)
-            , progres_bar "chapter" (100*prog_book.chapter_progress)
+            [progress_bar "page" (100*prog_book.page_progress)
+            , progress_bar "chapter" (100*prog_book.chapter_progress)
             ]
         ]
         

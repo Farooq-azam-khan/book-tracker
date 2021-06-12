@@ -1,4 +1,4 @@
-module Forms exposing (login_form_view, create_record_form, create_book_form)
+module Forms exposing (create_record_form, create_book_form)
 
 import Html exposing (..)
 import Html.Attributes exposing (attribute, type_, value, placeholder, id, for, class)
@@ -196,62 +196,3 @@ bookOption book = option [value <| String.fromInt book.id] [text book.name]
 
 authorOption : Author -> Html Msg 
 authorOption author = option [value <| String.fromInt author.id] [text author.name]
-
-login_form_view : LoginForm -> Html Msg 
-login_form_view login_form = 
-    div [class "text-white"]
-        [ div [class "fixed z-20 inset-0 bg-black opacity-50"] []
-        , div [ class "mx-auto flex items-center justify-center fixed inset-0 z-30 w-screen px-10"]
-        [ div [class "bg-gray-700 rounded-lg shadow-md w-full max-w-lg"] 
-        [ div 
-            [class "flex items-center rounded-t-lg  justify-between bg-gray-900 px-4 py-4"] 
-            [ h2 [class "text-md tracking-wider font-semibold"] [text "Login"]
-            , button 
-                    [ onClick ToggleLogin
-                    , type_ "button"
-                    , class "hover:text-white border-2 hover:border-indigo-300 border-white rounded-md"
-                    ] [x_icon]
-            ]
-        , form 
-            [onSubmit LoginAction
-            , class "flex flex-col items-start space-y-3 px-4 py-4 w-full max-w-md mx-auto"
-            ] 
-            [ div 
-                [class "flex flex-col items-start justify-between space-y-3 w-full"] 
-                [label [for "username"] [text "Username"]
-                , input [id "username"
-                        , type_ "text"
-                        , placeholder "Username"
-                        , attribute "autfocus" "true"
-                        , value login_form.username
-                        , onInput UpdateUserName
-                        , class "px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
-                        ] []
-                ]
-            , div 
-                [class "flex flex-col items-start justify-between space-y-3 w-full"] 
-                [ label [for "password"] [text "Password"]
-                , input [id "password"
-                        , type_ "password"
-                        , placeholder "Password"
-                        , value login_form.password
-                        , onInput UpdatePassword
-                        , class "px-2 py-2 placeholder-gray-300 text-gray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
-                        ] []
-                ]
-            
-            
-            , div 
-                [class "w-full"]
-                [ button 
-                    [class "mt-4 flex items-center justify-between focus:ring-2 inline-block mr-auto  px-3 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-500 hover:text-white shadow-lg"
-                    , type_ "submit"
-                    ] 
-                    [ span [] [login_icon "w-6 h-6"]
-                    , span [] [text "Login"]
-                    ]
-                ]
-            ]
-        ]
-        ]
-        ]
