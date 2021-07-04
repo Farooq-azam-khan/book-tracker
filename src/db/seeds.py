@@ -10,13 +10,13 @@ seed_authors = [
     'Robert Louis Stevenson',
     'Alexandre Dumas',
     'Robert Jordan & Brandon Sanderson',
-    'Fyodor Dostoyevsky',
+    'Fyodor Dostoevsky',
 ]
 
 seed_genres = [
     'Fantasy',
     'Science Fiction',
-    'Crime and Mistery',
+    'Crime and Mystery',
 ]
 seed_books = [
     {'name': 'The Eye of the World', 'author': 1, 'total_pages': 814, 'total_chapters': 55}, #1
