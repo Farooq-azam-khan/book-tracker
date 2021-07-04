@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from src.models import database,book_table
-
+from src.models import database  # ,book_table
 
 # from sqlalchemy.dialects import postgresql
 
@@ -30,19 +29,19 @@ async def a_book_progress(book_id: int):
     total_chapters = first_record['total_chapters']
     ret = {
         'book': {
-            'id': first_record['book'], 
-            'name': first_record['name'], 
-            'total_pages': total_pages, 
-            'total_chapters': total_chapters, 
+            'id': first_record['book'],
+            'name': first_record['name'],
+            'total_pages': total_pages,
+            'total_chapters': total_chapters,
             'author': first_record['author']
-        }, 
+        },
         'read_before': 0,
         'page_progress': 0,
         'chapter_progress': 0
     }
     for bk_prog in book_reading_progress:
         vl = dict(bk_prog)
-        
+
         page_mark = vl['page_mark']
         if page_mark == total_pages:
             ret['page_progress'] = 0
@@ -51,12 +50,12 @@ async def a_book_progress(book_id: int):
         else:
             ret['page_progress'] = vl['page_mark']
             ret['chapter_progress'] = vl['chapter_mark']
-        
 
     ret['page_progress'] = min(1, ret['page_progress'] / ret['book']['total_pages'])
     ret['chapter_progress'] = min(1, ret['chapter_progress'] / ret['book']['total_chapters'])
 
     return ret
+
 
 @router.get('/active/books')
 async def get_acitve_book_progess():
@@ -78,10 +77,11 @@ async def get_book_progess(book_id: int):
         raise HTTPException(status_code=400, detail='Book reading record does not exist')
     return book_prog
 
+
 async def all_book_progress():
     query = book_table.select()
     all_books = await database.fetch_all(query)
-    all_book_progs = [] 
+    all_book_progs = []
     for bk in all_books:
         val = dict(bk)
         book_prog = await a_book_progress(val['id'])
@@ -90,10 +90,7 @@ async def all_book_progress():
 
     return all_book_progs
 
+
 @router.get('/')
 async def get_book_progess():
     return await all_book_progress()
-
-
-
-    
