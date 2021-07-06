@@ -1,17 +1,20 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Request
-from dotenv import load_dotenv, dotenv_values
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+
+
+import os
+from typing import Optional
+from jose import jwt
+from datetime import timedelta, datetime
 
 from .models import database
 from .types import Token
 from fastapi.security import OAuth2PasswordRequestForm
 from .dependencies import authenticate_user
-from typing import Optional
 
-from jose import jwt
-from datetime import timedelta, datetime
-
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from . import config
 
 from .routers import authors as authors_router
 from .routers import books as books_router
@@ -19,14 +22,12 @@ from .routers import history as history_router
 from .routers import book_franchise as book_franchise_router
 from .routers import book_genre as book_genre_router
 from .routers import book_progress as book_progress_router
-import os
-
-load_dotenv('.env')
-SECRET_KEY = os.environ['SECRET_KEY']
-ALGORITHM = os.environ['ALGORITHM']
 
 app = FastAPI()
-app.mount('/static', StaticFiles(directory='src/elm-ui'), name='static')
+
+parent_dir_path = os.path.dirname(os.path.realpath(__file__))
+print(parent_dir_path)
+app.mount('/static', StaticFiles(directory=parent_dir_path + '/elm-ui'), name='static')
 templates = Jinja2Templates(directory='src/elm-ui')
 
 app.include_router(authors_router.router, prefix='/authors', tags=['Authors'])
@@ -46,7 +47,10 @@ app.include_router(book_progress_router.router,
                    prefix='/progress',
                    tags=['Currently Reading'])
 
-from fastapi.responses import HTMLResponse
+
+@app.route('/test')
+def route_for_testing():
+    return {"test": True}
 
 
 @app.get('/', response_class=HTMLResponse)
@@ -73,18 +77,11 @@ async def get_books_by_country():
     ]
 
 
-try:
-    ACCESS_TOKEN_EXPIRE_MINUTES = int(dotenv_values()['ACCESS_TOKEN_EXPIRE_MINUTES'])
-    USERNAME = dotenv_values()['USERNAME']
-except:
-    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ['ACCESS_TOKEN_EXPIRE_MINUTES'])
-    USERNAME = os.environ['USERNAME']
-
-
 @app.post("/token", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
+                                 settings: config.Settings = Depends(config.get_settings)):
     print('logging in ....')
-    user = authenticate_user(form_data.username, form_data.password)
+    user = authenticate_user(form_data.username, form_data.password, settings)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -92,14 +89,19 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             headers={'WWW-Authenticate': 'Bearer'},
         )
 
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={'sub': USERNAME}, expires_delta=access_token_expires
+        data={'sub': settings.USERNAME},
+        settings=settings,
+        expires_delta=access_token_expires
     )
     return {'access_token': access_token, 'token_type': 'bearer'}
 
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+def create_access_token(data: dict,
+                        settings: config.Settings,
+                        expires_delta: Optional[timedelta] = None
+                        ):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -107,5 +109,5 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
 
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
